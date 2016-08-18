@@ -17,7 +17,10 @@ namespace MvcLunchSite.Controllers
         // GET: Restaurants
         public ActionResult Index()
         {
-            return View(db.Restaurants.ToList());
+            ViewBag.Restaurants = db.Restaurants.ToList();
+            ViewBag.Menus = db.Menus.ToList();
+            ViewBag.MenuItems = db.MenuItems.ToList();
+            return View(ViewBag);
         }
 
         // GET: Restaurants/Details/5
@@ -38,6 +41,8 @@ namespace MvcLunchSite.Controllers
         // GET: Restaurants/Create
         public ActionResult Create()
         {
+            ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
+            ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName");
             return View();
         }
 
@@ -54,7 +59,8 @@ namespace MvcLunchSite.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
+            ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName");
             return View(restaurant);
         }
 

@@ -56,7 +56,7 @@ namespace MvcLunchSite.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
             return View(menu);
         }
 

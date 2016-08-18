@@ -257,6 +257,11 @@
     <Content Include="Views\MenuItems\Details.cshtml" />
     <Content Include="Views\MenuItems\Edit.cshtml" />
     <Content Include="Views\MenuItems\Index.cshtml" />
+    <Content Include="Views\Shared\MenuCreate.cshtml" />
+    <Content Include="Views\Shared\MenuDelete.cshtml" />
+    <Content Include="Views\Shared\MenuDetails.cshtml" />
+    <Content Include="Views\Shared\MenuEdit.cshtml" />
+    <Content Include="Views\Shared\MenuIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
