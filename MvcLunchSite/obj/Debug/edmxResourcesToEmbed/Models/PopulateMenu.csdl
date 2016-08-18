@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Menu">
+    <Key>
+      <PropertyRef Name="menuID" />
+    </Key>
+    <Property Name="menuID" Type="Int32" Nullable="false" />
+    <Property Name="restaurantID" Type="Int32" Nullable="false" />
+    <Property Name="menuName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Restaurant" Relationship="Self.FK_Menus_Restaurants" FromRole="Menus" ToRole="Restaurants" />
+  </EntityType>
+  <EntityType Name="Restaurant">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Menus" Relationship="Self.FK_Menus_Restaurants" FromRole="Restaurants" ToRole="Menus" />
+  </EntityType>
+  <Association Name="FK_Menus_Restaurants">
+    <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+    <End Role="Menus" Type="Self.Menu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Restaurants">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Menus">
+        <PropertyRef Name="restaurantID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LunchEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Menus" EntityType="Self.Menu" />
+    <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
+    <AssociationSet Name="FK_Menus_Restaurants" Association="Self.FK_Menus_Restaurants">
+      <End Role="Restaurants" EntitySet="Restaurants" />
+      <End Role="Menus" EntitySet="Menus" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

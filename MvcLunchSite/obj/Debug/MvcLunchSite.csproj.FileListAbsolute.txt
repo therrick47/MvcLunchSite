@@ -1,0 +1,138 @@
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\csc.exe
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\System.Collections.Immutable.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\System.Reflection.Metadata.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\vbc.exe
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\VBCSCompiler.exe
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\roslyn\VBCSCompiler.exe.config
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\MvcLunchSite.dll.config
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\MvcLunchSite.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\MvcLunchSite.pdb
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Antlr3.Runtime.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\EntityFramework.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\EntityFramework.SqlServer.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Google.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Web.Infrastructure.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Newtonsoft.Json.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Owin.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.Helpers.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.Mvc.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.Optimization.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.Razor.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.Deployment.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.Razor.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\WebGrease.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.Helpers.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.Mvc.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.Optimization.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.Razor.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.Deployment.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.Razor.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Antlr3.Runtime.pdb
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Newtonsoft.Json.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\EntityFramework.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\EntityFramework.SqlServer.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Google.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.csprojResolveAssemblyReference.cache
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.dll
+D:\Visual Studio Projects\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.pdb
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\csc.exe
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\vbc.exe
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\VBCSCompiler.exe
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\MvcLunchSite.dll.config
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\MvcLunchSite.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\MvcLunchSite.pdb
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Antlr3.Runtime.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\EntityFramework.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\EntityFramework.SqlServer.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Facebook.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Google.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Twitter.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Newtonsoft.Json.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Owin.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.Helpers.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.Mvc.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.Optimization.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.Razor.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.Deployment.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.Razor.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\WebGrease.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.Helpers.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.Mvc.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.Optimization.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.Razor.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.Deployment.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\System.Web.WebPages.Razor.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Antlr3.Runtime.pdb
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Newtonsoft.Json.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\EntityFramework.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\EntityFramework.SqlServer.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Facebook.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.OAuth.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Google.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.Twitter.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.csprojResolveAssemblyReference.cache
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.dll
+C:\Users\taherrick\Documents\GitHub\MvcLunchSite\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.pdb
