@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MvcLunchSite.Models.Restaurant>
-
+@{ var list = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Restaurant";
 }
 
 <h2>Restaurants</h2>
@@ -12,12 +12,13 @@
 <table class="table">
     <tr>
         <th>
+            
             @Html.DisplayNameFor(model => model.name)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in list) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.name)
@@ -31,5 +32,6 @@
 }
 
 </table>
-<div>@Html.Partial("~/Views/Menus/Index.cshtml")</div>
-<div>@Html.Partial("~/Views/MenuItems/Index.cshtml")</div>
+<div>@Html.</div>
+<div>@Html.Partial("~/Views/Menus/Index.cshtml",ViewData)</div>
+<div>@Html.Partial("~/Views/MenuItems/Index.cshtml",ViewData)</div>

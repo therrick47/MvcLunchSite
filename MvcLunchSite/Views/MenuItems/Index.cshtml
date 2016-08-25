@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<MvcLunchSite.Models.MenuItem>
+@{ var list = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Menu Item";
 }
 
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create","MenuItems")
 </p>
 <table class="table">
     <tr>
@@ -26,7 +27,10 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@if (list != null)
+{
+    foreach (var item in list)
+    {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Menu.menuName)
@@ -41,11 +45,37 @@
             @Html.DisplayFor(modelItem => item.menuItemDescription)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.menuItemID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.menuItemID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.menuItemID })
+            @Html.ActionLink("Edit", "Edit", "MenuItems", new { id = item.menuItemID }) |
+            @Html.ActionLink("Details", "Details", "MenuItems", new { id = item.menuItemID }) |
+            @Html.ActionLink("Delete", "Delete", "MenuItems", new { id = item.menuItemID })
         </td>
     </tr>
+    }
+}
+else
+{
+    foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Menu.menuName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemDescription)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "MenuItems", new { id = item.menuItemID }) |
+            @Html.ActionLink("Details", "Details", "MenuItems", new { id = item.menuItemID }) |
+            @Html.ActionLink("Delete", "Delete", "MenuItems", new { id = item.menuItemID })
+        </td>
+    </tr>
+    }
 }
 
 </table>

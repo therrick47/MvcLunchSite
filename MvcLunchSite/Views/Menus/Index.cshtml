@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<MvcLunchSite.Models.Menu>
+@{ var list = (List<MvcLunchSite.Models.Menu>)ViewData["MenuList"];}
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Menu";
 }
 
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create","Menus")
 </p>
 <table class="table">
     <tr>
@@ -20,7 +21,10 @@
         <th></th>
     </tr>
 
-@foreach (var item in ViewBag.Menus) {
+@if (list != null)
+{
+    foreach (var item in list)
+    {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Restaurant.ID)
@@ -29,11 +33,31 @@
             @Html.DisplayFor(modelItem => item.menuName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.menuID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.menuID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.menuID })
+            @Html.ActionLink("Edit", "Edit", "Menus", new { id = item.menuID }, null) |
+            @Html.ActionLink("Details", "Details","Menus", new { id = item.menuID }) |
+            @Html.ActionLink("Delete", "Delete","Menus", new { id = item.menuID })
         </td>
     </tr>
+    }
+}
+else
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Restaurant.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.menuName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Menus", new { id = item.menuID }, null) |
+                @Html.ActionLink("Details", "Details","Menus", new { id = item.menuID }) |
+                @Html.ActionLink("Delete", "Delete","Menus", new { id = item.menuID })
+            </td>
+        </tr>
+    }
 }
 
 </table>

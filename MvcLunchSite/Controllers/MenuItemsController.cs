@@ -54,7 +54,7 @@ namespace MvcLunchSite.Controllers
             {
                 db.MenuItems.Add(menuItem);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Restaurants");
             }
 
             ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName", menuItem.menuID);
@@ -88,7 +88,7 @@ namespace MvcLunchSite.Controllers
             {
                 db.Entry(menuItem).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Restaurants");
             }
             ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName", menuItem.menuID);
             return View(menuItem);
@@ -117,7 +117,7 @@ namespace MvcLunchSite.Controllers
             MenuItem menuItem = db.MenuItems.Find(id);
             db.MenuItems.Remove(menuItem);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Restaurants");
         }
 
         protected override void Dispose(bool disposing)

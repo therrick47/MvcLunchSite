@@ -54,7 +54,7 @@ namespace MvcLunchSite.Controllers
             {
                 db.Menus.Add(menu);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Restaurants");
             }
             ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
             return View(menu);
@@ -80,13 +80,13 @@ namespace MvcLunchSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "menuID,restaurantID,name")] Menu menu)
+        public ActionResult Edit([Bind(Include = "menuID,restaurantID,menuName")] Menu menu)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(menu).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Restaurants");
             }
             return View(menu);
         }
@@ -121,7 +121,7 @@ namespace MvcLunchSite.Controllers
             }
             db.Menus.Remove(menu);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Restaurants");
         }
 
         protected override void Dispose(bool disposing)
