@@ -5,7 +5,7 @@
     ViewBag.Title = "Menu Item";
 }
 
-<h2>Index</h2>
+<h2>Menu Item</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create","MenuItems")
@@ -45,9 +45,9 @@
             @Html.DisplayFor(modelItem => item.menuItemDescription)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", "MenuItems", new { id = item.menuItemID }) |
-            @Html.ActionLink("Details", "Details", "MenuItems", new { id = item.menuItemID }) |
-            @Html.ActionLink("Delete", "Delete", "MenuItems", new { id = item.menuItemID })
+            @Html.ActionLink("Edit", "Edit", "MenuItems", new { id = item.menuItemID },null) |
+            @Html.ActionLink("Details", "Details", "MenuItems", new { id = item.menuItemID },null) |
+            @Html.ActionLink("Delete", "Delete", "MenuItems", new { id = item.menuItemID },null)
         </td>
     </tr>
     }
