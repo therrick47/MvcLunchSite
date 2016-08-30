@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MvcLunchSite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +9,12 @@ namespace MvcLunchSite.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
+            ViewData["RestaurantList"] = db.Restaurants.ToList();
+            ViewData["MenuList"] = db.Menus.ToList();
+            ViewData["MenuItemList"] = db.MenuItems.ToList();
             return View();
         }
 
