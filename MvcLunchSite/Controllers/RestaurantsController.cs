@@ -119,6 +119,20 @@ namespace MvcLunchSite.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Restaurant restaurant = db.Restaurants.Find(id);
+            foreach(var item in db.Menus)
+            {
+                if (item.restaurantID == restaurant.ID)
+                {
+                    foreach(var menuItem in db.MenuItems)
+                    {
+                        if (item.menuID == menuItem.menuID)
+                        {
+                            db.MenuItems.Remove(menuItem);
+                        }
+                    }
+                    db.Menus.Remove(item);
+                }
+            }
             db.Restaurants.Remove(restaurant);
             db.SaveChanges();
             return RedirectToAction("Index");

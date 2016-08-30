@@ -17,21 +17,18 @@
     <div class="col-md-4">
        @foreach(var restItem in list)
        {
-           <p>Rest Stuff</p>
-           @Html.DisplayName(restItem.name)
-           <br/>
+           <p>@Html.DisplayName(restItem.name)</p>
+           
            foreach (var menuItem in Menulist)
            {
                if (menuItem.restaurantID == restItem.ID)
                {
-                <p>&nbsp&nbsp&nbsp menu stuff</p>
                 <p>&nbsp&nbsp&nbsp @Html.DisplayName(menuItem.menuName)</p>
-                   <br/>
+                   
                    foreach (var item in Itemlist)
                    {
                        if (item.menuID == menuItem.menuID)
                        {
-                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp item stuff</p>
                         <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp @Html.DisplayName(item.menuItemName)</p>
                        }
                    }
