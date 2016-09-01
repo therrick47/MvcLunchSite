@@ -13,7 +13,7 @@ namespace MvcLunchSite.Controllers
     public class RestaurantsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        private ApplicationDbContext db2 = new ApplicationDbContext();
         // GET: Restaurants
         public ActionResult Index()
         {
@@ -123,11 +123,14 @@ namespace MvcLunchSite.Controllers
             {
                 if (item.restaurantID == restaurant.ID)
                 {
-                    foreach(var menuItem in db.MenuItems)
+                    
+                    foreach(var menuItem in db2.MenuItems)
                     {
                         if (item.menuID == menuItem.menuID)
                         {
-                            db.MenuItems.Remove(menuItem);
+                            db.MenuItems.Attach(menuItem);
+                            db.Entry(menuItem).State = EntityState.Deleted;
+                            //db.MenuItems.Remove(menuItem);
                         }
                     }
                     db.Menus.Remove(item);
