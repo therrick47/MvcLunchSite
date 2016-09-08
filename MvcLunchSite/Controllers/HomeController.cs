@@ -31,5 +31,10 @@ namespace MvcLunchSite.Controllers
 
             return View();
         }
+        public ActionResult Vote()
+        {
+
+            return View();
+        }
     }
 }
