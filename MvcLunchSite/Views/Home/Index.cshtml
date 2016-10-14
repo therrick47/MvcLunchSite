@@ -1,0 +1,57 @@
+﻿@model IEnumerable<MvcLunchSite.Models.Restaurant>
+@{ var list = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
+@{ var Menulist = (List<MvcLunchSite.Models.Menu>)ViewData["MenuList"];}
+@{ var Itemlist = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
+
+@{ 
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    @{List<SelectListItem> listNumber = new List<SelectListItem>();
+        listNumber.Add(new SelectListItem { Value = " ", Text = " " });
+        listNumber.Add(new SelectListItem { Value = "1", Text = "1" });
+        listNumber.Add(new SelectListItem { Value = "2", Text = "2" });
+        listNumber.Add(new SelectListItem { Value = "3", Text = "3" });
+    }
+    @foreach (var item in list)
+    {
+        <p>@Html.DropDownList("Value", listNumber) &nbsp&nbsp @Html.DisplayName(item.name)</p>
+    }
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Vote" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+       @foreach(var restItem in list)
+       {
+           <p>@Html.DisplayName(restItem.name)</p>
+           
+           foreach (var menuItem in Menulist)
+           {
+               if (menuItem.restaurantID == restItem.ID)
+               {
+                <p>&nbsp&nbsp&nbsp @Html.DisplayName(menuItem.menuName)</p>
+                   
+                   foreach (var item in Itemlist)
+                   {
+                       if (item.menuID == menuItem.menuID)
+                       {
+                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp @Html.DisplayName(item.menuItemName)</p>
+                       }
+                   }
+               }
+           }
+       }
+    </div>
+    <div class="col-md-4">
+       
+    </div>
+    <div class="col-md-4">
+       
+    </div>
+</div>

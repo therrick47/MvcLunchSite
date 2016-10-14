@@ -1,0 +1,37 @@
+﻿@model IEnumerable<MvcLunchSite.Models.Restaurant>
+@{ var list = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
+@{
+    ViewBag.Title = "Restaurant";
+}
+
+<h2>Restaurants</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in list) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>@Html.Partial("~/Views/Menus/Index.cshtml",ViewData)</div>
+<div>@Html.Partial("~/Views/MenuItems/Index.cshtml",ViewData)</div>
