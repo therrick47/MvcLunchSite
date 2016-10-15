@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MvcLunchSite.Models.MenuItem>
+@{ var list = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
+
+@{
+    ViewBag.Title = "Menu Item";
+}
+
+<h2>Menu Item</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create","MenuItems")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Menu.menuName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.menuItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.menuItemPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.menuItemDescription)
+        </th>
+        <th></th>
+    </tr>
+
+@if (list != null)
+{
+    foreach (var item in list)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Menu.menuName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemDescription)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "MenuItems", new { id = item.menuItemID },null) |
+            @Html.ActionLink("Details", "Details", "MenuItems", new { id = item.menuItemID },null) |
+            @Html.ActionLink("Delete", "Delete", "MenuItems", new { id = item.menuItemID },null)
+        </td>
+    </tr>
+    }
+}
+else
+{
+    foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Menu.menuName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.menuItemDescription)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "MenuItems", new { id = item.menuItemID }) |
+            @Html.ActionLink("Details", "Details", "MenuItems", new { id = item.menuItemID }) |
+            @Html.ActionLink("Delete", "Delete", "MenuItems", new { id = item.menuItemID })
+        </td>
+    </tr>
+    }
+}
+
+</table>
