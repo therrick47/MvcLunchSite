@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MvcLunchSite.Models;
+using System.Data.Entity;
 
 namespace MvcLunchSite.Controllers
 {
@@ -220,7 +221,7 @@ namespace MvcLunchSite.Controllers
         {
             return View();
         }
-
+        
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
@@ -245,6 +246,22 @@ namespace MvcLunchSite.Controllers
             return View(model);
         }
 
+        public ActionResult ChangeRole()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeRole([Bind(Include = "Email,Role")]  ChangeRoleViewModel RoleView)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(RoleView).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(RoleView);
+        }
         //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()

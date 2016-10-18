@@ -84,4 +84,14 @@ namespace MvcLunchSite.Models
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
+    public class ChangeRoleViewModel
+    {
+        [Required]
+        [Display(Name = "Current role")]
+        public string oldRole { get; set; }
+
+        [Required]
+        [Display(Name = "New role")]
+        public string newRole { get; set; }
+    }
 }
