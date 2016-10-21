@@ -252,7 +252,7 @@ namespace MvcLunchSite.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeRole([Bind(Include = "Email,Role")]  ChangeRoleViewModel RoleView)
+        public ActionResult ChangeRole([Bind(Include = "Email,Role")]  IndexViewModel RoleView)
         {
             if (ModelState.IsValid)
             {

@@ -13,6 +13,9 @@ namespace MvcLunchSite.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
         public string RoleName { get; set; }
+        public int id { get; }
+        public string email { get; }
+
     }
 
     public class ManageLoginsViewModel
@@ -93,5 +96,8 @@ namespace MvcLunchSite.Models
         [Required]
         [Display(Name = "New role")]
         public string newRole { get; set; }
+
+        public int id { get; }
+        public string email { get; }
     }
 }

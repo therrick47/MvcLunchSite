@@ -65,20 +65,15 @@
         }
 
     }
-    <div class="form-group">
-        @{List<SelectListItem> listNumber = new List<SelectListItem>();
-            listNumber.Add(new SelectListItem { Value = " ", Text = " " });
-            listNumber.Add(new SelectListItem { Value = "Orderer", Text = "Orderer" });
-            listNumber.Add(new SelectListItem { Value = "Admin", Text = "Admin" });
-            listNumber.Add(new SelectListItem { Value = "Superuser", Text = "Superuser" });
-        }
-        
-            <p>@Html.DropDownList("Value", listNumber) &nbsp&nbsp @Html.TextBox("Username")</p>
-        
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="ChangeRole" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
 </div>
+@foreach (var item in list)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Change Role", "ChangeRole", new { id = item.Id })
+        </td>
+    </tr>
+}
