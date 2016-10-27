@@ -13,8 +13,8 @@ namespace MvcLunchSite.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
         public string RoleName { get; set; }
-        public int id { get; }
-        public string email { get; }
+        public int id { get; set; }
+        public string email { get; set; }
 
     }
 
@@ -89,12 +89,8 @@ namespace MvcLunchSite.Models
     }
     public class ChangeRoleViewModel
     {
-        [Required]
-        [Display(Name = "Current role")]
-        public string oldRole { get; set; }
-
-        [Required]
-        [Display(Name = "New role")]
+        
+        
         public string newRole { get; set; }
 
         public int id { get; }

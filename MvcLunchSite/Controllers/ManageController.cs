@@ -252,13 +252,28 @@ namespace MvcLunchSite.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeRole([Bind(Include = "Email,Role")]  IndexViewModel RoleView)
+        //public ActionResult ChangeRole( ChangeRoleViewModel RoleView)
+        public async Task<ActionResult> ChangeRole([Bind(Include = "email,RoleName")] IndexViewModel RoleView)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(RoleView).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                // db.Entry(RoleView).State = EntityState.Modified;
+                //db.SaveChanges();
+                //return RedirectToAction("Index");
+                var user = await UserManager.FindByEmailAsync(RoleView.email);
+                if (user != null)
+                {
+                    
+                    foreach (ApplicationUser use in db.Users)
+                    {
+                        if (use.Email == RoleView.email)
+                        {
+                            use.Role=RoleView.RoleName;
+                        }
+                    }
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
             return View(RoleView);
         }
