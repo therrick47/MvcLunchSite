@@ -45,20 +45,23 @@
                     <p>Superuser Privileges</p>
                     <p></p>
                     <div>
-                        @foreach (var User in list)
-                        {
-
-
-                            if (User.Role == null)
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>User Email</th>
+                                    <th>User Role</th>
+                                    <th>Edit Role</th>
+                                </tr>
+                            </thead>
+                            @foreach (var User in list)
                             {
-                                <p>@Html.DisplayFor(modelItem => User.Email) &nbsp User</p>
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => User.Email)</td>
+                                    <td>@Html.DisplayFor(modelItem => User.Role) </td>
+                                    <td>@Html.ActionLink("Change Role", "ChangeRole", new { id = User.Id })</td>
+                                </tr>
                             }
-                            else
-                            {
-                                <p> @Html.DisplayFor(modelItem => User.Email) &nbsp @Html.DisplayFor(modelItem => User.Role) </p>
-                            }
-                            <p></p>
-                        }
+                        </table>
                     </div>
                 }
             }
@@ -66,14 +69,3 @@
 
     }
 </div>
-@foreach (var item in list)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Change Role", "ChangeRole", new { id = item.Id })
-        </td>
-    </tr>
-}
