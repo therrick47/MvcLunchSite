@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "New Restaurants";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+
+
+@Html.TextBox("restaurantTextBox","",new { @class = "form-control"})
+<button name="updateRestaurant"  onclick="">
+    Update Restaurant
+</button>

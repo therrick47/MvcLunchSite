@@ -1,0 +1,64 @@
+﻿.VoteControl
+{
+	border:solid 1px gray;
+	margin:2px;
+}
+.VoteControlQuestion
+{
+  margin:0;
+  padding: 3px;
+  background-color: gray;
+  color:White;
+}
+.VoteControlInnerBox
+{
+    padding:3px;
+}
+.VoteControl ul
+{
+  list-style-type:none;
+  padding:0;
+  margin:0;
+}
+.VoteControlNormalRow
+{
+	background-color:#C1F0FF;
+}
+.VoteControlAlternateRow
+{
+	background-color:#EDFFFB;
+}
+.VoteControlRadioButton
+{
+	width:46px;
+	margin:0;
+	padding:0;
+	border:0;
+}
+.VoteControlPollBar
+{
+	background-color:blue;
+	height:3px;
+}
+.VoteControlPollBarSpacer
+{
+	height:3px;
+}
+.VoteControlPollPercent
+{
+	width:50px;
+	float:left;
+}
+.VoteControlPollCount
+{
+	width:50px;
+	float:left;
+}
+.VoteControlPollLabel
+{
+	border-bottom:12px;
+}
+.VoteControlLinks
+{
+	margin: 4px 0;
+}
