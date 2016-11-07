@@ -9,17 +9,20 @@
 
 <div class="jumbotron">
     @{List<SelectListItem> listNumber = new List<SelectListItem>();
+        //listNumber.Add(new SelectListItem { Value = " ", Text = " " });
+        //listNumber.Add(new SelectListItem { Value = "1", Text = "1" });
+        //listNumber.Add(new SelectListItem { Value = "2", Text = "2" });
+        //listNumber.Add(new SelectListItem { Value = "3", Text = "3" });
         listNumber.Add(new SelectListItem { Value = " ", Text = " " });
-        listNumber.Add(new SelectListItem { Value = "1", Text = "1" });
-        listNumber.Add(new SelectListItem { Value = "2", Text = "2" });
-        listNumber.Add(new SelectListItem { Value = "3", Text = "3" });
-    }
-    @foreach (var item in list)
-    {
-        if (item.name != null)
+        foreach (var item in list)
         {
-            <p>@Html.DropDownList("Value", listNumber) &nbsp&nbsp @Html.DisplayName(item.name)</p>
+            listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
         }
+    }
+
+    @for(int i = 0; i < 3; i++)
+    {   
+        <p>@Html.DropDownList("Value", listNumber)</p>    
     }
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
