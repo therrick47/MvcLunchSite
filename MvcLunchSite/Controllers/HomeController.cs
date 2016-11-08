@@ -31,7 +31,7 @@ namespace MvcLunchSite.Controllers
 
             return View();
         }
-        public ActionResult Vote()
+       /* public ActionResult Vote()
         {
             //Console.WriteLine("HEY");
             ViewData["RestaurantList"] = db.Restaurants.ToList();
@@ -39,15 +39,43 @@ namespace MvcLunchSite.Controllers
             ViewData["MenuItemList"] = db.MenuItems.ToList();
             ViewBag.Message = "UPDATDED";
             return View("Index");
-        }
+        } */
 
-       /* [HttpPost]
+       [HttpPost]
         public ActionResult Vote(FormCollection t)
         {
-            string temp = Request.Form["Count1"].ToString();
-            temp = t["Count1"].ToString();
-            ViewBag.Message = temp;
-            return View();
-        }*/
+            string userID = t["userid"].ToString();
+            if (userID.Length > 0)
+            {
+                //First Choice in Vote
+                int temp = Int32.Parse(t["Choice1"].ToString());
+                VoteRecord firstChoice = new VoteRecord(userID, temp, 3);
+                db.VoteRecords.Add(firstChoice);
+
+                //Second Choice in Vote
+                temp = Int32.Parse(t["Choice2"].ToString());
+                VoteRecord secondChoice = new VoteRecord(userID, temp, 2);
+                db.VoteRecords.Add(secondChoice);
+
+                //Third Choice in Vote
+                temp = Int32.Parse(t["Choice3"].ToString());
+                VoteRecord thirdChoice = new VoteRecord(userID, temp, 1);
+                db.VoteRecords.Add(thirdChoice);
+                db.SaveChanges();
+
+                ViewBag.Message = "Vote successfully cast.";
+            }
+
+            else
+            {
+                ViewBag.Message = "Please log in to vote.";
+            }
+            
+
+            ViewData["RestaurantList"] = db.Restaurants.ToList();
+            ViewData["MenuList"] = db.Menus.ToList();
+            ViewData["MenuItemList"] = db.MenuItems.ToList();
+            return View("Index");
+        }
     }
 }

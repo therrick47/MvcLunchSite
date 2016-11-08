@@ -1,4 +1,6 @@
-﻿@model IEnumerable<MvcLunchSite.Models.Restaurant>
+﻿@using Microsoft.AspNet.Identity
+
+@model IEnumerable<MvcLunchSite.Models.Restaurant>
 @{ var list = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
 @{ var Menulist = (List<MvcLunchSite.Models.Menu>)ViewData["MenuList"];}
 @{ var Itemlist = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
@@ -6,35 +8,45 @@
 @{ 
     ViewBag.Title = "Home Page";
 }
-
-<div class="jumbotron">
-    @{List<SelectListItem> listNumber = new List<SelectListItem>();
-        //listNumber.Add(new SelectListItem { Value = " ", Text = " " });
-        //listNumber.Add(new SelectListItem { Value = "1", Text = "1" });
-        //listNumber.Add(new SelectListItem { Value = "2", Text = "2" });
-        //listNumber.Add(new SelectListItem { Value = "3", Text = "3" });
-        listNumber.Add(new SelectListItem { Value = " ", Text = " " });
-        foreach (var item in list)
-        {
-            listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
+@using (Html.BeginForm("Vote", "Home", FormMethod.Post))
+{
+    <div class="jumbotron">
+        @{List<SelectListItem> listNumber = new List<SelectListItem>();
+            //listNumber.Add(new SelectListItem { Value = " ", Text = " " });
+            //listNumber.Add(new SelectListItem { Value = "1", Text = "1" });
+            //listNumber.Add(new SelectListItem { Value = "2", Text = "2" });
+            //listNumber.Add(new SelectListItem { Value = "3", Text = "3" });
+            listNumber.Add(new SelectListItem { Value = " ", Text = " " });
+            foreach (var item in list)
+            {
+                listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
+            }
         }
-    }
 
       
-    <p>@Html.DropDownList("Choice1", listNumber)</p>   
-    <p>@Html.DropDownList("Choice2", listNumber)</p> 
-    <p>@Html.DropDownList("Choice3", listNumber)</p> 
+        <p>@Html.DropDownList("Choice1", listNumber)</p>   
+        <p>@Html.DropDownList("Choice2", listNumber)</p> 
+        <p>@Html.DropDownList("Choice3", listNumber)</p> 
      
     
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input id ="btnVote" type="submit" value="Vote" class="btn btn-default" onclick= "location.href = '@Url.Action("Vote", "Home")'"/>
-            
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id ="btnVote" type="submit" value="Vote" class="btn btn-default" />
+@if (Request.IsAuthenticated)
+{
+    <input type="hidden" name="userid" value=@User.Identity.GetUserId() />
+}
+else
+{
+    <input type="hidden" name="userid" value="" />
+}
+
+            </div>
+            <h3>@ViewBag.Message</h3>
         </div>
-        <h3>@ViewBag.Message</h3>
-    </div>
     
-</div>
+    </div>
+}
 
 <div class="row">
     <div class="col-md-4">
