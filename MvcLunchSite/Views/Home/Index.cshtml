@@ -20,15 +20,20 @@
         }
     }
 
-    @for(int i = 0; i < 3; i++)
-    {   
-        <p>@Html.DropDownList("Value", listNumber)</p>    
-    }
+      
+    <p>@Html.DropDownList("Choice1", listNumber)</p>   
+    <p>@Html.DropDownList("Choice2", listNumber)</p> 
+    <p>@Html.DropDownList("Choice3", listNumber)</p> 
+     
+    
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Vote" class="btn btn-default" />
+            <input id ="btnVote" type="submit" value="Vote" class="btn btn-default" onclick= "location.href = '@Url.Action("Vote", "Home")'"/>
+            
         </div>
+        <h3>@ViewBag.Message</h3>
     </div>
+    
 </div>
 
 <div class="row">

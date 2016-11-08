@@ -33,8 +33,21 @@ namespace MvcLunchSite.Controllers
         }
         public ActionResult Vote()
         {
-
-            return View();
+            //Console.WriteLine("HEY");
+            ViewData["RestaurantList"] = db.Restaurants.ToList();
+            ViewData["MenuList"] = db.Menus.ToList();
+            ViewData["MenuItemList"] = db.MenuItems.ToList();
+            ViewBag.Message = "UPDATDED";
+            return View("Index");
         }
+
+       /* [HttpPost]
+        public ActionResult Vote(FormCollection t)
+        {
+            string temp = Request.Form["Count1"].ToString();
+            temp = t["Count1"].ToString();
+            ViewBag.Message = temp;
+            return View();
+        }*/
     }
 }
