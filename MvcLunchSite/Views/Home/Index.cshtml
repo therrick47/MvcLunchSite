@@ -4,6 +4,7 @@
 @{ var list = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
 @{ var Menulist = (List<MvcLunchSite.Models.Menu>)ViewData["MenuList"];}
 @{ var Itemlist = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
+@{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
 
 @{ 
     ViewBag.Title = "Home Page";
@@ -79,4 +80,14 @@ else
     <div class="col-md-4">
        
     </div>
+</div>
+
+<div class="row">
+    <h1>Top Scores</h1>
+    <ol>
+        @foreach(var topItem in TopScoresList)
+        {
+            <li>@topItem</li>
+        }
+    </ol>
 </div>
