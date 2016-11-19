@@ -10,6 +10,9 @@ namespace MvcLunchSite.Models
     public class ApplicationUser : IdentityUser
     {
         public string Role { get; set; }
+        public int? FirstChoice { get; set; }
+        public int? SecondChoice { get; set; }
+        public int? ThirdChoice { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

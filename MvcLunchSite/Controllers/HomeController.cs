@@ -47,20 +47,21 @@ namespace MvcLunchSite.Controllers
             string userID = t["userid"].ToString();
             if (userID.Length > 0)
             {
+                var query = from item in db.Users
+                            where item.Id.Contains(userID)
+                            select item;
+                var rowToChange = query.FirstOrDefault();
                 //First Choice in Vote
                 int temp = Int32.Parse(t["Choice1"].ToString());
-                VoteRecord firstChoice = new VoteRecord(userID, temp, 3);
-                db.VoteRecords.Add(firstChoice);
+                rowToChange.FirstChoice = temp;
 
                 //Second Choice in Vote
                 temp = Int32.Parse(t["Choice2"].ToString());
-                VoteRecord secondChoice = new VoteRecord(userID, temp, 2);
-                db.VoteRecords.Add(secondChoice);
+                rowToChange.SecondChoice = temp;
 
                 //Third Choice in Vote
                 temp = Int32.Parse(t["Choice3"].ToString());
-                VoteRecord thirdChoice = new VoteRecord(userID, temp, 1);
-                db.VoteRecords.Add(thirdChoice);
+                rowToChange.ThirdChoice = temp;
                 db.SaveChanges();
 
                 ViewBag.Message = "Vote successfully cast.";

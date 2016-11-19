@@ -10,7 +10,9 @@
 }
 @using (Html.BeginForm("Vote", "Home", FormMethod.Post))
 {
+    <center>
     <div class="jumbotron">
+        <h2>Vote for Your Favorite Restaraunts</h2>
         @{List<SelectListItem> listNumber = new List<SelectListItem>();
             //listNumber.Add(new SelectListItem { Value = " ", Text = " " });
             //listNumber.Add(new SelectListItem { Value = "1", Text = "1" });
@@ -23,15 +25,14 @@
             }
         }
 
-      
-        <p>@Html.DropDownList("Choice1", listNumber)</p>   
-        <p>@Html.DropDownList("Choice2", listNumber)</p> 
-        <p>@Html.DropDownList("Choice3", listNumber)</p> 
-     
-    
+
+        <p>1st:  @Html.DropDownList("Choice1", listNumber)</p>
+        <p>2nd: @Html.DropDownList("Choice2", listNumber)</p>
+        <p>3rd:  @Html.DropDownList("Choice3", listNumber)</p>
+        <input id="btnVote" type="submit" value="Vote" class="btn btn-default" />
+
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input id ="btnVote" type="submit" value="Vote" class="btn btn-default" />
+            <div class="col-md-offset-2 col-md-12">
 @if (Request.IsAuthenticated)
 {
     <input type="hidden" name="userid" value=@User.Identity.GetUserId() />
@@ -44,9 +45,10 @@ else
             </div>
             <h3>@ViewBag.Message</h3>
         </div>
-    
+
     </div>
-}
+    </center>
+    }
 
 <div class="row">
     <div class="col-md-4">
