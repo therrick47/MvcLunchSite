@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 
 @model IEnumerable<MvcLunchSite.Models.Restaurant>
-@{ var list = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
+@{ var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
 @{ var Menulist = (List<MvcLunchSite.Models.Menu>)ViewData["MenuList"];}
 @{ var Itemlist = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
 @{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
@@ -20,7 +20,7 @@
             //listNumber.Add(new SelectListItem { Value = "2", Text = "2" });
             //listNumber.Add(new SelectListItem { Value = "3", Text = "3" });
             listNumber.Add(new SelectListItem { Value = "-1", Text = " " });
-            foreach (var item in list)
+            foreach (var item in restaurantList)
             {
                 listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
             }
@@ -49,30 +49,223 @@ else
 
     </div>
     </center>
-    }
+            }
+@*11/23/16 jordan - html/razor added for a bit of style*@
+
+@*global indices*@
+@{ 
+    int i;
+    int j;
+    int k;
+}
 
 <div class="row">
-    <div class="col-md-4">
-       @foreach(var restItem in list)
-       {
-           <p>@Html.DisplayName(restItem.name)</p>
-           
-           foreach (var menuItem in Menulist)
-           {
-               if (menuItem.restaurantID == restItem.ID)
-               {
-                <p>&nbsp&nbsp&nbsp @Html.DisplayName(menuItem.menuName)</p>
-                   
-                   foreach (var item in Itemlist)
-                   {
-                       if (item.menuID == menuItem.menuID)
-                       {
-                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp @Html.DisplayName(item.menuItemName)</p>
-                       }
-                   }
-               }
-           }
-       }
+    <div class="col-lg-2">
+        <div class="btn-group-vertical">
+            <ul class="nav nav-pills nav-stacked" style="border-style:solid;border-color:gainsboro">
+                @{
+                    i = 1;
+                    foreach (var restaurant in restaurantList)
+                    {
+                        string restaurantName = Html.DisplayName(restaurant.name).ToString();
+                        string restaurantHref = "restaurant" + i;
+                        if (i == 1)
+                        {
+                            <li class="active"><a data-toggle="pill" href="#@restaurantHref">@restaurantName</a></li>
+                        }
+                        else
+                        {
+                            <li><a data-toggle="pill" href="#@restaurantHref">@restaurantName</a></li>
+                        }
+                        i++;
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+
+
+    <div class="col-lg-5 menu1" style="padding-left: 50px;">
+        <div class="tab-content">
+            @{
+                i = 1;
+                foreach (var restaurant in restaurantList)
+                {
+                    string restaurantName = Html.DisplayName(restaurant.name).ToString();
+                    string restaurantHref = "restaurant" + i;
+                    string imageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/PEO-cat_face.svg/2000px-PEO-cat_face.svg.png";
+                    if (i == 1)
+                    {
+                        <div id="@restaurantHref" class="tab-pane fade in active">
+                            <div class="list-group menu">
+                                <a class="list-group-item active">
+                                    <h4 class="list-group-item-heading menuTitle" id="menuTitle">
+                                        <img src=@imageURL class="logo" style="height:50px;width:50px;" />
+                                        &nbsp;&nbsp;&nbsp; @restaurantName
+                                    </h4>
+                                </a>
+                                <div style="border-color:gainsboro;">
+                                    <ul class="nav nav-pills" id="menuTab">
+                                        @{
+                                            j = 1;
+                                            foreach (var menu in Menulist)
+                                            {
+                                                if (menu.restaurantID == restaurant.ID)
+                                                {
+                                                    string menuName = Html.DisplayName(menu.menuName).ToString();
+                                                    string menuHref = "menu" + i + j;
+                                                    if (j == 1)
+                                                    {
+                                                    <li class="active">
+                                                        <a data-toggle="tab" href="#@menuHref">@menuName</a>
+                                                    </li>
+                                                    }
+                                                    else
+                                                    {
+                                                    <li>
+                                                        <a data-toggle="tab" href="#@menuHref">@menuName</a>
+                                                    </li>
+                                                    }
+
+                                                }
+                                                j++;
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+
+                                            }
+                                            else
+                                            {
+                        <div id="@restaurantHref" class="tab-pane fade">
+                                                    <div class="list-group menu">
+                                                        <a class="list-group-item active">
+                                                            <h4 class="list-group-item-heading menuTitle" id="menuTitle">
+                                                                <img src=@imageURL class="logo" style="height:50px;width:50px;" />
+                                                                &nbsp;&nbsp;&nbsp; @restaurantName
+                                                            </h4>
+                                                        </a>
+                                                        <div style="border-color:gainsboro;">
+                                                            <ul class="nav nav-pills" id="menuTab">
+                                                                @{
+                                                                    j = 1;
+                                                                    foreach (var menu in Menulist)
+                                                                    {
+                                                                        if (menu.restaurantID == restaurant.ID)
+                                                                        {
+                                                                            string menuName = Html.DisplayName(menu.menuName).ToString();
+                                                                            string menuHref = "menu" + i + j;
+                                                                            if (j == 1)
+                                                                            {
+                                                                            <li class="active">
+                                                                                <a data-toggle="tab" href="#@menuHref">@menuName</a>
+                                                                            </li>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                            <li>
+                                                                                <a data-toggle="tab" href="#@menuHref">@menuName</a>
+                                                                            </li>
+                                                                            }
+
+
+                                                                        }
+                                                                        j++;
+                                                                    }
+                                                                }
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                                    }
+
+                    <div class="tab-content">
+                        @{ 
+                            j = 1;
+                            foreach (var menu in Menulist)
+                            {
+                                string menuName = Html.DisplayName(menu.menuName).ToString();
+                                string menuHref = "menu" + i + j;
+                                if (j == 1)
+                                {
+                                    <div id="@menuHref" class="tab-content panel fade in active">
+                                        <ul class="list-group">
+                                            @foreach (var menuItem in Itemlist)
+                                            {
+                                                k = 1;
+                                                if (menuItem.menuID == menu.menuID && menu.restaurantID == restaurant.ID)
+                                                {
+                                                    <li class="list-group-item">
+                                                        <h4 class="list-group-item-heading">
+                                                            @menuItem.menuItemName
+                                                            <span class="label label-success label-pill pull-xs-right btn btnPrice" id="pr_@k" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                        </h4>
+
+                                                        <p class="list-group-item-text" id="description">
+                                                            @menuItem.menuItemDescription
+                                                        </p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="@menuHref" class="tab-pane fade">
+                                        <ul class="list-group">
+                                            @foreach (var menuItem in Itemlist)
+                                            {
+                                                k = 1;
+                                                if (menuItem.menuID == menu.menuID && menu.restaurantID == restaurant.ID)
+                                                {
+                                                    <li class="list-group-item">
+                                                        <h4 class="list-group-item-heading">
+                                                            @menuItem.menuItemName
+                                                            <span class="label label-success label-pill pull-xs-right btn btnPrice" id="pr_@k" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                        </h4>
+
+                                                        <p class="list-group-item-text" id="description">
+                                                            @menuItem.menuItemDescription
+                                                        </p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                                j++;
+                            }
+                        }
+                    </div>
+                                                              
+
+                    @*<p>@Html.DisplayName(restaurant.name)</p>
+
+                    foreach (var menuItem in Menulist)
+                    {
+                        if (menuItem.restaurantID == restaurant.ID)
+                        {
+                            <p>&nbsp&nbsp&nbsp @Html.DisplayName(menuItem.menuName)</p>
+
+                            foreach (var item in Itemlist)
+                            {
+                                if (item.menuID == menuItem.menuID)
+                                {
+                                    <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp @Html.DisplayName(item.menuItemName)</p>
+                                }
+                            }
+                        }
+                    }*@
+                    i++;
+                }
+            }
+        </div>
     </div>
     <div class="col-md-4">
        
