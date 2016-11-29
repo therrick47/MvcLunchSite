@@ -22,3 +22,82 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+.menu {
+
+}
+
+.menuTitle {
+}
+
+.menuitem {
+}
+
+.progress .progress-bar {
+    -webkit-transition: none !important;
+    transition: none !important;
+}
+
+.vote1 {
+}
+
+.vote2 {
+}
+
+.vote3 {
+}
+
+.vote4 {
+}
+
+.voteBar {
+}
+
+.voteProg .voteProgBar {
+}
+
+.alert{
+  display:none;
+}
+
+.btnPrice {
+   -webkit-transition-duration: 0.4s;
+   transition-duration: 0.4s;
+}
+
+.btnPrice:hover{
+    background-color: green;
+    color: white;
+}
+
+.btnPrice:hover:before {
+    content:"+ ";
+}
+
+
+.sbMenu {
+
+}
+
+
+.logo {
+    
+}
+
+.streetsMenu {
+
+}
+
+#ingredients {
+
+    font-size:11px;
+
+}
+
+#pr1 {
+
+
+}
+
+
