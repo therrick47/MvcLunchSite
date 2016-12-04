@@ -11,18 +11,9 @@
 }
 @using (Html.BeginForm("Vote", "Home", FormMethod.Post))
 {
-    <center>
         <div class="jumbotron">
             <div class="row">
-                <div class="col-md-6">
-                    <h1>Top Scores</h1>
-                    <ol>
-                        @foreach (var topItem in TopScoresList)
-                        {
-                            <li>@topItem</li>
-                        }
-                    </ol>
-                </div>
+                <center>
                 <div class="col-md-6">
                     &nbsp;
                     &nbsp;
@@ -60,10 +51,19 @@
                         <h3>@ViewBag.Message</h3>
                     </div>
                 </div>
+                </center>
+                <div class="col-md-6">
+                    <center><u><h2>Top Scores</h2></u></center>
+                    <ol>
+                        @foreach (var topItem in TopScoresList)
+                        {
+                            <li>@topItem</li>
+                        }
+                    </ol>
+                </div>
 
             </div>
         </div>
-    </center>
                 }
 @*11/23/16 jordan - html/razor added for a bit of style*@
 
