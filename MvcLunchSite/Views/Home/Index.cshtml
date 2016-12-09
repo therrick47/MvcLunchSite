@@ -55,9 +55,24 @@
                 <div class="col-md-6">
                     <center><u><h2>Top Scores</h2></u></center>
                     <ol>
+                        @{ int totalVotes = 0;}
                         @foreach (var topItem in TopScoresList)
                         {
-                            <li>@topItem</li>
+                            totalVotes += Convert.ToInt32(topItem.Substring(topItem.Length - 1));
+                        }
+                        @foreach (var topItem in TopScoresList)
+                        {
+                            <li>
+                                @topItem
+                                @{double percentVote = (Convert.ToDouble(topItem.Substring(topItem.Length - 1)) / totalVotes) * 100;
+                                }
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="@percentVote"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@percentVote%">
+                                    <span class="sr-only">@percentVote% Complete</span>
+                                </div>
+                            </div>
+                        </li>
                         }
                     </ol>
                 </div>
@@ -65,7 +80,6 @@
             </div>
         </div>
                 }
-@*11/23/16 jordan - html/razor added for a bit of style*@
 
 @*global indices*@
 @{
