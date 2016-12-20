@@ -618,3 +618,4 @@ C:\Users\jafox\Source\Repos\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Securit
 C:\Users\jafox\Source\Repos\MvcLunchSite\MvcLunchSite\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\jafox\Source\Repos\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.dll
 C:\Users\jafox\Source\Repos\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.pdb
+C:\Users\jafox\Source\Repos\MvcLunchSite\MvcLunchSite\obj\Debug\MvcLunchSite.csprojResolveAssemblyReference.cache

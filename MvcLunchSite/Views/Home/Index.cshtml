@@ -14,7 +14,7 @@
         <div class="jumbotron">
             <div class="row">
                 <center>
-                <div class="col-md-6">
+                <div class="col-xs-6">
                     &nbsp;
                     &nbsp;
                     <h2>Vote for Your Favorite Restaraunts</h2>
@@ -31,13 +31,13 @@
                     }
 
 
-                    <p>1st:  @Html.DropDownList("Choice1", listNumber)</p>
-                    <p>2nd: @Html.DropDownList("Choice2", listNumber)</p>
-                    <p>3rd:  @Html.DropDownList("Choice3", listNumber)</p>
-                    <input id="btnVote" type="submit" value="Vote" class="btn btn-default" />
+                    <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber)</p>
+                    <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber)</p>
+                    <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber)</p>
+                    <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;"/>
 
                     <div class="form-group">
-                        <div class="col-md-offset-2 col-md-12">
+                        <div class="col-xs-offset-2 col-xs-12">
                             @if (Request.IsAuthenticated)
                             {
                                 <input type="hidden" name="userid" value=@User.Identity.GetUserId() />
@@ -50,11 +50,13 @@
                         </div>
                         <h3>@ViewBag.Message</h3>
                     </div>
+                    
                 </div>
                 </center>
-                <div class="col-md-6">
+                <div class="col-xs-6" style="font-size: 14px;">
                     <center><u><h2>Top Scores</h2></u></center>
-                    <ol>
+                    &nbsp;
+                    <ol style="line-height: 1em;">
                         @{ int totalVotes = 0;}
                         @foreach (var topItem in TopScoresList)
                         {
@@ -66,7 +68,8 @@
                                 @topItem
                                 @{double percentVote = (Convert.ToDouble(topItem.Substring(topItem.Length - 1)) / totalVotes) * 100;
                                 }
-                            <div class="progress">
+                            <div class="progress" style="transform:scaleY(.5);">
+
                                 <div class="progress-bar" role="progressbar" aria-valuenow="@percentVote"
                                      aria-valuemin="0" aria-valuemax="100" style="width:@percentVote%">
                                     <span class="sr-only">@percentVote% Complete</span>
@@ -99,7 +102,7 @@
 
 
     </script>
-    <div class="col-lg-2">
+    <div class="col-xs-2">
         <div class="btn-group-vertical">
             <ul class="nav nav-pills nav-stacked" style="border-style:solid;border-color:gainsboro">
                 @{
@@ -125,7 +128,7 @@
 
 
 
-    <div class="col-lg-5 restaurant1" style="padding-left: 50px;">
+    <div class="col-xs-6 restaurant1" style="padding-left: 50px;">
         <div class="tab-content">
             @{
                 i = 1;
@@ -404,12 +407,6 @@
             }
             }
         </div>
-    </div>
-    <div class="col-md-4">
-
-    </div>
-    <div class="col-md-4">
-
     </div>
 </div>
 
