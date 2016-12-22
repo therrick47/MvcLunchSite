@@ -1,0 +1,36 @@
+﻿@model MvcLunchSite.Models.IndexViewModel
+
+@{
+    ViewBag.Title = "Change Role";
+}
+
+<h2>Change Role</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.DisplayFor(model => model.email);
+    <p></p>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+                <p>Enter Email: </p>@Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                <p>Enter New Role: </p>@Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

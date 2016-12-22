@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<poll>
+  <question text="This is a long question to show what happens when the question and answers are on muliple lines. You don't have to end the question with a question mark, athough usually you would." />
+  <answer text="This is the first of the long answers. This will also go across multiple lines. Note that you can use html tags to make things &lt;b&gt;bold&lt;/b&gt; for instance.">1</answer>
+  <answer text="This is a short answer.">0</answer>
+  <answer text="Another long answer. Obviously this isn't a very useful poll, because it isn't a sensible question, and there aren't any sensible answers.">6</answer>
+  <answer text="In practice it is probably better to have short questions and answers, because that looks better and is easier for the user to understand. ">3</answer>
+  <ipaddr dateEntered="2011/04/17 13:51">127.0.0.1</ipaddr>
+</poll>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<poll>
+  <question text="What sort of pet do you have?" />
+  <answer text="Cat">0</answer>
+  <answer text="Dog">0</answer>
+  <answer text="Hamster">0</answer>
+  <answer text="Variety of pets">0</answer>
+  <answer text="None">0</answer>
+</poll>

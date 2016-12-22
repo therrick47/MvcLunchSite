@@ -1,57 +1,415 @@
-﻿@model IEnumerable<MvcLunchSite.Models.Restaurant>
-@{ var list = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
+﻿@using Microsoft.AspNet.Identity
+
+@model IEnumerable<MvcLunchSite.Models.Restaurant>
+@{ var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
 @{ var Menulist = (List<MvcLunchSite.Models.Menu>)ViewData["MenuList"];}
 @{ var Itemlist = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
+@{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
 
-@{ 
+@{
     ViewBag.Title = "Home Page";
 }
+@using (Html.BeginForm("Vote", "Home", FormMethod.Post))
+{
+        <div class="jumbotron">
+            <div class="row">
+                <center>
+                <div class="col-xs-6">
+                    &nbsp;
+                    &nbsp;
+                    <h2>Vote for Your Favorite Restaraunts</h2>
+                    @{List<SelectListItem> listNumber = new List<SelectListItem>();
+                //listNumber.Add(new SelectListItem { Value = " ", Text = " " });
+                //listNumber.Add(new SelectListItem { Value = "1", Text = "1" });
+                //listNumber.Add(new SelectListItem { Value = "2", Text = "2" });
+                //listNumber.Add(new SelectListItem { Value = "3", Text = "3" });
+                listNumber.Add(new SelectListItem { Value = "-1", Text = " " });
+                foreach (var item in restaurantList)
+                {
+                    listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
+                }
+                    }
 
-<div class="jumbotron">
-    @{List<SelectListItem> listNumber = new List<SelectListItem>();
-        listNumber.Add(new SelectListItem { Value = " ", Text = " " });
-        listNumber.Add(new SelectListItem { Value = "1", Text = "1" });
-        listNumber.Add(new SelectListItem { Value = "2", Text = "2" });
-        listNumber.Add(new SelectListItem { Value = "3", Text = "3" });
-    }
-    @foreach (var item in list)
-    {
-        <p>@Html.DropDownList("Value", listNumber) &nbsp&nbsp @Html.DisplayName(item.name)</p>
-    }
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Vote" class="btn btn-default" />
+
+                    <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber)</p>
+                    <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber)</p>
+                    <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber)</p>
+                    <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;"/>
+
+                    <div class="form-group">
+                        <div class="col-xs-offset-2 col-xs-12">
+                            @if (Request.IsAuthenticated)
+                            {
+                                <input type="hidden" name="userid" value=@User.Identity.GetUserId() />
+                            }
+                            else
+                            {
+                                <input type="hidden" name="userid" value="" />
+                            }
+
+                        </div>
+                        <h3>@ViewBag.Message</h3>
+                    </div>
+                    
+                </div>
+                </center>
+                <div class="col-xs-6" style="font-size: 14px;">
+                    <center><u><h2>Top Scores</h2></u></center>
+                    &nbsp;
+                    <ol style="line-height: 1em;">
+                        @{ int totalVotes = 0;}
+                        @foreach (var topItem in TopScoresList)
+                        {
+                            totalVotes += Convert.ToInt32(topItem.Substring(topItem.Length - 1));
+                        }
+                        @foreach (var topItem in TopScoresList)
+                        {
+                            <li>
+                                @topItem
+                                @{double percentVote = (Convert.ToDouble(topItem.Substring(topItem.Length - 1)) / totalVotes) * 100;
+                                }
+                            <div class="progress" style="transform:scaleY(.5);">
+
+                                <div class="progress-bar" role="progressbar" aria-valuenow="@percentVote"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@percentVote%">
+                                    <span class="sr-only">@percentVote% Complete</span>
+                                </div>
+                            </div>
+                        </li>
+                        }
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+                }
+
+@*global indices*@
+@{
+    int i;
+    int j;
+    int k;
+}
+
+<div class="row">
+    <script type="text/javascript">
+
+
+        function codeAddress() {
+
+        }
+        window.onload = codeAddress;
+
+
+    </script>
+    <div class="col-xs-2">
+        <div class="btn-group-vertical">
+            <ul class="nav nav-pills nav-stacked" style="border-style:solid;border-color:gainsboro">
+                @{
+                    i = 1;
+                    foreach (var restaurant in restaurantList)
+                    {
+                        string restaurantName = Html.DisplayName(restaurant.name).ToString();
+                        string restaurantHref = "restaurant" + i;
+                        if (i == 1)
+                        {
+                            <li class="active"><a data-toggle="pill" href="#@restaurantHref">@restaurantName</a></li>
+                        }
+                        else
+                        {
+                            <li><a data-toggle="pill" href="#@restaurantHref">@restaurantName</a></li>
+                        }
+                        i++;
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+
+
+    <div class="col-xs-6 restaurant1" style="padding-left: 50px;">
+        <div class="tab-content">
+            @{
+                i = 1;
+                foreach (var restaurant in restaurantList)
+                {
+                    string restaurantName = Html.DisplayName(restaurant.name).ToString();
+                    string restaurantHref = "restaurant" + i;
+                    string imageURL = "http://www.rw-designer.com/icon-view/6647.png";
+                    if (i == 1)
+                    {
+                        <div id="@restaurantHref" class="tab-pane fade in active">
+                            <div class="list-group menu">
+                                <a class="list-group-item active">
+                                    <h4 class="list-group-item-heading menuTitle" id="menuTitle">
+                                        <img src=@imageURL class="logo" style="height:50px;width:50px;" />
+                                        &nbsp;&nbsp;&nbsp; @restaurantName
+                                    </h4>
+                                </a>
+                                <div style="border-color:gainsboro;">
+                                    <ul class="nav nav-pills" id="menuTab">
+                                        @{
+                                            j = 1;
+                                            foreach (var menu in Menulist)
+                                            {
+                                                if (menu.restaurantID == restaurant.ID)
+                                                {
+                                                    string menuName = Html.DisplayName(menu.menuName).ToString();
+                                                    string menuHref = "menu" + i + j;
+                                                    if (j == 1)
+                                                    {
+                                                        <li class="active">
+                                                            <a data-toggle="pill" href="#@menuHref">@menuName</a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+                                                            <a data-toggle="tab" href="#@menuHref">@menuName</a>
+                                                        </li>
+                                                    }
+                                                    j++;
+
+                                                }
+
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="tab-content">
+                                @{
+                                    j = 1;
+
+                                    foreach (var menu in Menulist)
+                                    {
+                                        k = 1;
+                                        if (menu.restaurantID == restaurant.ID)
+                                        {
+                                            string menuName = Html.DisplayName(menu.menuName).ToString();
+                                            string menuHref = "menu" + i + j;
+                                            if (j == 1)
+                                            {
+                                                <div id="@menuHref" class="tab-pane fade in active">
+                                                    <ul class="list-group">
+                                                        @foreach (var menuItem in Itemlist)
+                                                        {
+
+                                                            if (menuItem.menuID == menu.menuID && menu.restaurantID == restaurant.ID)
+                                                            {
+                                                                <li class="list-group-item">
+                                                                    <h4 class="list-group-item-heading">
+                                                                        @menuItem.menuItemName
+                                                                        @{if (k == 1)
+                                                                            {
+                                                                                <span class="btnPrice label label-success label-pill pull-xs-right btn" data-hover="ADD" id="pr1" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="label label-success label-pill pull-xs-right btn btnPrice" id="pr1" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                                            }
+                                                                        }
+                                                                    </h4>
+
+                                                                    <p class="list-group-item-text" id="description">
+                                                                        @menuItem.menuItemDescription
+                                                                    </p>
+                                                                </li>
+                                                                                    k++;
+                                                                                }
+
+                                                                            }
+                                                    </ul>
+                                                </div>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <div id="@menuHref" class="tab-pane fade">
+                                                                                    <ul class="list-group">
+                                                                                        @foreach (var menuItem in Itemlist)
+                                                                                        {
+
+                                                                                            if (menuItem.menuID == menu.menuID && menu.restaurantID == restaurant.ID)
+                                                                                            {
+                                                                                                <li class="list-group-item">
+                                                                                                    <h4 class="list-group-item-heading">
+                                                                                                        @menuItem.menuItemName
+                                                                                                        <span class="label label-success label-pill pull-xs-right btn btnPrice" id="pr1" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                                                                    </h4>
+
+                                                                                                    <p class="list-group-item-text" id="description">
+                                                                                                        @menuItem.menuItemDescription
+                                                                                                    </p>
+                                                                                                </li>
+                                                                                                k++;
+                                                                                            }
+
+                                                                                        }
+                                                                                    </ul>
+                                                                                </div>
+                                                                                    }
+                                                                                    j++;
+                                                                                }
+                                                                            }
+
+                                }
+                            </div>
+
+                        </div>
+
+                                            }
+                                            else
+                                            {
+                                                <div id="@restaurantHref" class="tab-pane fade">
+                                                    <div class="list-group menu">
+                                                        <a class="list-group-item active">
+                                                            <h4 class="list-group-item-heading menuTitle" id="menuTitle">
+                                                                <img src=@imageURL class="logo" style="height:50px;width:50px;" />
+                                                                &nbsp;&nbsp;&nbsp; @restaurantName
+                                                            </h4>
+                                                        </a>
+                                                        <div style="border-color:gainsboro;">
+                                                            <ul class="nav nav-pills" id="menuTab">
+                                                                @{
+                                                                    j = 1;
+                                                                    foreach (var menu in Menulist)
+                                                                    {
+                                                                        if (menu.restaurantID == restaurant.ID)
+                                                                        {
+                                                                            string menuName = Html.DisplayName(menu.menuName).ToString();
+                                                                            string menuHref = "menu" + i + j;
+                                                                            if (j == 1)
+                                                                            {
+                                                                                <li class="active">
+                                                                                    <a data-toggle="pill" href="#@menuHref">@menuName</a>
+                                                                                </li>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <li>
+                                                                                    <a data-toggle="tab" href="#@menuHref">@menuName</a>
+                                                                                </li>
+                                                                            }
+
+                                                                            j++;
+                                                                        }
+
+                                                                    }
+                                                                }
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="tab-content">
+                                                        @{
+                                                            j = 1;
+
+                                                            foreach (var menu in Menulist)
+                                                            {
+                                                                k = 1;
+                                                                if (menu.restaurantID == restaurant.ID)
+                                                                {
+                                                                    string menuName = Html.DisplayName(menu.menuName).ToString();
+                                                                    string menuHref = "menu" + i + j;
+                                                                    if (j == 1)
+                                                                    {
+                                                                        <div id="@menuHref" class="tab-pane fade in active">
+                                                                            <ul class="list-group">
+                                                                                @foreach (var menuItem in Itemlist)
+                                                                                {
+
+                                                                                    if (menuItem.menuID == menu.menuID && menu.restaurantID == restaurant.ID)
+                                                                                    {
+                                                                                        <li class="list-group-item">
+                                                                                            <h4 class="list-group-item-heading">
+                                                                                                @menuItem.menuItemName
+                                                                                                @{if (k == 1)
+                                                                                                    {
+                                                                                                        <span class="btnPrice label label-success label-pill pull-xs-right btn" data-hover="ADD" id="pr1" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <span class="label label-success label-pill pull-xs-right btn btnPrice" id="pr1" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                                                                    }
+                                                                                                }
+                                                                                            </h4>
+
+                                                                                            <p class="list-group-item-text" id="description">
+                                                                                                @menuItem.menuItemDescription
+                                                                                            </p>
+                                                                                        </li>
+                                                                                                            k++;
+                                                                                                        }
+
+                                                                                                    }
+                                                                            </ul>
+                                                                        </div>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <div id="@menuHref" class="tab-pane fade">
+                                                                                                            <ul class="list-group">
+                                                                                                                @foreach (var menuItem in Itemlist)
+                                                                                                                {
+
+                                                                                                                    if (menuItem.menuID == menu.menuID && menu.restaurantID == restaurant.ID)
+                                                                                                                    {
+                                                                                                                        <li class="list-group-item">
+                                                                                                                            <h4 class="list-group-item-heading">
+                                                                                                                                @menuItem.menuItemName
+                                                                                                                                <span class="label label-success label-pill pull-xs-right btn btnPrice" id="pr1" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                                                                                            </h4>
+
+                                                                                                                            <p class="list-group-item-text" id="description">
+                                                                                                                                @menuItem.menuItemDescription
+                                                                                                                            </p>
+                                                                                                                        </li>
+                                                                                                                        k++;
+                                                                                                                    }
+
+                                                                                                                }
+                                                                                                            </ul>
+                                                                                                        </div>
+                                                                                                            }
+                                                                                                            j++;
+                                                                                                        }
+                                                                                                    }
+
+                                                        }
+                                                    </div>
+
+                                                </div>
+                                                                    }
+
+                                                                    
+
+
+                                                                    @*<p>@Html.DisplayName(restaurant.name)</p>
+
+                                                                        foreach (var menuItem in Menulist)
+                                                                        {
+                                                                            if (menuItem.restaurantID == restaurant.ID)
+                                                                            {
+                                                                                <p>&nbsp&nbsp&nbsp @Html.DisplayName(menuItem.menuName)</p>
+
+                                                                                foreach (var item in Itemlist)
+                                                                                {
+                                                                                    if (item.menuID == menuItem.menuID)
+                                                                                    {
+                                                                                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp @Html.DisplayName(item.menuItemName)</p>
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }*@
+                i++;
+            }
+            }
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-       @foreach(var restItem in list)
-       {
-           <p>@Html.DisplayName(restItem.name)</p>
-           
-           foreach (var menuItem in Menulist)
-           {
-               if (menuItem.restaurantID == restItem.ID)
-               {
-                <p>&nbsp&nbsp&nbsp @Html.DisplayName(menuItem.menuName)</p>
-                   
-                   foreach (var item in Itemlist)
-                   {
-                       if (item.menuID == menuItem.menuID)
-                       {
-                        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp @Html.DisplayName(item.menuItemName)</p>
-                       }
-                   }
-               }
-           }
-       }
-    </div>
-    <div class="col-md-4">
-       
-    </div>
-    <div class="col-md-4">
-       
-    </div>
+
 </div>
