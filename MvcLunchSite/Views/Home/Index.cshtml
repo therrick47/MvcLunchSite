@@ -6,6 +6,7 @@
 @{ var Itemlist = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
 @{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
 
+
 @{
     ViewBag.Title = "Home Page";
 }
@@ -15,8 +16,6 @@
             <div class="row">
                 <center>
                 <div class="col-xs-6">
-                    &nbsp;
-                    &nbsp;
                     <h2>Vote for Your Favorite Restaraunts</h2>
                     @{List<SelectListItem> listNumber = new List<SelectListItem>();
                 //listNumber.Add(new SelectListItem { Value = " ", Text = " " });
@@ -53,8 +52,8 @@
                     
                 </div>
                 </center>
-                <div class="col-xs-6" style="font-size: 14px;">
-                    <center><u><h2>Top Scores</h2></u></center>
+                <div class="col-xs-6 col-xs-offset-2" style="font-size: 14px;">
+                    <h2 style="text-align:center;">Top Scores</h2>
                     &nbsp;
                     <ol style="line-height: 1em;">
                         @{ int totalVotes = 0;}
@@ -62,15 +61,21 @@
                         {
                             totalVotes += Convert.ToInt32(topItem.Substring(topItem.Length - 1));
                         }
+                        @{ bool first = true; string txtColor = "";}
                         @foreach (var topItem in TopScoresList)
                         {
                             <li>
                                 @topItem
                                 @{double percentVote = (Convert.ToDouble(topItem.Substring(topItem.Length - 1)) / totalVotes) * 100;
                                 }
-                            <div class="progress" style="transform:scaleY(.5);">
-
-                                <div class="progress-bar" role="progressbar" aria-valuenow="@percentVote"
+                            <div class="progress" style="transform:scaleY(.75);">
+                            @{ 
+                                if (first == true)
+                                { first = false; }
+                                else
+                                { txtColor = "progress-bar-success"; }
+                            }
+                                <div class="progress-bar @txtColor" role="progressbar" aria-valuenow="@percentVote"
                                      aria-valuemin="0" aria-valuemax="100" style="width:@percentVote%">
                                     <span class="sr-only">@percentVote% Complete</span>
                                 </div>
@@ -92,16 +97,7 @@
 }
 
 <div class="row">
-    <script type="text/javascript">
 
-
-        function codeAddress() {
-
-        }
-        window.onload = codeAddress;
-
-
-    </script>
     <div class="col-xs-2">
         <div class="btn-group-vertical">
             <ul class="nav nav-pills nav-stacked" style="border-style:solid;border-color:gainsboro">
@@ -136,7 +132,7 @@
                 {
                     string restaurantName = Html.DisplayName(restaurant.name).ToString();
                     string restaurantHref = "restaurant" + i;
-                    string imageURL = "http://www.rw-designer.com/icon-view/6647.png";
+                    string imageURL = "https://lh5.ggpht.com/nct7SKXWQ3vQYQki0hQEGidMPxk_-8JqkhPnSWEjuv8bF3pd2Qj3RuAa-5IXa_hCdQ=w300";
                     if (i == 1)
                     {
                         <div id="@restaurantHref" class="tab-pane fade in active">
@@ -408,8 +404,4 @@
             }
         </div>
     </div>
-</div>
-
-<div class="row">
-
 </div>
