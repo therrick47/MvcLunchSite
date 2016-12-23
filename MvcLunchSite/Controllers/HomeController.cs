@@ -89,19 +89,29 @@ namespace MvcLunchSite.Controllers
                             select item;
                 var rowToChange = query.FirstOrDefault();
                 //First Choice in Vote
-                int temp = Int32.Parse(t["Choice1"].ToString());
-                rowToChange.FirstChoice = temp;
+                int firstVote = Int32.Parse(t["Choice1"].ToString());
 
                 //Second Choice in Vote
-                temp = Int32.Parse(t["Choice2"].ToString());
-                rowToChange.SecondChoice = temp;
-
+                int secondVote = Int32.Parse(t["Choice2"].ToString());
                 //Third Choice in Vote
-                temp = Int32.Parse(t["Choice3"].ToString());
-                rowToChange.ThirdChoice = temp;
-                db.SaveChanges();
+                int thirdVote = Int32.Parse(t["Choice3"].ToString());
+                if (firstVote == -1 || secondVote == -1 || thirdVote == -1)
+                {
+                    ViewBag.Message = "Please choose a restaurant for each box.";
+                }
+                else if (firstVote == secondVote || firstVote == thirdVote || secondVote == thirdVote)
+                {
+                    ViewBag.Message = "Duplicate votes are not allowed.";
+                }
+                else
+                {
+                    rowToChange.FirstChoice = firstVote;
+                    rowToChange.SecondChoice = secondVote;
+                    rowToChange.ThirdChoice = thirdVote;
+                    db.SaveChanges();
 
-                ViewBag.Message = "Vote successfully cast.";
+                    ViewBag.Message = "Vote successfully cast.";
+                }
             }
 
             else

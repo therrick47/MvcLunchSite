@@ -24,26 +24,26 @@
             }
             ]
         </dd>
-        <dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
-        </dd>
+        @*<dt>External Logins:</dt>
+    <dd>
+        @Model.Logins.Count [
+        @Html.ActionLink("Manage", "ManageLogins") ]
+    </dd>*@
         
     </dl>
     @if (Model.RoleName != null)
     {
-        <p>User Privileges</p>
+        //<p>User Privileges</p>
         if (Model.RoleName.ToLower() == "orderer"|| Model.RoleName.ToLower() == "Admin"|| Model.RoleName.ToLower() == "superuser")
         {
-            <p>Orderer Privileges</p>
+            //<p>Orderer Privileges</p>
             if (Model.RoleName.ToLower() == "Admin"|| Model.RoleName.ToLower() == "superuser")
             {
-                <p>Admin Privileges</p>
+                //<p>Admin Privileges</p>
                 if (Model.RoleName.ToLower() == "superuser")
                 {
-                    <p>Superuser Privileges</p>
-                    <p></p>
+                    //<p>Superuser Privileges</p>
+                    //<p></p>
                     <div>
                         <table class="table table-bordered">
                             <thead>
