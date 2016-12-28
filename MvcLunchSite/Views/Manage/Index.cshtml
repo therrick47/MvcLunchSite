@@ -39,11 +39,13 @@
             @if (Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
             {
                 <text>[ @Html.ActionLink("Manage Restaurants", "Index", "Restaurants") ]</text>
-                <text>[ <a href="#" onclick="showHide('roles')">Change User Roles</a> ]</text>
+                <text>[ <a href="#" onclick="showHide('roles', this)">Change User Roles</a> ]</text>
                 <script>
-                    function showHide(id) {
+                    function showHide(id, link)
+                    {
                         var div = document.getElementById(id);
                         div.style.display = div.style.display == "none" ? "block" : "none";
+                        link.blur();
                     }
                 </script>
             }
