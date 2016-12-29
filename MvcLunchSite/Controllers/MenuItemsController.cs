@@ -39,7 +39,7 @@ namespace MvcLunchSite.Controllers
         // GET: MenuItems/Create
         public ActionResult Create()
         {
-            ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName");
+            ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName", RouteData.Values["id"]);
             return View();
         }
 

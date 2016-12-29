@@ -100,9 +100,10 @@
                     {
                         string restaurantName = Html.DisplayName(restaurant.name).ToString();
                         string restaurantHref = "restaurant" + restaurantNum;
+                        string orderHref = "order" + restaurantNum;
 
                         <li @if (restaurantNum == 1) { <text>class="active"</text> }>
-                            <a data-toggle="pill" href="#@restaurantHref">@restaurantName</a>
+                            <a href="#@restaurantHref" data-target="#@restaurantHref, #@orderHref" data-toggle="pill">@restaurantName</a>
                         </li>
                         
                         restaurantNum++;
@@ -200,10 +201,24 @@
 
     @* Order Display *@
     <div class="col-xs-4 order1">
-        <a class="list-group-item active">
-            <h4 class="list-group-item-heading">
-                Preferred Order
-            </h4>
-        </a>
+        <div class="tab-content">
+            @{
+                restaurantNum = 1;
+                foreach (var restaurant in restaurantList)
+                {
+                    string restaurantName = Html.DisplayName(restaurant.name).ToString();
+                    string orderHref = "order" + restaurantNum;
+
+                    <div id="@orderHref" class="tab-pane fade @if (restaurantNum == 1) { <text>in active</text> }">
+                        <a class="list-group-item active">
+                            <h4 class="list-group-item-heading">
+                                Order for <i>@restaurantName</i>
+                            </h4>
+                        </a>
+                    </div>
+                    restaurantNum++;
+                }
+            }
+        </div>
     </div>
 </div>
