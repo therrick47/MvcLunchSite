@@ -52,6 +52,7 @@ namespace MvcLunchSite.Controllers
             ViewData["RestaurantList"] = db.Restaurants.ToList();
             ViewData["MenuList"] = db.Menus.ToList();
             ViewData["MenuItemList"] = db.MenuItems.ToList();
+            ViewData["OrderList"] = db.Orders.ToList();
             return View();
         }
 
@@ -68,15 +69,31 @@ namespace MvcLunchSite.Controllers
 
             return View();
         }
-       /* public ActionResult Vote()
+
+        /*public ActionResult OrderItem()
         {
-            //Console.WriteLine("HEY");
-            ViewData["RestaurantList"] = db.Restaurants.ToList();
-            ViewData["MenuList"] = db.Menus.ToList();
-            ViewData["MenuItemList"] = db.MenuItems.ToList();
-            ViewBag.Message = "UPDATDED";
-            return View("Index");
-        } */
+            ViewBag.orderID = new SelectList(db.Orders, ""
+        }*/
+
+        public ActionResult OrderItem()
+        {
+            ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult OrderItem([Bind(Include = "orderID,userID,menuItemID,ItemPrice")] Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Orders.Add(order);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
+            return View(order);
+        }
 
        [HttpPost]
         public ActionResult Vote(FormCollection t)

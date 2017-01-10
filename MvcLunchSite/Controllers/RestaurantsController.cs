@@ -20,6 +20,7 @@ namespace MvcLunchSite.Controllers
             ViewData["RestaurantList"] = db.Restaurants.ToList();
             ViewData["MenuList"] = db.Menus.ToList();
             ViewData["MenuItemList"] = db.MenuItems.ToList();
+           
             //ViewBag.Restaurants = db.Restaurants.ToList();
             //ViewBag.Menus = db.Menus.ToList();
             //ViewBag.MenuItems = db.MenuItems.ToList();

@@ -89,6 +89,7 @@
     int menuItemNum;
 }
 
+
 <div class="row">
     @* Restaurant Selection *@
     <div class="col-xs-2">
@@ -102,10 +103,11 @@
                         string restaurantHref = "restaurant" + restaurantNum;
                         string orderHref = "order" + restaurantNum;
 
-                        <li @if (restaurantNum == 1) { <text>class="active"</text> }>
+                        <li @if (restaurantNum == 1)
+                        { <text>class="active"</text> }>
                             <a href="#@restaurantHref" data-target="#@restaurantHref, #@orderHref" data-toggle="pill">@restaurantName</a>
                         </li>
-                        
+
                         restaurantNum++;
                     }
                 }
@@ -124,7 +126,8 @@
                     string restaurantHref = "restaurant" + restaurantNum;
                     string imageURL = "https://lh5.ggpht.com/nct7SKXWQ3vQYQki0hQEGidMPxk_-8JqkhPnSWEjuv8bF3pd2Qj3RuAa-5IXa_hCdQ=w300";
 
-                    <div id="@restaurantHref" class="tab-pane fade @if (restaurantNum == 1) { <text>in active</text> }">
+                    <div id="@restaurantHref" class="tab-pane fade @if (restaurantNum == 1)
+                    { <text>in active</text> }">
                         @* Menu Selection *@
                         <div class="list-group menu">
                             <a class="list-group-item active">
@@ -144,7 +147,8 @@
                                                 string menuName = Html.DisplayName(menu.menuName).ToString();
                                                 string menuHref = "menu" + restaurantNum + menuNum;
 
-                                                <li @if (menuNum == 1) { <text>class="active"</text> }>
+                                                <li @if (menuNum == 1)
+                                                { <text>class="active"</text> }>
                                                     <a data-toggle="pill" href="#@menuHref">@menuName</a>
                                                 </li>
                                                 menuNum++;
@@ -166,7 +170,8 @@
                                         string menuName = Html.DisplayName(menu.menuName).ToString();
                                         string menuHref = "menu" + restaurantNum + menuNum;
 
-                                        <div id="@menuHref" class="tab-pane fade @if (menuNum == 1) { <text>in active</text> } ">
+                                        <div id="@menuHref" class="tab-pane fade @if (menuNum == 1)
+                                        { <text>in active</text> } ">
                                             <ul class="list-group">
                                                 @foreach (var menuItem in Itemlist)
                                                 {
@@ -176,7 +181,12 @@
                                                             <h4 class="list-group-item-heading">
                                                                 @menuItem.menuItemName
                                                                 @*Price/"Add to Cart" Button (will need some html wizardry to work with ordering)*@
-                                                                <span class="btn btnPrice label label-success label-pill pull-xs-right" data-hover="ADD" style="float:right;">$@menuItem.menuItemPrice</span>
+                                                                @*@<span class="btn btnPrice label label-success label-pill pull-xs-right" data-hover="ADD" style="float:right;">$@menuItem.menuItemPrice</span>*@
+                                                                @*using (Html.BeginForm("OrderItem", "Home", FormMethod.Post))
+                                                                {
+                                                                    @*<span class="btn btnPrice label label-success label-pill pull-xs-right" type="submit" data-hover="ADD" style="float:right;">$@menuItem.menuItemPrice</span>*@
+                                                                    @*<input id="btnOrderItem" type="submit" value=@menuItem.menuItemPrice class="btn btn-default" style="font-size:2vw;" />*@
+                                                                @Html.ActionLink("Add to Order", "Create", "Orders")
                                                             </h4>
                                                             <p class="list-group-item-text" id="description">
                                                                 @menuItem.menuItemDescription
@@ -193,8 +203,8 @@
                             }
                         </div>
                     </div>                   
-                    restaurantNum++;
-                }
+                                    restaurantNum++;
+                                }
             }
         </div>
     </div>
@@ -209,7 +219,8 @@
                     string restaurantName = Html.DisplayName(restaurant.name).ToString();
                     string orderHref = "order" + restaurantNum;
 
-                    <div id="@orderHref" class="tab-pane fade @if (restaurantNum == 1) { <text>in active</text> }">
+                    <div id="@orderHref" class="tab-pane fade @if (restaurantNum == 1)
+                    { <text>in active</text> }">
                         <a class="list-group-item active">
                             <h4 class="list-group-item-heading">
                                 Order for <i>@restaurantName</i>
