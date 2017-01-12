@@ -97,18 +97,22 @@
         var splitArray = buttonId.split("+++");
         var menuItemId = parseInt(splitArray[0].trim());
         var price = splitArray[1].trim();
+        var name = splitArray[2].trim();
+        var desc = splitArray[3].trim();
         //console.log(userID);
         //console.log(menuItemId);
         //console.log(price);
         var postData = {
             "userID": userID,
             "menuItemID": menuItemId,
-            "ItemPrice":  price
+            "ItemPrice": price,
+            "menuItemName": name,
+            "menuItemDescription": desc
         };
-        $.ajax({
+        $.ajax({ 
             url: "/Home/OrderItem",
             type: "POST",
-            contentType: "application/json; charset=utf-8",
+            contentType: "application/json; charset=utf-8", 
             data: JSON.stringify(postData),
             datatype: "json",
             success: function () {
@@ -217,7 +221,7 @@
                                                                     @*<span class="btn btnPrice label label-success label-pill pull-xs-right" type="submit" data-hover="ADD" style="float:right;">$@menuItem.menuItemPrice</span>*@
                                                                     @*<input id="btnOrderItem" type="submit" value=@menuItem.menuItemPrice class="btn btn-default" style="font-size:2vw;" />*@
                                                                 @*Html.ActionLink("Add to Order", "Create", "Orders")*@
-                                                                <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice" onclick="orderItem(this.id)" class="btn btnPrice label label-success label-pill pull-xs-right">Add to order</button>
+                                                                <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice +++ @menuItem.menuItemName +++ @menuItem.menuItemDescription" onclick="orderItem(this.id)" class="btn btnPrice label label-success label-pill pull-xs-right">Add to order</button>
                                                             </h4>
                                                             <p class="list-group-item-text" id="description">
                                                                 @menuItem.menuItemDescription
