@@ -83,7 +83,7 @@ namespace MvcLunchSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult OrderItem([Bind(Include = "orderID,userID,menuItemID,ItemPrice")] Order order)
+        public ActionResult OrderItem([Bind(Include = "userID,menuItemID,ItemPrice")] Order order)
         {
             if (ModelState.IsValid)
             {
