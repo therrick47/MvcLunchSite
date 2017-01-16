@@ -75,6 +75,20 @@ textarea {
     content:"+ ";
 }
 
+.btnRemove {
+   -webkit-transition-duration: 0.4s;
+   transition-duration: 0.4s;
+}
+
+.btnRemove:hover {
+    background-color: darkred;
+    color: white;
+}
+
+.btnRemove:hover:before {
+    content:"- ";
+}
+
 
 .sbMenu {
 
