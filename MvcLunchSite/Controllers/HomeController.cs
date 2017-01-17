@@ -112,22 +112,109 @@ namespace MvcLunchSite.Controllers
                 int secondVote = Int32.Parse(t["Choice2"].ToString());
                 //Third Choice in Vote
                 int thirdVote = Int32.Parse(t["Choice3"].ToString());
-                if (firstVote == -1 || secondVote == -1 || thirdVote == -1)
+                
+                //All votes empty
+                if (firstVote == -1 && secondVote == -1 && thirdVote == -1)
                 {
                     ViewBag.Message = "Please choose a restaurant for each box.";
                 }
-                else if (firstVote == secondVote || firstVote == thirdVote || secondVote == thirdVote)
+                else if (firstVote != -1 && secondVote == -1 && thirdVote == -1)
                 {
-                    ViewBag.Message = "Duplicate votes are not allowed.";
+                    //First voted on
+                    rowToChange.FirstChoice = firstVote;
+                    rowToChange.SecondChoice = -1;
+                    rowToChange.ThirdChoice = -1;
+
+                    db.SaveChanges();
+                    ViewBag.Message = "Vote successfully cast.";
+                }
+                else if (firstVote == -1 && secondVote != -1 && thirdVote == -1)
+                {
+                    //Second voted on
+                    rowToChange.FirstChoice = secondVote;
+                    rowToChange.SecondChoice = -1;
+                    rowToChange.ThirdChoice = -1;
+
+                    db.SaveChanges();
+                    ViewBag.Message = "Vote successfully cast.";
+                }
+                else if (firstVote == -1 && secondVote == -1 && thirdVote != -1)
+                {
+                    //Third voted on
+                    rowToChange.FirstChoice = thirdVote;
+                    rowToChange.SecondChoice = -1;
+                    rowToChange.ThirdChoice = -1;
+
+                    db.SaveChanges();
+                    ViewBag.Message = "Vote successfully cast.";
+                }
+                else if (firstVote != -1 && secondVote != -1 && thirdVote == -1)
+                {
+                    //First and Second voted on
+                    if (firstVote == secondVote)
+                    {
+                        ViewBag.Message = "Duplicate votes are not allowed.";
+                    }
+                    else
+                    {
+                        rowToChange.FirstChoice = firstVote;
+                        rowToChange.SecondChoice = secondVote;
+                        rowToChange.ThirdChoice = -1;
+
+                        db.SaveChanges();
+                        ViewBag.Message = "Vote successfully cast.";
+                    }
+                }
+                else if (firstVote != -1 && secondVote == -1 && thirdVote != -1)
+                {
+                    //First and Third voted on
+                    if (firstVote == thirdVote)
+                    {
+                        ViewBag.Message = "Duplicate votes are not allowed.";
+                    }
+                    else
+                    {
+                        rowToChange.FirstChoice = firstVote;
+                        rowToChange.SecondChoice = thirdVote;
+                        rowToChange.ThirdChoice = -1;
+
+                        db.SaveChanges();
+                        ViewBag.Message = "Vote successfully cast.";
+                    }
+                }
+                else if (firstVote == -1 && secondVote != -1 && thirdVote != -1)
+                {
+                    //Second and Third voted on
+                    if (secondVote == thirdVote)
+                    {
+                        ViewBag.Message = "Duplicate votes are not allowed.";
+                    }
+                    else
+                    {
+                        rowToChange.FirstChoice = secondVote;
+                        rowToChange.SecondChoice = thirdVote;
+                        rowToChange.ThirdChoice = -1;
+
+                        db.SaveChanges();
+                        ViewBag.Message = "Vote successfully cast.";
+                    }
                 }
                 else
                 {
-                    rowToChange.FirstChoice = firstVote;
-                    rowToChange.SecondChoice = secondVote;
-                    rowToChange.ThirdChoice = thirdVote;
-                    db.SaveChanges();
+                    //Check for duplicate votes
+                    if (firstVote == secondVote || firstVote == thirdVote || secondVote == thirdVote)
+                    {
+                        ViewBag.Message = "Duplicate votes are not allowed.";
+                    }
+                    else
+                    {
+                        rowToChange.FirstChoice = firstVote;
+                        rowToChange.SecondChoice = secondVote;
+                        rowToChange.ThirdChoice = thirdVote;
+                        db.SaveChanges();
 
-                    ViewBag.Message = "Vote successfully cast.";
+                        ViewBag.Message = "Vote successfully cast.";
+                    }
                 }
             }
 
@@ -140,6 +227,7 @@ namespace MvcLunchSite.Controllers
             ViewData["RestaurantList"] = db.Restaurants.ToList();
             ViewData["MenuList"] = db.Menus.ToList();
             ViewData["MenuItemList"] = db.MenuItems.ToList();
+            ViewData["OrderList"] = db.Orders.ToList();
             return View("Index");
         }
     }
