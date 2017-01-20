@@ -7,7 +7,6 @@
 @{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
 @{ var orderList = (List<MvcLunchSite.Models.Order>)ViewData["OrderList"];}
 
-
 @{
     ViewBag.Title = "Home Page";
 }
@@ -123,10 +122,11 @@
                 console.log("DAMMIT!");
             }
         });
-
+        location.reload();
     }
 </script>
-<div class="row">
+
+<div class="row" id="test">
     @* Restaurant Selection *@
     <div class="col-xs-2">
         <div>
@@ -307,3 +307,23 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        // keep current tab on page refresh
+        $(document).ready(function () {
+            $("#test").hide();
+            if (location.hash) {
+                $("a[href='" + location.hash + "']").tab("show");
+            }
+            $(document.body).on("click", "a[data-toggle]", function (event) {
+                location.hash = this.getAttribute("href");
+            });
+            $("#test").fadeIn();
+        });
+        $(window).on("popstate", function () {
+            var anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
+            $("a[href='" + anchor + "']").tab("show");
+        });        
+    </script>
+    }
