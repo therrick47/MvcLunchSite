@@ -95,6 +95,26 @@ namespace MvcLunchSite.Controllers
             return View(order);
         }
 
+        public ActionResult RemoveFromOrder()
+        {
+            ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
+
+            return View();
+        }
+
+        [HttpDelete]
+        public ActionResult RemoveFromOrder([Bind(Include = "userID,menuItemID,ItemPrice,menuItemName,menuItemDescription")] Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Orders.Remove(order);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
+            return View(order);
+        }
+
        [HttpPost]
         public ActionResult Vote(FormCollection t)
         {

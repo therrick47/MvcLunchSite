@@ -14,7 +14,7 @@
 @* Voting and Top Score Display *@
 @using (Html.BeginForm("Vote", "Home", FormMethod.Post))
 {
-    <div class="jumbotron">
+    <div id ="jumbo" class="jumbotron">
         <div class="row">
             <center>
             <div class="col-xs-6">
@@ -91,7 +91,7 @@
 
 <script>
     //Javascript for sending AJAX request for adding to order.
-    function orderItem(buttonId) {
+    function orderItem(buttonId, orderListHref) {
         console.log("Starting order item function.");
         var userID = "@User.Identity.GetUserId()";
         var splitArray = buttonId.split("+++");
@@ -109,10 +109,10 @@
             "menuItemName": name,
             "menuItemDescription": desc
         };
-        $.ajax({ 
+        $.ajax({
             url: "/Home/OrderItem",
             type: "POST",
-            contentType: "application/json; charset=utf-8", 
+            contentType: "application/json; charset=utf-8",
             data: JSON.stringify(postData),
             datatype: "json",
             success: function () {
@@ -122,7 +122,73 @@
                 console.log("DAMMIT!");
             }
         });
-        location.reload();
+
+        var orderUI = '<li class="list-group-item"><h4 class="list-group-item-heading">' + name + '<button id="' + menuItemId + ' +++ ' + price + ' +++ ' + name + ' +++ ' + desc + '" onclick="removeFromOrder(this.id, \'' + orderListHref + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + desc + '</p></li>'
+        var orderListUI = document.getElementById(orderListHref);
+        orderListUI.innerHTML += orderUI;
+    }
+
+    function removeFromOrder(buttonId, orderListHref) {
+        // Tried to mimic orderItem function, this doesn't work
+        console.log("Starting order item removal function.");
+        var userID = "@User.Identity.GetUserId()";
+        var splitArray = buttonId.split("+++");
+        var menuItemId = parseInt(splitArray[0].trim());
+        var price = splitArray[1].trim();
+        var name = splitArray[2].trim();
+        var desc = splitArray[3].trim();
+        var deleteData = {
+            "userID": userID,
+            "menuItemID": menuItemId,
+            "ItemPrice": price,
+            "menuItemName": name,
+            "menuItemDescription": desc
+        };
+        $.ajax({
+            url: "/Home/RemoveFromOrder",
+            type: "DELETE",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(deleteData),
+            datatype: "json",
+            success: function () {
+                console.log("SUCCESS!!!!");
+            },
+            error: function () {
+                console.log("DAMMIT!");
+                document.getElementById(orderListHref).innerHTML += '<h4 id="bad" style="color:white">Removal failed.</h4>'
+                img = document.getElementById('kitty');
+                img.style.position = 'relative';
+                img.style.left = '0px';
+                $(function moveRight() {
+                    img.style.width = '50%';
+                    img.style.height = '50%';
+                    img.style.left = parseInt(img.style.left) + 10 + 'px';
+                    setTimeout(moveRight, 20);
+                });
+                $(function alertUser() {
+                    switch (document.body.style.backgroundColor) {
+                        case "red":
+                            document.body.style.backgroundColor = "orange";
+                            break;
+                        case "orange":
+                            document.body.style.backgroundColor = "yellow";
+                            break;
+                        case "yellow":
+                            document.body.style.backgroundColor = "green";
+                            break;
+                        case "green":
+                            document.body.style.backgroundColor = "blue";
+                            break;
+                        case "blue":
+                            document.body.style.backgroundColor = "violet";
+                            break;
+                        default:
+                            document.body.style.backgroundColor = "red";
+                    }
+                    setTimeout(alertUser, 500);
+                });
+            }
+        });
     }
 </script>
 
@@ -160,6 +226,7 @@
                 {
                     string restaurantName = Html.DisplayName(restaurant.name).ToString();
                     string restaurantHref = "restaurant" + restaurantNum;
+                    string orderHref = "order" + restaurantNum;
                     string imageURL = "https://lh5.ggpht.com/nct7SKXWQ3vQYQki0hQEGidMPxk_-8JqkhPnSWEjuv8bF3pd2Qj3RuAa-5IXa_hCdQ=w300";
 
                     <div id="@restaurantHref" class="tab-pane fade @if (restaurantNum == 1)
@@ -168,7 +235,7 @@
                         <div class="list-group menu">
                             <a class="list-group-item active">
                                 <h4 class="list-group-item-heading menuTitle" id="menuTitle">
-                                    <img src=@imageURL class="logo" style="height:50px;width:50px;" />
+                                    <img id="kitty" src=@imageURL class="logo" style="height:50px;width:50px;" />
                                     &nbsp;&nbsp;&nbsp; @restaurantName
                                 </h4>
                             </a>
@@ -223,7 +290,7 @@
                                                                     @*<span class="btn btnPrice label label-success label-pill pull-xs-right" type="submit" data-hover="ADD" style="float:right;">$@menuItem.menuItemPrice</span>*@
                                                                     @*<input id="btnOrderItem" type="submit" value=@menuItem.menuItemPrice class="btn btn-default" style="font-size:2vw;" />*@
                                                                 @*Html.ActionLink("Add to Order", "Create", "Orders")*@
-                                                                <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice +++ @menuItem.menuItemName +++ @menuItem.menuItemDescription" onclick="orderItem(this.id)" class="btn btnPrice label label-success label-pill pull-xs-right" style="float:right;">Add to order</button>
+                                                                <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice +++ @menuItem.menuItemName +++ @menuItem.menuItemDescription" onclick="orderItem(this.id, '@orderHref-list')" class="btn btnPrice label label-success label-pill pull-xs-right" style="float:right;">Add to order</button>
                                                             </h4>
                                                             <p class="list-group-item-text" id="description">
                                                                 @menuItem.menuItemDescription
@@ -267,7 +334,7 @@
                                 <text>Please log in to view your order.</text>
                             }
                         </a>
-                        <ul class="list-group">
+                        <ul class="list-group" id="@orderHref-list">
                         @{
                             menuNum = 1;
                             foreach (var order in orderList)
@@ -284,7 +351,7 @@
                                                 <li class="list-group-item">
                                                     <h4 class="list-group-item-heading">
                                                         @menuItem.menuItemName
-                                                        <button class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">
+                                                        <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice +++ @menuItem.menuItemName +++ @menuItem.menuItemDescription" onclick="removeFromOrder(this.id, '@orderHref-list')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">
                                                             Remove
                                                         </button>
                                                     </h4>
@@ -307,23 +374,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script type="text/javascript">
-        // keep current tab on page refresh
-        $(document).ready(function () {
-            $("#test").hide();
-            if (location.hash) {
-                $("a[href='" + location.hash + "']").tab("show");
-            }
-            $(document.body).on("click", "a[data-toggle]", function (event) {
-                location.hash = this.getAttribute("href");
-            });
-            $("#test").fadeIn();
-        });
-        $(window).on("popstate", function () {
-            var anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
-            $("a[href='" + anchor + "']").tab("show");
-        });        
-    </script>
-    }
