@@ -102,12 +102,15 @@ namespace MvcLunchSite.Controllers
             return View();
         }
 
-        [HttpDelete]
+        [HttpPost]
         public ActionResult RemoveFromOrder([Bind(Include = "userID,menuItemID,ItemPrice,menuItemName,menuItemDescription")] Order order)
         {
             if (ModelState.IsValid)
             {
-                db.Orders.Remove(order);
+                Order ord = db.Orders
+                    .Where(x => x.userID == order.userID && x.menuItemName == order.menuItemName)
+                    .FirstOrDefault();
+                db.Orders.Remove(ord);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
