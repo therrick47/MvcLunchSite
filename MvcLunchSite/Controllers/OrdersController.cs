@@ -13,6 +13,9 @@ namespace MvcLunchSite.Controllers
         // GET: Orders
         public ActionResult Index()
         {
+            ViewData["UserList"] = db.Users.ToList();
+            ViewData["OrderList"] = db.Orders.ToList();
+            ViewData["RestaurantList"] = db.Restaurants.ToList();
             return View();
         }
 

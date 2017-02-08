@@ -99,6 +99,7 @@
         var price = splitArray[1].trim();
         var name = splitArray[2].trim();
         var desc = splitArray[3].trim();
+        var restId = splitArray[4].trim();
         //console.log(userID);
         //console.log(menuItemId);
         //console.log(price);
@@ -107,7 +108,8 @@
             "menuItemID": menuItemId,
             "ItemPrice": price,
             "menuItemName": name,
-            "menuItemDescription": desc
+            "menuItemDescription": desc,
+            "restaurantID":restId
         };
         $.ajax({
             url: "/Home/OrderItem",
@@ -117,7 +119,7 @@
             datatype: "json",
             success: function () {
                 console.log("SUCCESS!!!!");
-                var orderUI = '<li id="' + orderItemHref + '" class="list-group-item"><h4 class="list-group-item-heading">' + name + '<button id="' + menuItemId + ' +++ ' + price + ' +++ ' + name + ' +++ ' + desc + '" onclick="removeFromOrder(this.id, \'' + orderItemHref + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + desc + '</p></li>'
+                var orderUI = '<li id="' + orderItemHref + '" class="list-group-item"><h4 class="list-group-item-heading">' + name + '<button id="' + menuItemId + ' +++ ' + price + ' +++ ' + name + ' +++ ' + desc +' +++ ' +restId+ '" onclick="removeFromOrder(this.id, \'' + orderItemHref + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + desc + '</p></li>'
                 var orderListUI = document.getElementById(orderListHref);
                 orderListUI.innerHTML += orderUI;
             },
@@ -139,12 +141,14 @@
         var price = splitArray[1].trim();
         var name = splitArray[2].trim();
         var desc = splitArray[3].trim();
+        var restId = splitArray[4].trim();
         var deleteData = {
             "userID": userID,
             "menuItemID": menuItemId,
             "ItemPrice": price,
             "menuItemName": name,
-            "menuItemDescription": desc
+            "menuItemDescription": desc,
+            "restaurantID":restId
         };
         $.ajax({
             url: "/Home/RemoveFromOrder",
@@ -153,11 +157,11 @@
             data: JSON.stringify(deleteData),
             datatype: "json",
             success: function () {
-                console.log("SUCCESS!!!!");
+                //console.log("SUCCESS!!!!");
                 $("#" + orderItemHref).remove();
             },
             error: function () {
-                console.log("DAMMIT!");
+                //console.log("DAMMIT!");
                 $("#bad").remove();
                 document.getElementById(orderListHref).innerHTML += '<h4 id="bad" style="display:none; color:red;">Removal failed.</h4>'
                 $("#bad").fadeIn();
@@ -165,42 +169,6 @@
         });
     }
 </script>
-
-@*<script>
-    function nyanCat(restaurantNum) {
-        img = document.getElementById('kitty-' + restaurantNum);
-        img.style.position = 'relative';
-        img.style.left = '0px';
-        $(function moveRight() {
-            img.style.width = '50%';
-            img.style.height = '50%';
-            img.style.left = parseInt(img.style.left) + 10 + 'px';
-            setTimeout(moveRight, 20);
-        });
-        $(function alertUser() {
-            switch (document.body.style.backgroundColor) {
-                case "red":
-                    document.body.style.backgroundColor = "orange";
-                    break;
-                case "orange":
-                    document.body.style.backgroundColor = "yellow";
-                    break;
-                case "yellow":
-                    document.body.style.backgroundColor = "green";
-                    break;
-                case "green":
-                    document.body.style.backgroundColor = "blue";
-                    break;
-                case "blue":
-                    document.body.style.backgroundColor = "violet";
-                    break;
-                default:
-                    document.body.style.backgroundColor = "red";
-            }
-            setTimeout(alertUser, 500);
-        });
-    }
-</script>*@
 
 <div class="row" id="test">
     @* Restaurant Selection *@
@@ -293,14 +261,7 @@
                                                         <li class="list-group-item">
                                                             <h4 class="list-group-item-heading">
                                                                 @menuItem.menuItemName
-                                                                @*Price/"Add to Cart" Button (will need some html wizardry to work with ordering)*@
-                                                                @*@<span class="btn btnPrice label label-success label-pill pull-xs-right" data-hover="ADD" style="float:right;">$@menuItem.menuItemPrice</span>*@
-                                                                @*using (Html.BeginForm("OrderItem", "Home", FormMethod.Post))
-                                                                {
-                                                                    @*<span class="btn btnPrice label label-success label-pill pull-xs-right" type="submit" data-hover="ADD" style="float:right;">$@menuItem.menuItemPrice</span>*@
-                                                                    @*<input id="btnOrderItem" type="submit" value=@menuItem.menuItemPrice class="btn btn-default" style="font-size:2vw;" />*@
-                                                                @*Html.ActionLink("Add to Order", "Create", "Orders")*@
-                                                                <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice +++ @menuItem.menuItemName +++ @menuItem.menuItemDescription" onclick="orderItem(this.id, '@orderHref-list', 'orderItem-@menuItemNum')" class="btn btnPrice label label-success label-pill pull-xs-right" style="float:right;">Add to order</button>
+                                                                <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice +++ @menuItem.menuItemName +++ @menuItem.menuItemDescription +++ @restaurant.ID" onclick="orderItem(this.id, '@orderHref-list', 'orderItem-@menuItemNum')" class="btn btnPrice label label-success label-pill pull-xs-right" style="float:right;">Add to order</button>
                                                             </h4>
                                                             <p class="list-group-item-text" id="description">
                                                                 @menuItem.menuItemDescription
@@ -361,7 +322,7 @@
                                                 <li id ="orderItem-@menuItemNum" class="list-group-item">
                                                     <h4 class="list-group-item-heading">
                                                         @menuItem.menuItemName
-                                                        <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice +++ @menuItem.menuItemName +++ @menuItem.menuItemDescription" onclick="removeFromOrder(this.id, 'orderItem-@menuItemNum')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">
+                                                        <button id="@menuItem.menuItemID +++ @menuItem.menuItemPrice +++ @menuItem.menuItemName +++ @menuItem.menuItemDescription +++ @restaurant.ID" onclick="removeFromOrder(this.id, 'orderItem-@menuItemNum')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">
                                                             Remove
                                                         </button>
                                                     </h4>

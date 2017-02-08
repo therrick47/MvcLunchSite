@@ -83,7 +83,7 @@ namespace MvcLunchSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult OrderItem([Bind(Include = "userID,menuItemID,ItemPrice,menuItemName,menuItemDescription")] Order order)
+        public ActionResult OrderItem([Bind(Include = "userID,menuItemID,ItemPrice,menuItemName,menuItemDescription,restaurantID")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace MvcLunchSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveFromOrder([Bind(Include = "userID,menuItemID,ItemPrice,menuItemName,menuItemDescription")] Order order)
+        public ActionResult RemoveFromOrder([Bind(Include = "userID,menuItemID,ItemPrice,menuItemName,menuItemDescription,restaurantID")] Order order)
         {
             if (ModelState.IsValid)
             {

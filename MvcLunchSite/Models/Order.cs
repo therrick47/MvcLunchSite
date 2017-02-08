@@ -13,5 +13,6 @@ namespace MvcLunchSite.Models
         public string ItemPrice { get; set; }
         public string menuItemName { get; set; }
         public string menuItemDescription { get; set; }
+        public string restaurantID { get; set; }
     }
 }

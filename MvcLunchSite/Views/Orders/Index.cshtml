@@ -1,0 +1,54 @@
+﻿@model MvcLunchSite.Models.Order
+@{ var orderList = (List<MvcLunchSite.Models.Order>)ViewData["OrderList"];}
+@{var list = (List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"]; }
+@{ var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@{
+    List<SelectListItem> listNumber = new List<SelectListItem>();
+    listNumber.Add(new SelectListItem { Value = "-1", Text = " " });
+    foreach (var item in restaurantList)
+    {
+        listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
+    }
+}
+<div>
+    @Html.DropDownList("filterList", listNumber)
+    <input id="btnVote" type="submit" value="Print" class="btn btn-default" style="font-size:2vw;"/>
+    <br />
+</div>
+
+@foreach (var user in list)
+{
+    <strong>@user.UserName</strong>
+    <ul style="border-top: 2px solid black;">
+        @foreach (var rest in restaurantList)
+                {
+            <li style="border-bottom: 1px solid black;">
+                @rest.name
+                <ul >
+                    @foreach (var item in orderList)
+                    {
+                        if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
+                        {
+                            <li style="border-top: 1px solid black;">
+                                @item.menuItemName
+                                <ul>
+                                    @item.menuItemDescription
+
+                                </ul>
+                            </li>
+
+                        }
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+}
+
+    }
