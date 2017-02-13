@@ -22,15 +22,109 @@
                 @{
                     List<SelectListItem> listNumber = new List<SelectListItem>();
                     listNumber.Add(new SelectListItem { Value = "-1", Text = " " });
+
                     foreach (var item in restaurantList)
                     {
                         listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
                     }
                 }
 
-                <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber)</p>
-                <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber)</p>
-                <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber)</p>
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                <script type="text/javascript">
+                
+                    function UpdateDropdown(ddl) {
+                        var val = ddl.options[ddl.selectedIndex].value;
+                        var val1 = ddl.options[ddl.selectedIndex].value;              
+
+                            //Clear all items
+                            $("#Choice2 > option").remove();
+                            $("#Choice3 > option").remove();
+
+                            //Add all options from dropdown 1
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice2").options.add(opt);
+                                var opt1 = document.createElement("option");
+                                opt1.text = this.text;
+                                opt1.value = this.value;
+                                document.getElementById("Choice3").options.add(opt1);
+
+                            });
+
+                            if (val != -1) {
+                                //Remove selected
+                                $("#Choice2 option[value='" + val + "']").remove();
+                                $("#Choice3 option[value='" + val1 + "']").remove();
+                            }   
+                    }
+
+                    //function UpdateDropdown2(ddl) {
+                    //    var val = ddl.options[ddl.selectedIndex].value;
+                    //    var val1 = ddl.options[ddl.selectedIndex].value;
+
+                    //    //Clear all items
+                    //    $("#Choice1 > option").remove();
+                    //    $("#Choice3 > option").remove();
+
+                    //    //Add all options from dropdown 1
+                    //    $("#" + ddl.id + "> option").each(function () {
+                    //        var opt = document.createElement("option");
+                    //        opt.text = this.text;
+                    //        opt.value = this.value;
+                    //        document.getElementById("Choice1").options.add(opt);
+                    //        var opt1 = document.createElement("option");
+                    //        opt1.text = this.text;
+                    //        opt1.value = this.value;
+                    //        document.getElementById("Choice3").options.add(opt1);
+
+                    //    });
+
+                    //    if (val != -1) {
+                    //        //Remove selected
+                    //        $("#Choice1 option[value='" + val + "']").remove();
+                    //        $("#Choice3 option[value='" + val1 + "']").remove();
+                    //    }
+                    //    else if(ddl.selectedIndex.value  )
+                    //    {
+
+                    //    }
+                    //}
+
+                    //function UpdateDropdown3(ddl) {
+                    //    var val = ddl.options[ddl.selectedIndex].value;
+                    //    var val1 = ddl.options[ddl.selectedIndex].value;
+
+                    //    //Clear all items
+                    //    $("#Choice1 > option").remove();
+                    //    $("#Choice2 > option").remove();
+
+                    //    //Add all options from dropdown 1
+                    //    $("#" + ddl.id + "> option").each(function () {
+                    //        var opt = document.createElement("option");
+                    //        opt.text = this.text;
+                    //        opt.value = this.value;
+                    //        document.getElementById("Choice1").options.add(opt);
+                    //        var opt1 = document.createElement("option");
+                    //        opt1.text = this.text;
+                    //        opt1.value = this.value;
+                    //        document.getElementById("Choice2").options.add(opt1);
+
+                    //    });
+
+                    //    if (val != -1 ) {
+                    //        //Remove selected
+                    //        $("#Choice1 option[value='" + val + "']").remove();
+                    //        $("#Choice2 option[value='" + val1 + "']").remove();
+                    //    }
+                    //}
+
+                </script>
+
+                <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber, new { @onchange = "UpdateDropdown(this)" }) </p>
+                <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber) </p>
+                <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber) </p>
                 <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;"/>
 
                 <div class="form-group">
@@ -54,17 +148,17 @@
                 <ol style="line-height: 1em;">
                     @{ int totalVotes = 0; }
                     @foreach (var topItem in TopScoresList)
-                    {
-                        totalVotes += Convert.ToInt32(topItem.Substring(topItem.Length - 1));
-                    }
+                {
+                    totalVotes += Convert.ToInt32(topItem.Substring(topItem.Length - 1));
+                }
                     @{ bool first = true; string txtColor = ""; }
                     @foreach (var topItem in TopScoresList)
-                    {
+                {
                         <li>
                             @topItem
                             @{ double percentVote = (Convert.ToDouble(topItem.Substring(topItem.Length - 1)) / totalVotes) * 100; }
                             <div class="progress" style="transform:scaleY(.75);">
-                                @{ 
+                                @{
                                     if (first == true)
                                     { first = false; }
                                     else
@@ -168,7 +262,7 @@
             }
         });
     }
-</script>
+                </script>
 
 <div class="row" id="test">
     @* Restaurant Selection *@

@@ -139,7 +139,7 @@ namespace MvcLunchSite.Controllers
                 //All votes empty
                 if (firstVote == -1 && secondVote == -1 && thirdVote == -1)
                 {
-                    ViewBag.Message = "Please choose a restaurant for each box.";
+                    ViewBag.Message = "Please choose a restaurant for at least one box.";
                 }
                 else if (firstVote != -1 && secondVote == -1 && thirdVote == -1)
                 {
@@ -154,8 +154,8 @@ namespace MvcLunchSite.Controllers
                 else if (firstVote == -1 && secondVote != -1 && thirdVote == -1)
                 {
                     //Second voted on
-                    rowToChange.FirstChoice = secondVote;
-                    rowToChange.SecondChoice = -1;
+                    rowToChange.FirstChoice = -1;
+                    rowToChange.SecondChoice = secondVote;
                     rowToChange.ThirdChoice = -1;
 
                     db.SaveChanges();
@@ -164,9 +164,9 @@ namespace MvcLunchSite.Controllers
                 else if (firstVote == -1 && secondVote == -1 && thirdVote != -1)
                 {
                     //Third voted on
-                    rowToChange.FirstChoice = thirdVote;
+                    rowToChange.FirstChoice = -1;
                     rowToChange.SecondChoice = -1;
-                    rowToChange.ThirdChoice = -1;
+                    rowToChange.ThirdChoice = thirdVote;
 
                     db.SaveChanges();
                     ViewBag.Message = "Vote successfully cast.";
@@ -198,8 +198,8 @@ namespace MvcLunchSite.Controllers
                     else
                     {
                         rowToChange.FirstChoice = firstVote;
-                        rowToChange.SecondChoice = thirdVote;
-                        rowToChange.ThirdChoice = -1;
+                        rowToChange.SecondChoice = -1;
+                        rowToChange.ThirdChoice = thirdVote;
 
                         db.SaveChanges();
                         ViewBag.Message = "Vote successfully cast.";
@@ -214,9 +214,9 @@ namespace MvcLunchSite.Controllers
                     }
                     else
                     {
-                        rowToChange.FirstChoice = secondVote;
-                        rowToChange.SecondChoice = thirdVote;
-                        rowToChange.ThirdChoice = -1;
+                        rowToChange.FirstChoice = -1;
+                        rowToChange.SecondChoice = secondVote;
+                        rowToChange.ThirdChoice = thirdVote;
 
                         db.SaveChanges();
                         ViewBag.Message = "Vote successfully cast.";
