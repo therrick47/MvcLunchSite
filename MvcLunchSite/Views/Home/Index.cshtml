@@ -32,99 +32,96 @@
                 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
                 <script type="text/javascript">
                 
+                    var firstDD = -1, secondDD =-1, thirdDD=-1;
+
                     function UpdateDropdown(ddl) {
                         var val = ddl.options[ddl.selectedIndex].value;
-                        var val1 = ddl.options[ddl.selectedIndex].value;              
+                        firstDD = val;
 
-                            //Clear all items
+                        if (secondDD != -1 && secondDD == val) {
+
+                            //console.log("HEH1");
                             $("#Choice2 > option").remove();
-                            $("#Choice3 > option").remove();
-
-                            //Add all options from dropdown 1
                             $("#" + ddl.id + "> option").each(function () {
                                 var opt = document.createElement("option");
                                 opt.text = this.text;
                                 opt.value = this.value;
                                 document.getElementById("Choice2").options.add(opt);
-                                var opt1 = document.createElement("option");
-                                opt1.text = this.text;
-                                opt1.value = this.value;
-                                document.getElementById("Choice3").options.add(opt1);
-
-                            });
-
-                            if (val != -1) {
-                                //Remove selected
-                                $("#Choice2 option[value='" + val + "']").remove();
-                                $("#Choice3 option[value='" + val1 + "']").remove();
-                            }   
+                            })
+                            
+                        }
+                        else if (thirdDD != -1 && thirdDD == val)
+                        {
+                            //console.log("HEH2");
+                            $("#Choice3 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice3").options.add(opt);
+                            })
+                        }
                     }
 
-                    //function UpdateDropdown2(ddl) {
-                    //    var val = ddl.options[ddl.selectedIndex].value;
-                    //    var val1 = ddl.options[ddl.selectedIndex].value;
+                    function UpdateDropdown2(ddl) {
+                        var val = ddl.options[ddl.selectedIndex].value;
+                        secondDD = val;
 
-                    //    //Clear all items
-                    //    $("#Choice1 > option").remove();
-                    //    $("#Choice3 > option").remove();
 
-                    //    //Add all options from dropdown 1
-                    //    $("#" + ddl.id + "> option").each(function () {
-                    //        var opt = document.createElement("option");
-                    //        opt.text = this.text;
-                    //        opt.value = this.value;
-                    //        document.getElementById("Choice1").options.add(opt);
-                    //        var opt1 = document.createElement("option");
-                    //        opt1.text = this.text;
-                    //        opt1.value = this.value;
-                    //        document.getElementById("Choice3").options.add(opt1);
+                        if (thirdDD != -1 && thirdDD == val) {
+                            $("#Choice3 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice3").options.add(opt);
+                            })
+                        }
+                        else if (firstDD != -1 && firstDD == val) {
+                            $("#Choice1 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice1").options.add(opt);
+                            })
+                            
+                        }
+                        
 
-                    //    });
+                    }
 
-                    //    if (val != -1) {
-                    //        //Remove selected
-                    //        $("#Choice1 option[value='" + val + "']").remove();
-                    //        $("#Choice3 option[value='" + val1 + "']").remove();
-                    //    }
-                    //    else if(ddl.selectedIndex.value  )
-                    //    {
+                    function UpdateDropdown3(ddl) {
+                        var val = ddl.options[ddl.selectedIndex].value;
+                        thirdDD = val;
 
-                    //    }
-                    //}
 
-                    //function UpdateDropdown3(ddl) {
-                    //    var val = ddl.options[ddl.selectedIndex].value;
-                    //    var val1 = ddl.options[ddl.selectedIndex].value;
+                        if (secondDD != -1 && secondDD == val) {
+                            $("#Choice2 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice2").options.add(opt);
+                            })
+                        }
+                        else if (firstDD != -1 && firstDD == val) {
+                            $("#Choice1 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice1").options.add(opt);
+                            })
 
-                    //    //Clear all items
-                    //    $("#Choice1 > option").remove();
-                    //    $("#Choice2 > option").remove();
-
-                    //    //Add all options from dropdown 1
-                    //    $("#" + ddl.id + "> option").each(function () {
-                    //        var opt = document.createElement("option");
-                    //        opt.text = this.text;
-                    //        opt.value = this.value;
-                    //        document.getElementById("Choice1").options.add(opt);
-                    //        var opt1 = document.createElement("option");
-                    //        opt1.text = this.text;
-                    //        opt1.value = this.value;
-                    //        document.getElementById("Choice2").options.add(opt1);
-
-                    //    });
-
-                    //    if (val != -1 ) {
-                    //        //Remove selected
-                    //        $("#Choice1 option[value='" + val + "']").remove();
-                    //        $("#Choice2 option[value='" + val1 + "']").remove();
-                    //    }
-                    //}
+                        }
+                    }
 
                 </script>
 
                 <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber, new { @onchange = "UpdateDropdown(this)" }) </p>
-                <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber) </p>
-                <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber) </p>
+                <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber, new { @onchange = "UpdateDropdown2(this)" }) </p>
+                <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber, new { @onchange = "UpdateDropdown3(this)" }) </p>
                 <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;"/>
 
                 <div class="form-group">
