@@ -122,7 +122,17 @@
                 <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber, new { @onchange = "UpdateDropdown(this)" }) </p>
                 <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber, new { @onchange = "UpdateDropdown2(this)" }) </p>
                 <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber, new { @onchange = "UpdateDropdown3(this)" }) </p>
-                <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;"/>
+                <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;" />              
+                <input id="btnVoteClear" onclick="clearVotes()" type="button" value="Clear" class="btn btn-default" style="font-size:2vw;" />
+
+                <script>
+                    function clearVotes()
+                    {
+                        $("#Choice1").val(-1);
+                        $("#Choice2").val(-1);
+                        $("#Choice3").val(-1);                     
+                    }
+                </script>
 
                 <div class="form-group">
                     <div class="col-xs-offset-2 col-xs-12">
