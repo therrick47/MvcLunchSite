@@ -2,7 +2,7 @@
 @{ var orderList = (List<MvcLunchSite.Models.Order>)ViewData["OrderList"];}
 @{var list = (List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"]; }
 @{ var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
-
+@{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
 @{
     ViewBag.Title = "Index";
 }
@@ -17,38 +17,78 @@
     }
 }
 <div>
-    @Html.DropDownList("filterList", listNumber)
-    <input id="btnVote" type="submit" value="Print" class="btn btn-default" style="font-size:2vw;"/>
+    @Html.DropDownList("filterList", listNumber, new { @onchange = "changeDisp()" })
+    <input id="btnVote" type="submit" value="Print" class="btn btn-default" onclick="window.print();" style="font-size:2vw;" />
     <br />
 </div>
+@*updating the page based on dropdown choice*@
+<script type="text/javascript">
+    function changeDisp() {
+        //div that orders are displayed into
+        var section = document.getElementById("toPrint");
+        section.innerHTML = null;
+        //dropdownlist
+        var dropList = document.getElementById("filterList");
+        //dropdownlist text
+        var dropText = dropList.options[dropList.selectedIndex].text;
+        //store lists into arrays to be used in loops
+        var myRestList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"]));
+        var myUseList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"]));
+        var myOrdList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.Order>)ViewData["OrderList"]));
+        //used to store html string to be used for body
+        var toStoreInSec="";
+        for(var useSpot = 0; useSpot < myUseList.length; useSpot++){
+            toStoreInSec += '<strong>' + myUseList[useSpot].UserName+'</strong>'
+                + '<ul style="border-top: 2px solid black;">';
+            for( var resSpot = 0; resSpot < myRestList.length; resSpot++){
+                //if dropdownlist text matches restaurant or the dropdownlist is on the empty value
+                if(dropText == myRestList[resSpot].name || dropText.trim() == ""){
+                    toStoreInSec+='<li style="border-bottom: 1px solid black;">'
+                    +myRestList[resSpot].name + '<ul>';
+                    for (var ordSpot = 0; ordSpot < myOrdList.length; ordSpot++){
+                        if(myOrdList[ordSpot].userID == myUseList[useSpot].Id && myOrdList[ordSpot].restaurantID == myRestList[resSpot].ID){
+                            toStoreInSec+='<li style="border-top: 1px solid black;">'
+                                +myOrdList[ordSpot].menuItemName+'<ul>'
+                                +myOrdList[ordSpot].menuItemDescription+'</ul></li>';
+                        }
+                    }
+                    toStoreInSec+='</ul></li>';
+                }
+            }
+            toStoreInSec+='</ul>';
+        }
+        //update page with new html
+        section.innerHTML += toStoreInSec;
+    }
+</script>
+<div id="toPrint">
+    @foreach (var user in list)
+    {
+        <strong>@user.UserName</strong>
+        <ul style="border-top: 2px solid black;">
 
-@foreach (var user in list)
-{
-    <strong>@user.UserName</strong>
-    <ul style="border-top: 2px solid black;">
-        @foreach (var rest in restaurantList)
-                {
-            <li style="border-bottom: 1px solid black;">
-                @rest.name
-                <ul >
-                    @foreach (var item in orderList)
+            @foreach (var rest in restaurantList)
+            {
+                <li style="border-bottom: 1px solid black;">
+                    @rest.name
+                    <ul>
+                        @foreach (var item in orderList)
                     {
                         if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
                         {
-                            <li style="border-top: 1px solid black;">
-                                @item.menuItemName
-                                <ul>
-                                    @item.menuItemDescription
+                                <li style="border-top: 1px solid black;">
+                                    @item.menuItemName
+                                    <ul>
+                                        @item.menuItemDescription
 
-                                </ul>
-                            </li>
+                                    </ul>
+                                </li>
 
+                            }
                         }
-                    }
-                </ul>
-            </li>
-        }
-    </ul>
-}
-
+                    </ul>
+                </li>
+            }
+        </ul>
     }
+</div>
