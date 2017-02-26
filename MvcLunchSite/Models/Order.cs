@@ -14,5 +14,6 @@ namespace MvcLunchSite.Models
         public string menuItemName { get; set; }
         public string menuItemDescription { get; set; }
         public string restaurantID { get; set; }
+        public string customization { get; set; }
     }
 }

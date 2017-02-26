@@ -14,6 +14,23 @@
 @* Voting and Top Score Display *@
 @using (Html.BeginForm("Vote", "Home", FormMethod.Post))
 {
+    <div id="orderModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true" onclick="closeModal()">&times;</button>
+                    <h4 class="modal-title">Customize Order</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea id="customize-text"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="addCustomization()">Add to Order</button>
+                    <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id ="jumbo" class="jumbotron">
         <div class="row">
             <center>
@@ -31,7 +48,7 @@
 
                 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
                 <script type="text/javascript">
-                
+
                     var firstDD = -1, secondDD =-1, thirdDD=-1;
 
                     function UpdateDropdown(ddl) {
@@ -48,7 +65,7 @@
                                 opt.value = this.value;
                                 document.getElementById("Choice2").options.add(opt);
                             })
-                            
+
                         }
                         else if (thirdDD != -1 && thirdDD == val)
                         {
@@ -85,9 +102,9 @@
                                 opt.value = this.value;
                                 document.getElementById("Choice1").options.add(opt);
                             })
-                            
+
                         }
-                        
+
 
                     }
 
@@ -122,7 +139,7 @@
                 <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber, new { @onchange = "UpdateDropdown(this)" }) </p>
                 <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber, new { @onchange = "UpdateDropdown2(this)" }) </p>
                 <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber, new { @onchange = "UpdateDropdown3(this)" }) </p>
-                <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;" />              
+                <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;" />
                 <input id="btnVoteClear" onclick="clearVotes()" type="button" value="Clear" class="btn btn-default" style="font-size:2vw;" />
 
                 <script>
@@ -130,7 +147,7 @@
                     {
                         $("#Choice1").val(-1);
                         $("#Choice2").val(-1);
-                        $("#Choice3").val(-1);                     
+                        $("#Choice3").val(-1);
                     }
                 </script>
 
@@ -192,6 +209,11 @@
 
 <script>
     //Javascript for sending AJAX request for adding to order.
+    var postData = {};
+    var orderListHrefGlobal;
+    var orderItemHrefGlobal;
+
+
     function orderItem(buttonId, orderListHref, orderItemHref) {
         console.log("Starting order item function.");
         var userID = "@User.Identity.GetUserId()";
@@ -204,14 +226,21 @@
         //console.log(userID);
         //console.log(menuItemId);
         //console.log(price);
-        var postData = {
+        postData = {
             "userID": userID,
             "menuItemID": menuItemId,
             "ItemPrice": price,
             "menuItemName": name,
             "menuItemDescription": desc,
-            "restaurantID":restId
+            "restaurantID": restId,
+            "customization": ""
         };
+        orderListHrefGlobal = orderListHref;
+        orderItemHrefGlobal = orderItemHref;
+        $("#orderModal").modal("toggle");
+    }
+
+    function orderSendAfterCustomize(){
         $.ajax({
             url: "/Home/OrderItem",
             type: "POST",
@@ -220,17 +249,28 @@
             datatype: "json",
             success: function () {
                 console.log("SUCCESS!!!!");
-                var orderUI = '<li id="' + orderItemHref + '" class="list-group-item"><h4 class="list-group-item-heading">' + name + '<button id="' + menuItemId + ' +++ ' + price + ' +++ ' + name + ' +++ ' + desc +' +++ ' +restId+ '" onclick="removeFromOrder(this.id, \'' + orderItemHref + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + desc + '</p></li>'
-                var orderListUI = document.getElementById(orderListHref);
+                var orderUI = '<li id="' + orderItemHrefGlobal + '" class="list-group-item"><h4 class="list-group-item-heading">' + postData.menuItemName + '<button id="' + postData.menuItemID + ' +++ ' + postData.ItemPrice + ' +++ ' + postData.menuItemName + ' +++ ' + postData.menuItemDescription + ' +++ ' + postData.restaurantID + '" onclick="removeFromOrder(this.id, \'' + orderItemHrefGlobal + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + postData.menuItemDescription + '</p><p><i>' + postData.customization + '</i></p></li>';
+                var orderListUI = document.getElementById(orderListHrefGlobal);
                 orderListUI.innerHTML += orderUI;
             },
             error: function () {
                 console.log("DAMMIT!");
                 $("#bad").remove();
-                document.getElementById(orderListHref).innerHTML += '<h4 id="bad" style="display:none; color:red;">Failed to add to order.</h4>'
+                document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Failed to add to order.</h4>'
                 $("#bad").fadeIn();
             },
         });
+    }
+
+    function closeModal() {
+        $("#customize-text").val('');
+        $("#orderModal").modal("toggle");
+    }
+
+    function addCustomization() {
+        postData.customization = $("#customize-text").val();
+        orderSendAfterCustomize();
+        closeModal();
     }
 
     function removeFromOrder(buttonId, orderItemHref) {
@@ -378,7 +418,7 @@
                                 }
                             }
                         </div>
-                    </div>                   
+                    </div>
                     restaurantNum++;
                 }
             }
@@ -429,6 +469,9 @@
                                                     </h4>
                                                     <p class="list-group-item-text" id="description">
                                                         @menuItem.menuItemDescription
+                                                    </p>
+                                                    <p>
+                                                        <i>@order.customization</i>
                                                     </p>
                                                 </li>
                                             }
