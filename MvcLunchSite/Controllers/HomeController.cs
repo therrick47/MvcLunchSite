@@ -85,7 +85,7 @@ namespace MvcLunchSite.Controllers
         [HttpPost]
         public ActionResult OrderItem([Bind(Include = "userID,menuItemID,ItemPrice,menuItemName,menuItemDescription,restaurantID,customization")] Order order)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && order.userID != null)
             {
                 db.Orders.Add(order);
                 db.SaveChanges();
