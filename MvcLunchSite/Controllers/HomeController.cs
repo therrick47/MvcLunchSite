@@ -87,6 +87,10 @@ namespace MvcLunchSite.Controllers
         {
             if (ModelState.IsValid && order.userID != null)
             {
+                if(order.customization == null)
+                {
+                    order.customization = "";
+                }
                 db.Orders.Add(order);
                 db.SaveChanges();
                 return RedirectToAction("Index");

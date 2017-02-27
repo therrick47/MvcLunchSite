@@ -43,6 +43,7 @@
                     var myRestList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"]));
                     var myUseList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"]));
                     var myOrdList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.Order>)ViewData["OrderList"]));
+                    console.log(myOrdList);
                     //used to store html string to be used for body
                     var toStoreInSec="";
                     for(var useSpot = 0; useSpot < myUseList.length; useSpot++){
@@ -56,7 +57,7 @@
                                 for (var ordSpot = 0; ordSpot < myOrdList.length; ordSpot++){
                                     if(myOrdList[ordSpot].userID == myUseList[useSpot].Id && myOrdList[ordSpot].restaurantID == myRestList[resSpot].ID){
                                         toStoreInSec+='<li style="border-top: 1px solid black;">'
-                                            +myOrdList[ordSpot].menuItemName+'<ul>'
+                                            +myOrdList[ordSpot].menuItemName+ ' --- ' + myOrdList[ordSpot].ItemPrice + '<ul>'
                                             +myOrdList[ordSpot].customization+'</ul></li>';
                                     }
                                 }
@@ -85,7 +86,7 @@
                                 if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
                                 {
                                             <li style="border-top: 1px solid black;">
-                                                @item.menuItemName
+                                                @item.menuItemName --- @item.ItemPrice
                                                 <ul>
                                                     @item.customization
 
