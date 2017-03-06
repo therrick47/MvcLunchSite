@@ -24,9 +24,18 @@
     {
         if (currUser.Role.ToLower() == "orderer" || currUser.Role.ToLower() == "admin" || currUser.Role.ToLower() == "superuser")//checks that user has proper clearance to view orders
         {
+            <script type="text/javascript">
+                function printDisp(divName){
+                    var toPrint = document.getElementById(divName).innerHTML;
+                    var currPage = document.body.innerHTML;
+                    document.body.innerHTML=toPrint;
+                    window.print();
+                    document.body.innerHTML=currPage;
+                }
+            </script>
             <div>
                 @Html.DropDownList("filterList", listNumber, new { @onchange = "changeDisp()" })
-                <button id="btnVote" type="submit" onclick="window.print();" style="height:25px;width:120px;background:black;color:white;border:none" >Print</button>
+                <button id="btnVote" type="submit" onclick="printDisp('toPrint')" style="height:25px;width:120px;background:black;color:white;border:none">Print</button>
                 <br />
             </div>
             @*updating the page based on dropdown choice*@
@@ -46,24 +55,29 @@
                     console.log(myOrdList);
                     //used to store html string to be used for body
                     var toStoreInSec="";
-                    for(var useSpot = 0; useSpot < myUseList.length; useSpot++){
-                        toStoreInSec += '<strong>' + myUseList[useSpot].UserName+'</strong>'
-                            + '<ul style="border-top: 2px solid black;">';
-                        for( var resSpot = 0; resSpot < myRestList.length; resSpot++){
-                            //if dropdownlist text matches restaurant or the dropdownlist is on the empty value
-                            if(dropText == myRestList[resSpot].name || dropText.trim() == ""){
-                                toStoreInSec+='<li style="border-bottom: 1px solid black;">'
-                                +myRestList[resSpot].name + '<ul>';
+                    for(var resSpot = 0; resSpot < myRestList.length; resSpot++){
+                        if(dropText == myRestList[resSpot].name || dropText.trim() == ""){
+                            toStoreInSec += '<strong>' +myRestList[resSpot].name+'</strong>'
+                                + '<ul>';
+                            for( var useSpot = 0; useSpot < myUseList.length; useSpot++){
+                                //if dropdownlist text matches restaurant or the dropdownlist is on the empty value
+
+                                toStoreInSec+='<li>'
+                                + myUseList[useSpot].UserName + '<ul>';
                                 for (var ordSpot = 0; ordSpot < myOrdList.length; ordSpot++){
                                     if(myOrdList[ordSpot].userID == myUseList[useSpot].Id && myOrdList[ordSpot].restaurantID == myRestList[resSpot].ID){
-                                        toStoreInSec+='<li style="border-top: 1px solid black;">'
-                                            +myOrdList[ordSpot].menuItemName+ ' --- ' + myOrdList[ordSpot].ItemPrice + '<ul>'
-                                            +myOrdList[ordSpot].customization+'</ul></li>';
+                                        toStoreInSec+='<li>'
+                                            +myOrdList[ordSpot].menuItemName+ ' --- ' + myOrdList[ordSpot].ItemPrice + '<ul>';
+                                        if(myOrdList[ordSpot].customization != null){
+                                            toStoreInSec+=myOrdList[ordSpot].customization;
+                                        }
+                                        toStoreInSec+='</ul></li>';
                                     }
                                 }
-                                toStoreInSec+='</ul></li>';
+                                    toStoreInSec+='</ul></li>';
+                                }
                             }
-                        }
+
                         toStoreInSec+='</ul>';
                     }
                     //update page with new html
@@ -71,33 +85,38 @@
                 }
             </script>
             <div id="toPrint">
-                @foreach (var user in list)
-                {
-                    <strong>@user.UserName</strong>
-                    <ul style="border-top: 2px solid black;">
+                @foreach (var rest in restaurantList) //var user in list)
+                    {
+                    <strong>
+                        @rest.name
+                    </strong>
+                        <ul>
 
-                        @foreach (var rest in restaurantList)
+                            @foreach (var user in list)
                         {
-                            <li style="border-bottom: 1px solid black;">
-                                @rest.name
-                                <ul>
-                                    @foreach (var item in orderList)
-                            {
-                                if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
-                                {
-                                            <li style="border-top: 1px solid black;">
-                                                @item.menuItemName --- @item.ItemPrice
-                                                <ul>
-                                                    @item.customization
+                                <li>
+                                    @user.UserName
+                                    <ul>
+                                        @foreach (var item in orderList)
+                                        {
+                                            if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
+                                            {
+                                                <li>
+                                                    @item.menuItemName --- @item.ItemPrice
+                                                    <ul>
+                                                        @if (item.customization != "")
+                                                        {
+                                                            @item.customization
+                                                        }
 
-                                                </ul>
-                                            </li>
+                                                    </ul>
+                                                </li>
+                                            }
                                         }
-                                    }
-                                </ul>
-                            </li>
-                        }
-                    </ul>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
                 }
             </div>
         }
