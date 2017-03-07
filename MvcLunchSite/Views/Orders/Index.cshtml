@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @model MvcLunchSite.Models.Order
 @{ var orderList = (List<MvcLunchSite.Models.Order>)ViewData["OrderList"];}
-@{var list = (List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"]; }
+@{ var list = (List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"]; }
 @{ var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
 @{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
 @{
@@ -55,6 +55,8 @@
                     console.log(myOrdList);
                     //used to store html string to be used for body
                     var toStoreInSec="";
+
+                    var currTotal=0.0;
                     for(var resSpot = 0; resSpot < myRestList.length; resSpot++){
                         if(dropText == myRestList[resSpot].name || dropText.trim() == ""){
                             toStoreInSec += '<strong>' +myRestList[resSpot].name+'</strong>'
@@ -68,17 +70,20 @@
                                     if(myOrdList[ordSpot].userID == myUseList[useSpot].Id && myOrdList[ordSpot].restaurantID == myRestList[resSpot].ID){
                                         toStoreInSec+='<li>'
                                             +myOrdList[ordSpot].menuItemName+ ' --- ' + myOrdList[ordSpot].ItemPrice + '<ul>';
+                                        currTotal+=parseFloat(myOrdList[ordSpot].ItemPrice);
+
                                         if(myOrdList[ordSpot].customization != null){
                                             toStoreInSec+=myOrdList[ordSpot].customization;
                                         }
                                         toStoreInSec+='</ul></li>';
                                     }
                                 }
-                                    toStoreInSec+='</ul></li>';
-                                }
+                                toStoreInSec+='</ul></li>';
                             }
 
-                        toStoreInSec+='</ul>';
+                            toStoreInSec+='</ul>'
+                            +'<strong> Total:'+ currTotal.toFixed(2)+'</strong><br/><br/>';
+                        }
                     }
                     //update page with new html
                     section.innerHTML += toStoreInSec;
@@ -86,39 +91,45 @@
             </script>
             <div id="toPrint">
                 @foreach (var rest in restaurantList) //var user in list)
-                    {
+                {
+                    var currTotal = 0.0;
                     <strong>
                         @rest.name
                     </strong>
-                        <ul>
-
-                            @foreach (var user in list)
+                    <ul>
+                        @foreach (var user in list)
                         {
-                                <li>
-                                    @user.UserName
-                                    <ul>
-                                        @foreach (var item in orderList)
+                            <li>
+                                @user.UserName
+                                <ul>
+                                    @foreach (var item in orderList)
+                                    {
+                                        if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
                                         {
-                                            if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
-                                            {
-                                                <li>
-                                                    @item.menuItemName --- @item.ItemPrice
-                                                    <ul>
-                                                        @if (item.customization != "")
-                                                        {
-                                                            @item.customization
-                                                        }
+                                            <li>
+                                                @{
+                                                    currTotal += double.Parse(item.ItemPrice);
+                                                }
+                                                @item.menuItemName --- @item.ItemPrice
+                                                <ul>
+                                                    @if (item.customization != "")
+                                                    {
+                                                        @item.customization
+                                                    }
 
-                                                    </ul>
-                                                </li>
-                                            }
-                                        }
-                                    </ul>
-                                </li>
-                            }
-                        </ul>
-                }
+                                                </ul>
+                                            </li>
+                                                        }
+                                                    }
+                                </ul>
+                            </li>
+                                                    }
+                    </ul>
+                    <strong> Total: @currTotal</strong>
+                        <br />
+                        <br />
+                                                    }
             </div>
-        }
-    }
+                                                        }
+                                                    }
 }

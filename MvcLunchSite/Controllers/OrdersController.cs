@@ -61,11 +61,5 @@ namespace MvcLunchSite.Controllers
             ViewBag.orderID = new SelectList(db.Orders, "orderID", "menuItemID", RouteData.Values["id"]);
             return View();
         }
-        /*public ActionResult Print()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Print()*/
     }
 }
