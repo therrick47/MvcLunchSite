@@ -12,12 +12,24 @@
     @Html.DisplayFor(model => model.email);
     <p></p>
         <div class="form-group">
-            
             <div class="col-md-10">
-                <p>Enter Email: </p>@Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
-                <p>Enter New Role: </p>@Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
+                <p>Email: </p>
+                @if (ViewBag.Item == null)
+                {
+                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                }
+                else
+                {
+                    <p>@ViewBag.Item</p>
+                    @Html.HiddenFor(model=>model.email, new { @Value = @ViewBag.Item })
+                }
+                <p>Choose New Role: </p>@Html.DropDownList("RoleName",new List<SelectListItem>{
+                                      new SelectListItem {Text="user", Value="user" },
+                                      new SelectListItem {Text="orderer", Value="orderer" },
+                                      new SelectListItem {Text="admin", Value="admin" },
+                                      new SelectListItem {Text="superuser", Value="superuser" }
+                                  })
             </div>
         </div>
 

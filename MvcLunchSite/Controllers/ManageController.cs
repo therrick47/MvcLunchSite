@@ -247,7 +247,20 @@ namespace MvcLunchSite.Controllers
         }
 
         public ActionResult ChangeRole()
-        {
+        {   
+            if(Url.RequestContext.RouteData.Values["id"] != null)
+            {
+                string userId = Url.RequestContext.RouteData.Values["id"].ToString();
+                var query = from item in db.Users
+                            where item.Id.Equals(userId)
+                            select item;
+                var queryItem = query.FirstOrDefault();
+                if(queryItem != null)
+                {
+                    ViewBag.Item = queryItem.Email;
+                }
+            }
+            
             return View();
         }
         [HttpPost]
