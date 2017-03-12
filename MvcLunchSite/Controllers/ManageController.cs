@@ -247,7 +247,12 @@ namespace MvcLunchSite.Controllers
         }
 
         public ActionResult ChangeRole()
-        {   
+        {
+            ViewBag.userBool = false;
+            ViewBag.ordererBool = false;
+            ViewBag.adminBool = false;
+            ViewBag.superuserBool = false;
+            ViewBag.InitialSelect = "user";
             if(Url.RequestContext.RouteData.Values["id"] != null)
             {
                 string userId = Url.RequestContext.RouteData.Values["id"].ToString();
@@ -258,9 +263,29 @@ namespace MvcLunchSite.Controllers
                 if(queryItem != null)
                 {
                     ViewBag.Item = queryItem.Email;
+                    if(queryItem.Role != null)
+                    {
+                        ViewBag.InitialSelect = queryItem.Role.ToLower();
+                    }
                 }
             }
-            
+
+            if(ViewBag.InitialSelect == "superuser")
+            {
+                ViewBag.superuserBool = true;
+            }
+            else if(ViewBag.InitialSelect == "orderer")
+            {
+                ViewBag.ordererBool = true;
+            }
+            else if(ViewBag.InitialSelect == "admin")
+            {
+                ViewBag.adminBool = true;
+            }
+            else
+            {
+                ViewBag.userBool = true;
+            }
             return View();
         }
         [HttpPost]

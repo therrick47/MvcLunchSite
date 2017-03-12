@@ -25,10 +25,10 @@
                     @Html.HiddenFor(model=>model.email, new { @Value = @ViewBag.Item })
                 }
                 <p>Choose New Role: </p>@Html.DropDownList("RoleName",new List<SelectListItem>{
-                                      new SelectListItem {Text="user", Value="user" },
-                                      new SelectListItem {Text="orderer", Value="orderer" },
-                                      new SelectListItem {Text="admin", Value="admin" },
-                                      new SelectListItem {Text="superuser", Value="superuser" }
+                                      new SelectListItem {Text="user", Value="user", Selected=ViewBag.userBool},
+                                      new SelectListItem {Text="orderer", Value="orderer", Selected=ViewBag.ordererBool},
+                                      new SelectListItem {Text="admin", Value="admin", Selected=ViewBag.adminBool },
+                                      new SelectListItem {Text="superuser", Value="superuser", Selected=ViewBag.superuserBool }
                                   })
             </div>
         </div>
@@ -36,6 +36,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
+                <button onclick="location.href='@Url.Action("Index", "Manage")';return false;" class="btn">Cancel</button>
             </div>
         </div>
 }
