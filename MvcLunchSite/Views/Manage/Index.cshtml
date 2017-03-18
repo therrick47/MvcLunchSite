@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Manage";
 }
-
 <h2>@ViewBag.Title</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
@@ -96,3 +95,10 @@
     }
 
     </div>
+@if (ViewBag.ErrorMessage != null)
+{
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; display: block;" class="alert alert-warning alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <center><strong>Error: </strong> @ViewBag.ErrorMessage</center>
+    </div>
+}
