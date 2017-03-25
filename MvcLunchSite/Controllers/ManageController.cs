@@ -74,6 +74,7 @@ namespace MvcLunchSite.Controllers
                 RoleName = RoleName()
             };
             ViewData["UserList"] = db.Users.ToList();
+
             //Manage t = new Manage();
             //t.voteEndDate = DateTime.Now.AddDays(1);
             //t.orderEndDate = DateTime.Now.AddDays(3);
@@ -81,6 +82,12 @@ namespace MvcLunchSite.Controllers
             //db.Manages.Add(t);
             //db.SaveChanges();
             ViewData["TimeList"] = db.Manages.ToList();
+
+            if(TempData["errorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["errorMessage"];
+            }
+
             return View(model);
         }
 
@@ -255,72 +262,127 @@ namespace MvcLunchSite.Controllers
 
         public ActionResult ChangeRole()
         {
-            ViewBag.userBool = false;
-            ViewBag.ordererBool = false;
-            ViewBag.adminBool = false;
-            ViewBag.superuserBool = false;
-            ViewBag.InitialSelect = "user";
-            if(Url.RequestContext.RouteData.Values["id"] != null)
-            {
-                string userId = Url.RequestContext.RouteData.Values["id"].ToString();
-                var query = from item in db.Users
-                            where item.Id.Equals(userId)
-                            select item;
-                var queryItem = query.FirstOrDefault();
-                if(queryItem != null)
+            var user = System.Web.HttpContext.Current.User;
+            bool allowed = false;
+            if ((user != null) && user.Identity.IsAuthenticated) {
+                var identity_query = from item in db.Users
+                                     where item.Role.Equals("superuser") && item.UserName.Equals(user.Identity.Name)
+                                     select item;
+                var test = identity_query.FirstOrDefault();
+                if(test != null)
                 {
-                    ViewBag.Item = queryItem.Email;
-                    if(queryItem.Role != null)
+                    allowed = true;
+                }                     
+            }
+            if (allowed)
+            {
+                ViewBag.userBool = false;
+                ViewBag.ordererBool = false;
+                ViewBag.adminBool = false;
+                ViewBag.superuserBool = false;
+                ViewBag.InitialSelect = "user";
+                if (Url.RequestContext.RouteData.Values["id"] != null)
+                {
+                    string userId = Url.RequestContext.RouteData.Values["id"].ToString();
+                    var query = from item in db.Users
+                                where item.Id.Equals(userId)
+                                select item;
+                    var queryItem = query.FirstOrDefault();
+                    if (queryItem != null)
                     {
-                        ViewBag.InitialSelect = queryItem.Role.ToLower();
+                        ViewBag.Item = queryItem.Email;
+                        if (queryItem.Role != null)
+                        {
+                            ViewBag.InitialSelect = queryItem.Role.ToLower();
+                        }
                     }
                 }
-            }
 
-            if(ViewBag.InitialSelect == "superuser")
-            {
-                ViewBag.superuserBool = true;
-            }
-            else if(ViewBag.InitialSelect == "orderer")
-            {
-                ViewBag.ordererBool = true;
-            }
-            else if(ViewBag.InitialSelect == "admin")
-            {
-                ViewBag.adminBool = true;
+                if (ViewBag.InitialSelect == "superuser")
+                {
+                    ViewBag.superuserBool = true;
+                }
+                else if (ViewBag.InitialSelect == "orderer")
+                {
+                    ViewBag.ordererBool = true;
+                }
+                else if (ViewBag.InitialSelect == "admin")
+                {
+                    ViewBag.adminBool = true;
+                }
+                else
+                {
+                    ViewBag.userBool = true;
+                }
+                return View();
             }
             else
             {
-                ViewBag.userBool = true;
+                return RedirectToAction("Index", "Home");
             }
-            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public ActionResult ChangeRole( ChangeRoleViewModel RoleView)
         public async Task<ActionResult> ChangeRole([Bind(Include = "email,RoleName")] IndexViewModel RoleView)
         {
-            if (ModelState.IsValid)
+            var requestUser = System.Web.HttpContext.Current.User;
+            bool allowed = false;
+            bool ownRoleChanger = false;
+            if ((requestUser != null) && requestUser.Identity.IsAuthenticated)
             {
-                // db.Entry(RoleView).State = EntityState.Modified;
-                //db.SaveChanges();
-                //return RedirectToAction("Index");
-                var user = await UserManager.FindByEmailAsync(RoleView.email);
-                if (user != null)
+                var identity_query = from item in db.Users
+                                     where item.Role.Equals("superuser") && item.UserName.Equals(requestUser.Identity.Name)
+                                     select item;
+                var test = identity_query.FirstOrDefault();
+                if (test != null)
                 {
-                    
-                    foreach (ApplicationUser use in db.Users)
+                    if(RoleView.email != requestUser.Identity.Name)
                     {
-                        if (use.Email == RoleView.email)
-                        {
-                            use.Role=RoleView.RoleName;
-                        }
+                        allowed = true;
                     }
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    else
+                    {
+                        ownRoleChanger = true;
+                    }
                 }
             }
-            return View(RoleView);
+            if (allowed)
+            {
+                if (ModelState.IsValid)
+                {
+                    // db.Entry(RoleView).State = EntityState.Modified;
+                    //db.SaveChanges();
+                    //return RedirectToAction("Index");
+                    var user = await UserManager.FindByEmailAsync(RoleView.email);
+                    if (user != null)
+                    {
+
+                        foreach (ApplicationUser use in db.Users)
+                        {
+                            if (use.Email == RoleView.email)
+                            {
+                                use.Role = RoleView.RoleName;
+                            }
+                        }
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
+                return View(RoleView);
+            }
+            else
+            {
+                if (ownRoleChanger)
+                {
+                    TempData["errorMessage"] = "You can't change your own role.";
+                }
+                else
+                {
+                    TempData["errorMessage"] = "There was problem with changing the role of the user. It may be due to authorization or authentication.";
+                }
+                return RedirectToAction("Index");
+            }
         }
         //
         // GET: /Manage/SetPassword

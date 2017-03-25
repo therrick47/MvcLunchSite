@@ -3,8 +3,8 @@
 @{
     ViewBag.Title = "Manage";
 }
-@{ var timeList = (List<MvcLunchSite.Models.Manage>)ViewData["TimeList"];}
 
+@{ var timeList = (List<MvcLunchSite.Models.Manage>)ViewData["TimeList"];}
 
 <h2>@ViewBag.Title</h2>
 
@@ -119,8 +119,19 @@
             Current Ordering Deadline: @timeList[0].orderEndDate        
           
 
+
         </h4>
         <p>
             @Html.ActionLink("Select Date/Time", "Time", new { id = timeList[0].Id})
         </p>
     </div>
+
+    </div>
+@if (ViewBag.ErrorMessage != null)
+{
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; display: block;" class="alert alert-warning alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <center><strong>Error: </strong> @ViewBag.ErrorMessage</center>
+    </div>
+}
+
