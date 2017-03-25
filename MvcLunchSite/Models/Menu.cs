@@ -10,6 +10,7 @@ namespace MvcLunchSite.Models
         public int menuID { get; set; }
         public int restaurantID { get; set; }
         public string menuName { get; set; }
+        public string menuNotes { get; set; }
         public Restaurant Restaurant { get; set; }
         public ICollection<MenuItem> MenuItems { get; set; }
     }

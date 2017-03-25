@@ -396,9 +396,10 @@
                                     {
                                         string menuName = Html.DisplayName(menu.menuName).ToString();
                                         string menuHref = "menu" + restaurantNum + menuNum;
-
+                                        
                                         <div id="@menuHref" class="tab-pane fade @if (menuNum == 1)
                                         { <text>in active</text> } ">
+                                            <div> @menu.menuNotes</div>
                                             <ul class="list-group">
                                                 @foreach (var menuItem in Itemlist)
                                                 {
