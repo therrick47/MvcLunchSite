@@ -43,5 +43,7 @@ namespace MvcLunchSite.Models
         public System.Data.Entity.DbSet<MvcLunchSite.Models.VoteRecord> VoteRecords { get; set; }
 
         public System.Data.Entity.DbSet<MvcLunchSite.Models.Order> Orders { get; set; }
+
+        public System.Data.Entity.DbSet<MvcLunchSite.Models.Manage> Manages { get; set; }
     }
 }

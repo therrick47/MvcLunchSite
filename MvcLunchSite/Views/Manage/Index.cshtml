@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Manage";
 }
+
+@{ var timeList = (List<MvcLunchSite.Models.Manage>)ViewData["TimeList"];}
+
 <h2>@ViewBag.Title</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
@@ -45,6 +48,18 @@
                     }
                 </script>
             }
+            @if (Model.RoleName.ToLower() == "superuser")
+            {
+                <text>[ <a href="#" onclick="showHide('time', this)">Change Voting Deadline</a> ]</text>
+                <script>
+                    function showHide(id, link)
+                    {
+                        var div = document.getElementById(id);
+                        div.style.display = div.style.display == "none" ? "block" : "none";
+                        link.blur();
+                    }
+                </script>
+            }
             </dd>
         }
         @*<dt>External Logins:</dt>
@@ -56,19 +71,19 @@
     </dl>
     <div id="roles" style="display:none">
         @if (Model.RoleName != null)
-    {
-
-        //<p>User Privileges</p>
-        if (Model.RoleName.ToLower() == "orderer" || Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
         {
-            //<p>Orderer Privileges</p>
-            if (Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
+
+            //<p>User Privileges</p>
+            if (Model.RoleName.ToLower() == "orderer" || Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
             {
-                //<p>Admin Privileges</p>
-                if (Model.RoleName.ToLower() == "superuser")
+                //<p>Orderer Privileges</p>
+                if (Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
                 {
-                    //<p>Superuser Privileges</p>
-                    //<p></p>
+                    //<p>Admin Privileges</p>
+                    if (Model.RoleName.ToLower() == "superuser")
+                    {
+                        //<p>Superuser Privileges</p>
+                        //<p></p>
                     <div>
                         <table class="table table-bordered">
                             <thead>
@@ -88,11 +103,28 @@
                             }
                         </table>
                     </div>
+                    }
                 }
             }
+
         }
 
-    }
+    </div>
+
+    <div id="time" style="display:none">
+        <h4>
+        
+            Current Voting Deadline: @timeList[0].voteEndDate
+            <br />
+            Current Ordering Deadline: @timeList[0].orderEndDate        
+          
+
+
+        </h4>
+        <p>
+            @Html.ActionLink("Select Date/Time", "Time", new { id = timeList[0].Id})
+        </p>
+    </div>
 
     </div>
 @if (ViewBag.ErrorMessage != null)
@@ -102,3 +134,4 @@
         <center><strong>Error: </strong> @ViewBag.ErrorMessage</center>
     </div>
 }
+

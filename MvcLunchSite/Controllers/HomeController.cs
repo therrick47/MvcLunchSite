@@ -125,130 +125,145 @@ namespace MvcLunchSite.Controllers
        [HttpPost]
         public ActionResult Vote(FormCollection t)
         {
-            string userID = t["userid"].ToString();
-            if (userID.Length > 0)
+            DateTime current = DateTime.Now;
+            //[Bind(Include = "voteEndDate")] Manage manage;
+            var first = db.Manages.ToList().First(); //new DateTime(2017, 3, 13, 10, 00, 00);
+                                                     //DateTimePicker f = new DateTimePicker();
+                                                     //d DateTime f = 
+            int comp = DateTime.Compare(current, first.voteEndDate);
+            //int comp = DateTime.Compare(current, first);
+            if(comp > 0)
             {
-                var query = from item in db.Users
-                            where item.Id.Contains(userID)
-                            select item;
-                var rowToChange = query.FirstOrDefault();
-                //First Choice in Vote
-                int firstVote = Int32.Parse(t["Choice1"].ToString());
+                ViewBag.Message = "Voting not allowed after " + first.voteEndDate.ToString("f");
+            }
+            else
+            {
+                string userID = t["userid"].ToString();
+                if (userID.Length > 0)
+                {
+                    var query = from item in db.Users
+                                where item.Id.Contains(userID)
+                                select item;
+                    var rowToChange = query.FirstOrDefault();
+                    //First Choice in Vote
+                    int firstVote = Int32.Parse(t["Choice1"].ToString());
 
-                //Second Choice in Vote
-                int secondVote = Int32.Parse(t["Choice2"].ToString());
-                //Third Choice in Vote
-                int thirdVote = Int32.Parse(t["Choice3"].ToString());
-                
-                //All votes empty
-                if (firstVote == -1 && secondVote == -1 && thirdVote == -1)
-                {
-                    ViewBag.Message = "Please choose a restaurant for at least one box.";
-                }
-                else if (firstVote != -1 && secondVote == -1 && thirdVote == -1)
-                {
-                    //First voted on
-                    rowToChange.FirstChoice = firstVote;
-                    rowToChange.SecondChoice = -1;
-                    rowToChange.ThirdChoice = -1;
+                    //Second Choice in Vote
+                    int secondVote = Int32.Parse(t["Choice2"].ToString());
+                    //Third Choice in Vote
+                    int thirdVote = Int32.Parse(t["Choice3"].ToString());
 
-                    db.SaveChanges();
-                    ViewBag.Message = "Vote successfully cast.";
-                }
-                else if (firstVote == -1 && secondVote != -1 && thirdVote == -1)
-                {
-                    //Second voted on
-                    rowToChange.FirstChoice = -1;
-                    rowToChange.SecondChoice = secondVote;
-                    rowToChange.ThirdChoice = -1;
-
-                    db.SaveChanges();
-                    ViewBag.Message = "Vote successfully cast.";
-                }
-                else if (firstVote == -1 && secondVote == -1 && thirdVote != -1)
-                {
-                    //Third voted on
-                    rowToChange.FirstChoice = -1;
-                    rowToChange.SecondChoice = -1;
-                    rowToChange.ThirdChoice = thirdVote;
-
-                    db.SaveChanges();
-                    ViewBag.Message = "Vote successfully cast.";
-                }
-                else if (firstVote != -1 && secondVote != -1 && thirdVote == -1)
-                {
-                    //First and Second voted on
-                    if (firstVote == secondVote)
+                    //All votes empty
+                    if (firstVote == -1 && secondVote == -1 && thirdVote == -1)
                     {
-                        ViewBag.Message = "Duplicate votes are not allowed.";
+                        ViewBag.Message = "Please choose a restaurant for at least one box.";
                     }
-                    else
+                    else if (firstVote != -1 && secondVote == -1 && thirdVote == -1)
                     {
+                        //First voted on
                         rowToChange.FirstChoice = firstVote;
+                        rowToChange.SecondChoice = -1;
+                        rowToChange.ThirdChoice = -1;
+
+                        db.SaveChanges();
+                        ViewBag.Message = "Vote successfully cast.";
+                    }
+                    else if (firstVote == -1 && secondVote != -1 && thirdVote == -1)
+                    {
+                        //Second voted on
+                        rowToChange.FirstChoice = -1;
                         rowToChange.SecondChoice = secondVote;
                         rowToChange.ThirdChoice = -1;
 
                         db.SaveChanges();
                         ViewBag.Message = "Vote successfully cast.";
                     }
-                }
-                else if (firstVote != -1 && secondVote == -1 && thirdVote != -1)
-                {
-                    //First and Third voted on
-                    if (firstVote == thirdVote)
+                    else if (firstVote == -1 && secondVote == -1 && thirdVote != -1)
                     {
-                        ViewBag.Message = "Duplicate votes are not allowed.";
-                    }
-                    else
-                    {
-                        rowToChange.FirstChoice = firstVote;
+                        //Third voted on
+                        rowToChange.FirstChoice = -1;
                         rowToChange.SecondChoice = -1;
                         rowToChange.ThirdChoice = thirdVote;
 
                         db.SaveChanges();
                         ViewBag.Message = "Vote successfully cast.";
                     }
-                }
-                else if (firstVote == -1 && secondVote != -1 && thirdVote != -1)
-                {
-                    //Second and Third voted on
-                    if (secondVote == thirdVote)
+                    else if (firstVote != -1 && secondVote != -1 && thirdVote == -1)
                     {
-                        ViewBag.Message = "Duplicate votes are not allowed.";
+                        //First and Second voted on
+                        if (firstVote == secondVote)
+                        {
+                            ViewBag.Message = "Duplicate votes are not allowed.";
+                        }
+                        else
+                        {
+                            rowToChange.FirstChoice = firstVote;
+                            rowToChange.SecondChoice = secondVote;
+                            rowToChange.ThirdChoice = -1;
+
+                            db.SaveChanges();
+                            ViewBag.Message = "Vote successfully cast.";
+                        }
+                    }
+                    else if (firstVote != -1 && secondVote == -1 && thirdVote != -1)
+                    {
+                        //First and Third voted on
+                        if (firstVote == thirdVote)
+                        {
+                            ViewBag.Message = "Duplicate votes are not allowed.";
+                        }
+                        else
+                        {
+                            rowToChange.FirstChoice = firstVote;
+                            rowToChange.SecondChoice = -1;
+                            rowToChange.ThirdChoice = thirdVote;
+
+                            db.SaveChanges();
+                            ViewBag.Message = "Vote successfully cast.";
+                        }
+                    }
+                    else if (firstVote == -1 && secondVote != -1 && thirdVote != -1)
+                    {
+                        //Second and Third voted on
+                        if (secondVote == thirdVote)
+                        {
+                            ViewBag.Message = "Duplicate votes are not allowed.";
+                        }
+                        else
+                        {
+                            rowToChange.FirstChoice = -1;
+                            rowToChange.SecondChoice = secondVote;
+                            rowToChange.ThirdChoice = thirdVote;
+
+                            db.SaveChanges();
+                            ViewBag.Message = "Vote successfully cast.";
+                        }
                     }
                     else
                     {
-                        rowToChange.FirstChoice = -1;
-                        rowToChange.SecondChoice = secondVote;
-                        rowToChange.ThirdChoice = thirdVote;
+                        //Check for duplicate votes
+                        if (firstVote == secondVote || firstVote == thirdVote || secondVote == thirdVote)
+                        {
+                            ViewBag.Message = "Duplicate votes are not allowed.";
+                        }
+                        else
+                        {
+                            rowToChange.FirstChoice = firstVote;
+                            rowToChange.SecondChoice = secondVote;
+                            rowToChange.ThirdChoice = thirdVote;
+                            db.SaveChanges();
 
-                        db.SaveChanges();
-                        ViewBag.Message = "Vote successfully cast.";
+                            ViewBag.Message = "Vote successfully cast.";
+                        }
                     }
                 }
+
                 else
                 {
-                    //Check for duplicate votes
-                    if (firstVote == secondVote || firstVote == thirdVote || secondVote == thirdVote)
-                    {
-                        ViewBag.Message = "Duplicate votes are not allowed.";
-                    }
-                    else
-                    {
-                        rowToChange.FirstChoice = firstVote;
-                        rowToChange.SecondChoice = secondVote;
-                        rowToChange.ThirdChoice = thirdVote;
-                        db.SaveChanges();
-
-                        ViewBag.Message = "Vote successfully cast.";
-                    }
+                    ViewBag.Message = "Please log in to vote.";
                 }
             }
-
-            else
-            {
-                ViewBag.Message = "Please log in to vote.";
-            }
+            
             
             ViewData["TopScoresList"] = getTopScores();
             ViewData["RestaurantList"] = db.Restaurants.ToList();
