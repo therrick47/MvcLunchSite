@@ -48,7 +48,7 @@ namespace MvcLunchSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "menuID,restaurantID,menuName")] Menu menu)
+        public ActionResult Create([Bind(Include = "menuID,restaurantID,menuName,menuNotes")] Menu menu)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace MvcLunchSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "menuID,restaurantID,menuName")] Menu menu)
+        public ActionResult Edit([Bind(Include = "menuID,restaurantID,menuName,menuNotes")] Menu menu)
         {
             if (ModelState.IsValid)
             {
