@@ -8,39 +8,65 @@ using System.Web;
 using System.Web.Mvc;
 using MvcLunchSite.Models;
 using System.Data.Entity.Infrastructure;
+using MvcLunchSite.Helpers;
+using System.Security.Principal;
 
 namespace MvcLunchSite.Controllers
 {
     public class MenusController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        private SecurityHelper sh = new SecurityHelper();
         // GET: Menus
         public ActionResult Index()
         {
-            return View(db.Menus.ToList());
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
+            {
+                return View(db.Menus.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Menus/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Menu menu = db.Menus.Find(id);
+                if (menu == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(menu);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(menu);
         }
 
         // GET: Menus/Create
         public ActionResult Create()
         {
-            ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name", RouteData.Values["id"]);
-            return View();
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
+            {
+                ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name", RouteData.Values["id"]);
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // POST: Menus/Create
@@ -50,29 +76,45 @@ namespace MvcLunchSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "menuID,restaurantID,menuName")] Menu menu)
         {
-            if (ModelState.IsValid)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                db.Menus.Add(menu);
-                db.SaveChanges();
-                return RedirectToAction("Index","Restaurants");
+                if (ModelState.IsValid)
+                {
+                    db.Menus.Add(menu);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Restaurants");
+                }
+                ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
+                return View(menu);
             }
-            ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
-            return View(menu);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Menus/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Menu menu = db.Menus.Find(id);
+                if (menu == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(menu);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(menu);
         }
 
         // POST: Menus/Edit/5
@@ -82,28 +124,44 @@ namespace MvcLunchSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "menuID,restaurantID,menuName")] Menu menu)
         {
-            if (ModelState.IsValid)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                db.Entry(menu).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index","Restaurants");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(menu).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Restaurants");
+                }
+                return View(menu);
             }
-            return View(menu);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Menus/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Menu menu = db.Menus.Find(id);
+                if (menu == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(menu);
             }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(menu);
         }
 
         // POST: Menus/Delete/5
@@ -111,17 +169,25 @@ namespace MvcLunchSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Menu menu = db.Menus.Find(id);
-            foreach(MenuItem item in db.MenuItems)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                if( item.menuID == id)
+                Menu menu = db.Menus.Find(id);
+                foreach (MenuItem item in db.MenuItems)
                 {
-                    db.MenuItems.Remove(item);
+                    if (item.menuID == id)
+                    {
+                        db.MenuItems.Remove(item);
+                    }
                 }
+                db.Menus.Remove(menu);
+                db.SaveChanges();
+                return RedirectToAction("Index", "Restaurants");
             }
-            db.Menus.Remove(menu);
-            db.SaveChanges();
-            return RedirectToAction("Index","Restaurants");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)

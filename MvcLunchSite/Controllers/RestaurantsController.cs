@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MvcLunchSite.Models;
+using MvcLunchSite.Helpers;
+using System.Security.Principal;
 
 namespace MvcLunchSite.Controllers
 {
@@ -14,40 +16,66 @@ namespace MvcLunchSite.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationDbContext db2 = new ApplicationDbContext();
+        private SecurityHelper sh = new SecurityHelper();
         // GET: Restaurants
         public ActionResult Index()
         {
-            ViewData["RestaurantList"] = db.Restaurants.ToList();
-            ViewData["MenuList"] = db.Menus.ToList();
-            ViewData["MenuItemList"] = db.MenuItems.ToList();
-           
-            //ViewBag.Restaurants = db.Restaurants.ToList();
-            //ViewBag.Menus = db.Menus.ToList();
-            //ViewBag.MenuItems = db.MenuItems.ToList();
-            return View();
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
+            {
+                ViewData["RestaurantList"] = db.Restaurants.ToList();
+                ViewData["MenuList"] = db.Menus.ToList();
+                ViewData["MenuItemList"] = db.MenuItems.ToList();
+
+                //ViewBag.Restaurants = db.Restaurants.ToList();
+                //ViewBag.Menus = db.Menus.ToList();
+                //ViewBag.MenuItems = db.MenuItems.ToList();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
 
         // GET: Restaurants/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Restaurant restaurant = db.Restaurants.Find(id);
+                if (restaurant == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(restaurant);
             }
-            Restaurant restaurant = db.Restaurants.Find(id);
-            if (restaurant == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(restaurant);
         }
 
         // GET: Restaurants/Create
         public ActionResult Create()
         {
-            ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
-            //ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName");
-            return View();
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
+            {
+                ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
+                //ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName");
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // POST: Restaurants/Create
@@ -57,30 +85,46 @@ namespace MvcLunchSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,name")] Restaurant restaurant)
         {
-            if (ModelState.IsValid)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                db.Restaurants.Add(restaurant);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Restaurants.Add(restaurant);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
+                //ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName");
+                return View(restaurant);
             }
-            ViewBag.restaurantID = new SelectList(db.Restaurants, "ID", "name");
-            //ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName");
-            return View(restaurant);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Restaurants/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Restaurant restaurant = db.Restaurants.Find(id);
+                if (restaurant == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(restaurant);
             }
-            Restaurant restaurant = db.Restaurants.Find(id);
-            if (restaurant == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(restaurant);
         }
 
         // POST: Restaurants/Edit/5
@@ -90,28 +134,44 @@ namespace MvcLunchSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,name")] Restaurant restaurant)
         {
-            if (ModelState.IsValid)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                db.Entry(restaurant).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(restaurant).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(restaurant);
             }
-            return View(restaurant);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Restaurants/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Restaurant restaurant = db.Restaurants.Find(id);
+                if (restaurant == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(restaurant);
             }
-            Restaurant restaurant = db.Restaurants.Find(id);
-            if (restaurant == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(restaurant);
         }
 
         // POST: Restaurants/Delete/5
@@ -119,27 +179,35 @@ namespace MvcLunchSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Restaurant restaurant = db.Restaurants.Find(id);
-            foreach(var item in db.Menus)
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastAdmin(user))
             {
-                if (item.restaurantID == restaurant.ID)
+                Restaurant restaurant = db.Restaurants.Find(id);
+                foreach (var item in db.Menus)
                 {
-                    
-                    foreach(var menuItem in db2.MenuItems)
+                    if (item.restaurantID == restaurant.ID)
                     {
-                        if (item.menuID == menuItem.menuID)
+
+                        foreach (var menuItem in db2.MenuItems)
                         {
-                            db.MenuItems.Attach(menuItem);
-                            db.Entry(menuItem).State = EntityState.Deleted;
-                            //db.MenuItems.Remove(menuItem);
+                            if (item.menuID == menuItem.menuID)
+                            {
+                                db.MenuItems.Attach(menuItem);
+                                db.Entry(menuItem).State = EntityState.Deleted;
+                                //db.MenuItems.Remove(menuItem);
+                            }
                         }
+                        db.Menus.Remove(item);
                     }
-                    db.Menus.Remove(item);
                 }
+                db.Restaurants.Remove(restaurant);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            db.Restaurants.Remove(restaurant);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)

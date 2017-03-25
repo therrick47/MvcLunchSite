@@ -8,12 +8,16 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MvcLunchSite.Models;
 using System.Data.Entity;
+using MvcLunchSite.Helpers;
+using System.Security.Principal;
 
 namespace MvcLunchSite.Controllers
 {
+
     [Authorize]
     public class ManageController : Controller
     {
+        private SecurityHelper sh = new SecurityHelper();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -451,23 +455,39 @@ namespace MvcLunchSite.Controllers
 
         public ActionResult Time()
         {
-            return View("~/Views/Manage/Time.cshtml");
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastSuperuser(user))
+            {
+                return View("~/Views/Manage/Time.cshtml");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Time(FormCollection t)
         {
-            string voteEnd = t["voteEndDate"];
-            string orderEnd = t["orderEndDate"];
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastSuperuser(user))
+            {
+                string voteEnd = t["voteEndDate"];
+                string orderEnd = t["orderEndDate"];
 
-            DateTime date = Convert.ToDateTime(voteEnd);
-            DateTime orderDate = Convert.ToDateTime(orderEnd);
-            var manages = db.Manages.First();
-            manages.voteEndDate = date;
-            manages.orderEndDate = orderDate;
-            db.SaveChanges();
-            return RedirectToAction("Index");
+                DateTime date = Convert.ToDateTime(voteEnd);
+                DateTime orderDate = Convert.ToDateTime(orderEnd);
+                var manages = db.Manages.First();
+                manages.voteEndDate = date;
+                manages.orderEndDate = orderDate;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
         }
         //

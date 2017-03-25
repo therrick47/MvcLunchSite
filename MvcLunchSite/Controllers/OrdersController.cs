@@ -2,14 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
+using MvcLunchSite.Helpers;
 
 namespace MvcLunchSite.Controllers
 {
     public class OrdersController : Controller
     {
+        private SecurityHelper sh = new SecurityHelper();
         private ApplicationDbContext db = new ApplicationDbContext();
+
         public List<string> getTopScores()
         {
             Dictionary<int, int> topScores = new Dictionary<int, int>();
@@ -49,17 +53,27 @@ namespace MvcLunchSite.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            ViewData["TopScoresList"] = getTopScores();
-            ViewData["UserList"] = db.Users.ToList();
-            ViewData["OrderList"] = db.Orders.ToList();
-            ViewData["RestaurantList"] = db.Restaurants.ToList();
-            return View();
+            IPrincipal user = System.Web.HttpContext.Current.User;
+            if (sh.atLeastOrderer(user))
+            {
+                ViewData["TopScoresList"] = getTopScores();
+                ViewData["UserList"] = db.Users.ToList();
+                ViewData["OrderList"] = db.Orders.ToList();
+                ViewData["RestaurantList"] = db.Restaurants.ToList();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public ActionResult Create()
         {
-            ViewBag.orderID = new SelectList(db.Orders, "orderID", "menuItemID", RouteData.Values["id"]);
-            return View();
+            //Commenting this code out for the time being because I don't know if it is being used at all
+            //ViewBag.orderID = new SelectList(db.Orders, "orderID", "menuItemID", RouteData.Values["id"]);
+            //return View();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
