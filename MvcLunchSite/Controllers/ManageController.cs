@@ -74,6 +74,13 @@ namespace MvcLunchSite.Controllers
                 RoleName = RoleName()
             };
             ViewData["UserList"] = db.Users.ToList();
+            //Manage t = new Manage();
+            //t.voteEndDate = DateTime.Now.AddDays(1);
+            //t.orderEndDate = DateTime.Now.AddDays(3);
+            //t.Id = db.Manages.Count() + 1;
+            //db.Manages.Add(t);
+            //db.SaveChanges();
+            ViewData["TimeList"] = db.Manages.ToList();
             return View(model);
         }
 
@@ -380,6 +387,27 @@ namespace MvcLunchSite.Controllers
             return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
         }
 
+        public ActionResult Time()
+        {
+            return View("~/Views/Manage/Time.cshtml");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Time(FormCollection t)
+        {
+            string voteEnd = t["voteEndDate"];
+            string orderEnd = t["orderEndDate"];
+
+            DateTime date = Convert.ToDateTime(voteEnd);
+            DateTime orderDate = Convert.ToDateTime(orderEnd);
+            var manages = db.Manages.First();
+            manages.voteEndDate = date;
+            manages.orderEndDate = orderDate;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
+        }
         //
         // GET: /Manage/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()

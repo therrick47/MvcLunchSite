@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System;
 
 namespace MvcLunchSite.Models
 {
@@ -15,6 +16,7 @@ namespace MvcLunchSite.Models
         public string RoleName { get; set; }
         public int id { get; set; }
         public string email { get; set; }
+        
     }
 
     public class ManageLoginsViewModel
@@ -95,4 +97,5 @@ namespace MvcLunchSite.Models
         public int id { get; }
         public string email { get; }
     }
+
 }

@@ -1,0 +1,72 @@
+﻿@model MvcLunchSite.Models.Manage
+
+@{
+    ViewBag.Title = "Time";
+    //Layout = "~/Views/Restaurants/Edit.cshtml";
+}
+
+<h2>Time</h2>
+
+@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Manage</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.voteEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+
+                        @Html.EditorFor(model => model.voteEndDate, new { htmlAttributes = new { @class = "form-control", id="voteEnd" } })
+                       
+                        @Html.ValidationMessageFor(model => model.voteEndDate, "", new { @class = "text-danger" })
+                    
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.orderEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.orderEndDate, new { htmlAttributes = new { @class = "form-control", id = "orderEnd" } })
+                    @Html.ValidationMessageFor(model => model.orderEndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+        @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        }
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#voteEnd').datetimepicker();
+        $('#orderEnd').datetimepicker();
+    });
+
+
+    
+</script>
+
+
+
