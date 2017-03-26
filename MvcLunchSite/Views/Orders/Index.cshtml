@@ -58,14 +58,20 @@
 
                     var currTotal=0.0;
                     for(var resSpot = 0; resSpot < myRestList.length; resSpot++){
+                        currTotal=0.0;
                         if(dropText == myRestList[resSpot].name || dropText.trim() == ""){
                             toStoreInSec += '<strong>' +myRestList[resSpot].name+'</strong>'
                                 + '<ul>';
                             for( var useSpot = 0; useSpot < myUseList.length; useSpot++){
                                 //if dropdownlist text matches restaurant or the dropdownlist is on the empty value
 
-                                toStoreInSec+='<li>'
-                                + myUseList[useSpot].UserName + '<ul>';
+                                toStoreInSec+='<li>';
+                                if(myUseList[useSpot].FullName == null){
+                                    toStoreInSec+=myUseList[useSpot].Email+'<ul>';
+                                }
+                                else{
+                                   toStoreInSec += myUseList[useSpot].FullName + '<ul>';
+                                }
                                 for (var ordSpot = 0; ordSpot < myOrdList.length; ordSpot++){
                                     if(myOrdList[ordSpot].userID == myUseList[useSpot].Id && myOrdList[ordSpot].restaurantID == myRestList[resSpot].ID){
                                         toStoreInSec+='<li>'
@@ -100,7 +106,13 @@
                         @foreach (var user in list)
                         {
                             <li>
-                                @user.FullName
+                                @if (user.FullName == null) {
+                                    @user.Email
+                                }
+                                else
+                                {
+                                    @user.FullName
+                                }
                                 <ul>
                                     @foreach (var item in orderList)
                                     {
