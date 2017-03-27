@@ -17,6 +17,16 @@
         listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
     }
 }
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#filterList").val("@ViewData["WinningRestaurantDropDownIndex"]");
+        changeDisp();
+    });
+</script>
+
 @{
     <h2>Order</h2>
     MvcLunchSite.Models.ApplicationUser currUser = list.Find(x => x.UserName == User.Identity.Name);

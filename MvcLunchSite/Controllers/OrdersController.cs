@@ -50,6 +50,39 @@ namespace MvcLunchSite.Controllers
             return topScoresOutputList;
         }
 
+        public int getDropDownIndexForWinningRestaurant()
+        {
+            Dictionary<int, int> topScores = new Dictionary<int, int>();
+            foreach (var item in db.Restaurants)
+            {
+                topScores.Add(item.ID, 0);
+            }
+            foreach (var user in db.Users)
+            {
+                if (user.FirstChoice != null && topScores.ContainsKey(user.FirstChoice.GetValueOrDefault()))
+                {
+                    topScores[user.FirstChoice.GetValueOrDefault()] += 3;
+                }
+                if (user.SecondChoice != null && topScores.ContainsKey(user.SecondChoice.GetValueOrDefault()))
+                {
+                    topScores[user.SecondChoice.GetValueOrDefault()] += 2;
+                }
+                if (user.ThirdChoice != null && topScores.ContainsKey(user.ThirdChoice.GetValueOrDefault()))
+                {
+                    topScores[user.ThirdChoice.GetValueOrDefault()] += 1;
+                }
+            }
+            Tuple<int, int> winner = new Tuple<int, int>(0, 0);
+            foreach (var element in topScores)
+            {
+                if (element.Value > winner.Item2)
+                {
+                    winner = new Tuple<int, int>(element.Key, element.Value);
+                }
+            }
+            return winner.Item1;
+        }
+
         // GET: Orders
         public ActionResult Index()
         {
@@ -60,6 +93,7 @@ namespace MvcLunchSite.Controllers
                 ViewData["UserList"] = db.Users.ToList();
                 ViewData["OrderList"] = db.Orders.ToList();
                 ViewData["RestaurantList"] = db.Restaurants.ToList();
+                ViewData["WinningRestaurantDropDownIndex"] = getDropDownIndexForWinningRestaurant();
                 return View();
             }
             else

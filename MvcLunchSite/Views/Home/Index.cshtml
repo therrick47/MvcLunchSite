@@ -163,9 +163,9 @@
                             <div class="progress" style="transform:scaleY(.75);">
                                 @{
                                     if (first == true)
-                                    { first = false; }
+                                    { txtColor = "progress-bar-success"; first = false; }
                                     else
-                                    { txtColor = "progress-bar-success"; }
+                                    { txtColor = ""; }
                                 }
                                 <div class="progress-bar @txtColor" role="progressbar" aria-valuenow="@percentVote" aria-valuemin="0" aria-valuemax="100" style="width:@percentVote%">
                                     <span class="sr-only">@percentVote% Complete</span>
