@@ -9,6 +9,8 @@ namespace MvcLunchSite.Models
     {
         public int ID { get; set; }
         public string name { get; set; }
+        public string pic { get; set; }
+        public string url { get; set; }
         public ICollection<Menu> Menus { get; set; }
         public List<Restaurant> GetRestaurants()
         {
