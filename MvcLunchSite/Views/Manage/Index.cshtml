@@ -43,6 +43,7 @@
             {
                 <text>[ <a href="#" onclick="showHide('roles', this)">Change User Roles</a> ]</text>
                 <text>[ <a href="#" onclick="showHide('time', this)">Change Voting Deadline</a> ]</text>
+
                 <script>
                     function showHide(id, link)
                     {
@@ -51,8 +52,10 @@
                         link.blur();
                     }
                 </script>
+                <p><input id="clear" onclick="location.href='@Url.Action("clearVotes", "Manage")'" type="button" value="Clear Votes" class="btn btn-default" style="font-size:1vw;" /></p>
             }
             </dd>
+            
         }
         @*<dt>External Logins:</dt>
     <dd>
@@ -116,6 +119,16 @@
         <p>
             @Html.ActionLink("Select Date/Time", "Time", new { id = timeList[0].Id})
         </p>
+    </div>
+
+    <div id="clearVotes">
+        
+        <p>
+            
+            @*<button id="clearVoteButton" onclick="clearVotes">Clear Votes</button>*@
+            
+            
+         </p>
     </div>
 
 @if (ViewBag.ErrorMessage != null)

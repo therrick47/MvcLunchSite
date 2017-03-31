@@ -6,6 +6,7 @@
 @{ var Itemlist = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
 @{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
 @{ var orderList = (List<MvcLunchSite.Models.Order>)ViewData["OrderList"];}
+@{ var time = (List<MvcLunchSite.Models.Manage>)ViewData["TimeList"];}
 
 @{
     ViewBag.Title = "Home Page";
@@ -19,7 +20,7 @@
         <div class="row">
             <center>
             <div class="col-xs-6">
-                <h2>Vote for Your Favorite Restaraunts</h2>
+                
                 @{
                     List<SelectListItem> listNumber = new List<SelectListItem>();
                     listNumber.Add(new SelectListItem { Value = "-1", Text = " " });
@@ -124,13 +125,29 @@
                     }
 
                 </script>
+                @if(time.First() !=null)
+                {
 
-                <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber, new { @onchange = "UpdateDropdown(this)" }) </p>
-                <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber, new { @onchange = "UpdateDropdown2(this)" }) </p>
-                <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber, new { @onchange = "UpdateDropdown3(this)" }) </p>
-                <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;" />
-                <input id="btnVoteClear" onclick="clearVotes()" type="button" value="Clear" class="btn btn-default" style="font-size:2vw;" />
+                
+                if (DateTime.Compare(time.First().voteEndDate, DateTime.Now) > 0)
+                {
+                    <h2>Vote for Your Favorite Restaraunts</h2>
+                    <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber, new { @onchange = "UpdateDropdown(this)" }) </p>
+                    <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber, new { @onchange = "UpdateDropdown2(this)" }) </p>
+                    <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber, new { @onchange = "UpdateDropdown3(this)" }) </p>
+                    <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;" />
+                    <input id="btnVoteClear" onclick="clearVotes()" type="button" value="Clear" class="btn btn-default" style="font-size:2vw;" />
+                    
 
+                }
+
+                if(DateTime.Compare(time.First().voteEndDate, DateTime.Now)<0)
+                {              
+                    <br />
+                    <br />                       
+                    <h2>Voting concluded after @time.First().voteEndDate.ToString("f"). Please order down below.</h2>
+                }
+                }
                 <script>
                     function clearVotes()
                     {

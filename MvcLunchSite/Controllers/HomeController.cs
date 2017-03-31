@@ -56,6 +56,7 @@ namespace MvcLunchSite.Controllers
             ViewData["MenuList"] = db.Menus.ToList();
             ViewData["MenuItemList"] = db.MenuItems.ToList();
             ViewData["OrderList"] = db.Orders.ToList();
+            ViewData["TimeList"] = db.Manages.ToList();
             return View();
         }
 
@@ -352,6 +353,7 @@ namespace MvcLunchSite.Controllers
             ViewData["MenuList"] = db.Menus.ToList();
             ViewData["MenuItemList"] = db.MenuItems.ToList();
             ViewData["OrderList"] = db.Orders.ToList();
+            ViewData["TimeList"] = db.Manages.ToList();
             return View("Index");
         }
     }

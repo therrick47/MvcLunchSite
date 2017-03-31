@@ -369,11 +369,6 @@
     <Content Include="Views\MenuItems\Details.cshtml" />
     <Content Include="Views\MenuItems\Edit.cshtml" />
     <Content Include="Views\MenuItems\Index.cshtml" />
-    <Content Include="Views\Shared\MenuCreate.cshtml" />
-    <Content Include="Views\Shared\MenuDelete.cshtml" />
-    <Content Include="Views\Shared\MenuDetails.cshtml" />
-    <Content Include="Views\Shared\MenuEdit.cshtml" />
-    <Content Include="Views\Shared\MenuIndex.cshtml" />
     <Content Include="Views\Manage\ChangeRole.cshtml" />
     <Content Include="Views\Orders\Create.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />

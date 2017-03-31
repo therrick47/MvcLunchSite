@@ -490,6 +490,33 @@ namespace MvcLunchSite.Controllers
             }
 
         }
+
+        //public ActionResult clearVotes()
+        //{
+        //    IPrincipal user = System.Web.HttpContext.Current.User;
+        //    if (sh.atLeastSuperuser(user))
+        //    {
+        //        return View("~/Views/Manage/Time.cshtml");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult clearVotes()
+        {
+            foreach(var user in db.Users)
+            {
+                user.FirstChoice=null;
+                user.SecondChoice = null;
+                user.ThirdChoice = null;
+            }
+            db.SaveChanges();
+            return RedirectToAction("Index", "Manage");
+        }
         //
         // GET: /Manage/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
