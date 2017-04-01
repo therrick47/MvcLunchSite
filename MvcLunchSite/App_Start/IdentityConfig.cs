@@ -11,6 +11,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using MvcLunchSite.Models;
+using System.Net.Mail;
+using System.Configuration;
+using System.Net;
 
 namespace MvcLunchSite
 {
@@ -19,7 +22,15 @@ namespace MvcLunchSite
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            client.Host = "smtp.gmail.com";
+            client.EnableSsl = true;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("lunchvotingwebsitecrc@gmail.com", "daStoveIsBest");
+
+            return client.SendMailAsync("lunchvotingwebsitecrc@gmail.com", message.Destination, message.Subject, message.Body);
         }
     }
 

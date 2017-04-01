@@ -236,14 +236,13 @@
                     $("#bad").fadeIn();
                 }
                 else {
-                    
+                    $("#bad").remove();
                     var orderUI = '<li id="' + orderItemHrefGlobal + '" class="list-group-item"><h4 class="list-group-item-heading">' + returnObj.menuItemName + '<button id="' + returnObj.orderID + '" onclick="removeFromOrder(this.id, \'' + orderItemHrefGlobal + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + returnObj.menuItemDescription + '</p><p><i>' + returnObj.customization + '</i></p></li>';
                     var orderListUI = document.getElementById(orderListHrefGlobal);
                     orderListUI.innerHTML += orderUI;
                 }
             },
             error: function (returnOnbj) {
-                
                 $("#bad").remove();
                 document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Failed to add to order.</h4>'
                 $("#bad").fadeIn();
