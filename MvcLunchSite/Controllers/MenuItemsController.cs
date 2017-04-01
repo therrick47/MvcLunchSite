@@ -75,7 +75,7 @@ namespace MvcLunchSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "menuItemID,menuItemName,menuItemPrice,menuItemDescription,menuID")] MenuItem menuItem)
+        public ActionResult Create([Bind(Include = "menuItemID,menuItemName,menuItemPrice,menuItemDescription,menuID,itemType")] MenuItem menuItem)
         {
             IPrincipal user = System.Web.HttpContext.Current.User;
             if (sh.atLeastAdmin(user))
@@ -112,6 +112,12 @@ namespace MvcLunchSite.Controllers
                     return HttpNotFound();
                 }
                 ViewBag.menuID = new SelectList(db.Menus, "menuID", "menuName", menuItem.menuID);
+                List<string> itemList = new List<string>();
+                itemList.Add("Appetizer");
+                itemList.Add("Entree");
+                itemList.Add("Topping");
+                itemList.Add("Free");
+                ViewBag.itemType = new SelectList(itemList, db.MenuItems.Where(x => x.menuItemID == id).FirstOrDefault().itemType);
                 return View(menuItem);
             }
             else
@@ -125,7 +131,7 @@ namespace MvcLunchSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "menuItemID,menuItemName,menuItemPrice,menuItemDescription,menuID")] MenuItem menuItem)
+        public ActionResult Edit([Bind(Include = "menuItemID,menuItemName,menuItemPrice,menuItemDescription,menuID,itemType")] MenuItem menuItem)
         {
             IPrincipal user = System.Web.HttpContext.Current.User;
             if (sh.atLeastAdmin(user))

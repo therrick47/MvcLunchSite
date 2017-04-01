@@ -51,7 +51,10 @@
             @*updating the page based on dropdown choice*@
             <script type="text/javascript">
                 function changeDisp() {
-                    //div that orders are displayed into
+
+                    // Refactored the below code to show/hide preloaded divs instead of redrawing the page each time
+
+                    @*//div that orders are displayed into
                     var section = document.getElementById("toPrint");
                     section.innerHTML = null;
                     //dropdownlist
@@ -102,12 +105,40 @@
                         }
                     }
                     //update page with new html
-                    section.innerHTML += toStoreInSec;
+                    section.innerHTML += toStoreInSec;*@
+
+                    // Show hide divs based on dropdown ID
+
+                    var dropList = document.getElementById("filterList");
+                    var myRestList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"]));
+                    for(var resSpot = 0; resSpot < myRestList.length; resSpot++) {
+                        if (dropList.options[dropList.selectedIndex].value == "-1") {
+                            var toShow = document.getElementById(myRestList[resSpot].ID);
+                            toShow.style.display = 'block';
+                            // console.log("Showing " + myRestList[resSpot].ID)
+                        }
+                        else if (dropList.options[dropList.selectedIndex].value == myRestList[resSpot].ID) {
+                            var toShow = document.getElementById(myRestList[resSpot].ID);
+                            toShow.style.display = 'block';
+                            // console.log("Showing " + myRestList[resSpot].ID)
+                        }
+                        else {
+                            var toHide = document.getElementById(myRestList[resSpot].ID);
+                            toHide.style.display = 'none';
+                            // console.log("Hiding " + myRestList[resSpot].ID)
+                        }
+                    }
                 }
             </script>
             <div id="toPrint">
                 @foreach (var rest in restaurantList) //var user in list)
                 {
+                <div id="@rest.ID"> @{ 
+                    var query = from user in list
+                                where !orderList.Any(order => order.userID == user.Id && order.restaurantID == rest.ID.ToString())
+                                select user.Id;
+                    List<string> notOrderedIDs = query.ToList();
+                    List<string> notOrdered = new List<string>();
                     var currTotal = 0.0;
                     <strong>
                         @rest.name
@@ -115,7 +146,16 @@
                     <ul>
                         @foreach (var user in list)
                         {
-                            <li>
+                            if (notOrderedIDs.Contains(user.Id)) {
+                                if (user.FullName == null) {
+                                    notOrdered.Add(user.Email);
+                                }
+                                else {
+                                    notOrdered.Add(user.FullName);
+                                }
+                            }
+                            else {
+                            <li> 
                                 @if (user.FullName == null) {
                                     @user.Email
                                 }
@@ -123,35 +163,43 @@
                                 {
                                     @user.FullName
                                 }
-                                <ul>
-                                    @foreach (var item in orderList)
-                                    {
-                                        if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
+                                    <ul>
+                                        @foreach (var item in orderList)
                                         {
-                                            <li>
-                                                @{
-                                                    currTotal += double.Parse(item.ItemPrice);
-                                                }
-                                                @item.menuItemName --- @item.ItemPrice
-                                                <ul>
-                                                    @if (item.customization != "")
-                                                    {
-                                                        @item.customization
+                                            if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
+                                            {
+                                                <li>
+                                                    @{
+                                                        currTotal += double.Parse(item.ItemPrice);
                                                     }
-
-                                                </ul>
-                                            </li>
+                                                    @item.menuItemName --- @item.ItemPrice
+                                                    <ul>
+                                                        @if (item.customization != "")
+                                                        {
+                                                            @item.customization
                                                         }
-                                                    }
-                                </ul>
-                            </li>
-                                                    }
+                                                    </ul>
+                                                </li>
+                                                }
+                                            }
+                                    </ul>
+                                </li>
+                            }  
+                        }
                     </ul>
                     <strong> Total: @currTotal</strong>
                     <br />
-                        <br />
-                                                    }
+                    <br />
+                    <strong style="color:red">The following people have not ordered for @rest.name:</strong>
+                    <ul>
+                        @foreach (string user in notOrdered) { 
+                            <li style="color:red">@user</li> 
+                        }
+                    </ul>
+                }
+                </div>
+                }
             </div>
-                                                        }
-                                                    }
+        }
+    }
 }

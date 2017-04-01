@@ -329,17 +329,20 @@
                     string restaurantName = Html.DisplayName(restaurant.name).ToString();
                     string restaurantHref = "restaurant" + restaurantNum;
                     string orderHref = "order" + restaurantNum;
-                    string imageURL = "https://lh5.ggpht.com/nct7SKXWQ3vQYQki0hQEGidMPxk_-8JqkhPnSWEjuv8bF3pd2Qj3RuAa-5IXa_hCdQ=w300";
+                    string imageURL = restaurant.pic;
+                    string restaurantURL = restaurant.url;
 
                     <div id="@restaurantHref" class="tab-pane fade @if (restaurantNum == 1)
                     { <text>in active</text> }">
                         @* Menu Selection *@
                         <div class="list-group menu">
                             <a class="list-group-item active">
-                                <h4 class="list-group-item-heading menuTitle" id="menuTitle">
-                                    <img id="kitty-@restaurantNum" src=@imageURL class="logo" style="height:50px;width:50px;" />
-                                    &nbsp;&nbsp;&nbsp; @restaurantName
-                                </h4>
+                                <h3 class="list-group-item-heading menuTitle" id="menuTitle">
+                                    <img id="kitty-@restaurantNum" src=@imageURL class="logo" style="height:55px;width:55px;" /> 
+                                     &nbsp;&nbsp;&nbsp; @restaurantName  
+                                    
+                                </h3>
+                                <a href="@restaurantURL">@restaurantName</a> - Menu
                             </a>
                             <div style="border-color:gainsboro;">
                                 <ul class="nav nav-pills" id="menuTab">

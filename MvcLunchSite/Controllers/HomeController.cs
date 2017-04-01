@@ -17,12 +17,13 @@ namespace MvcLunchSite.Controllers
         public List<string> getTopScores()
         {
             Dictionary<int, int> topScores = new Dictionary<int, int>();
-            foreach(var item in db.Restaurants){
+            foreach (var item in db.Restaurants)
+            {
                 topScores.Add(item.ID, 0);
             }
-            foreach(var user in db.Users)
+            foreach (var user in db.Users)
             {
-                if(user.FirstChoice != null && topScores.ContainsKey(user.FirstChoice.GetValueOrDefault()))
+                if (user.FirstChoice != null && topScores.ContainsKey(user.FirstChoice.GetValueOrDefault()))
                 {
                     topScores[user.FirstChoice.GetValueOrDefault()] += 3;
                 }
@@ -93,52 +94,89 @@ namespace MvcLunchSite.Controllers
             if ((user != null) && user.Identity.IsAuthenticated)
             {
                 string userId = user.Identity.GetUserId();
-                if(order.menuItemID != 0)
+                if (order.menuItemID != 0)
                 {
                     var query = from item in db.MenuItems
                                 where item.menuItemID.Equals(order.menuItemID)
                                 select item;
                     MenuItem menuItem = query.FirstOrDefault();
-                    if(menuItem != null)
+                    if (menuItem != null)
                     {
-                        order.menuItemDescription = menuItem.menuItemDescription;
-                        order.ItemPrice = menuItem.menuItemPrice;
-                        order.menuItemName = menuItem.menuItemName;
-                        order.userID = userId;
-                        var secondQuery = from item in db.Menus
-                                          where item.menuID.Equals(menuItem.menuID)
-                                          select item;
-                        Menu menu = secondQuery.FirstOrDefault();
-                        if(menu == null)
+                        bool canOrder = true;
+                        string strID = user.Identity.GetUserId();
+                        List<Order> ordList = db.Orders.Where(x => x.userID == strID).ToList();
+                        int topCount = 0;
+                        foreach (var ordItem in ordList)
                         {
-                            return Json(new {error = "Restaurant was not found." }, JsonRequestBehavior.AllowGet);
-                        }
-                        else
-                        {
-                            order.restaurantID = menu.restaurantID.ToString();
-                        }
-                        if (ModelState.IsValid && order.userID != null)
-                        {
-                            if (order.customization == null)
+                            MenuItem toCheckType = db.MenuItems.Where(x => ordItem.menuItemID == x.menuItemID).FirstOrDefault();
+                            Menu toLook = db.Menus.Where(x => x.menuID == menuItem.menuID).FirstOrDefault();
+                            Restaurant first = db.Restaurants.Where(x => x.ID.ToString() == ordItem.restaurantID).FirstOrDefault();
+                            Restaurant second = db.Restaurants.Where(x => x.ID == toLook.restaurantID).FirstOrDefault();
+                            if (first.ID == second.ID)
                             {
-                                order.customization = "";
+                                if (toCheckType.itemType == menuItem.itemType)
+                                {
+                                    if (menuItem.itemType.Trim() == "Topping")
+                                    {
+                                        topCount++;
+                                        if (topCount > 2)
+                                        {
+                                            canOrder = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        canOrder = false;
+                                    }
+                                }
                             }
-                            if(order != null)
+
+                        }
+                        if (canOrder)
+                        {
+                            order.menuItemDescription = menuItem.menuItemDescription;
+                            order.ItemPrice = menuItem.menuItemPrice;
+                            order.menuItemName = menuItem.menuItemName;
+                            order.userID = userId;
+                            var secondQuery = from item in db.Menus
+                                              where item.menuID.Equals(menuItem.menuID)
+                                              select item;
+                            Menu menu = secondQuery.FirstOrDefault();
+                            if (menu == null)
                             {
-                                db.Orders.Add(order);
-                                db.SaveChanges();
+                                return Json(new { error = "Restaurant was not found." }, JsonRequestBehavior.AllowGet);
                             }
                             else
                             {
-                                return Json(new { error = "Order was somehow null." }, JsonRequestBehavior.AllowGet);
+                                order.restaurantID = menu.restaurantID.ToString();
                             }
+                            if (ModelState.IsValid && order.userID != null)
+                            {
+                                if (order.customization == null)
+                                {
+                                    order.customization = "";
+                                }
+                                if (order != null)
+                                {
+                                    db.Orders.Add(order);
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    return Json(new { error = "Order was somehow null." }, JsonRequestBehavior.AllowGet);
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { error = "Invalid model state." }, JsonRequestBehavior.AllowGet);
+                            }
+                            ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
+                            return Json(order);
                         }
                         else
                         {
-                            return Json(new { error = "Invalid model state." }, JsonRequestBehavior.AllowGet);
+                            return Json(new { error = "Item type limit already acheived." }, JsonRequestBehavior.AllowGet);
                         }
-                        ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
-                        return Json(order);
                     }
                     else
                     {
@@ -171,12 +209,12 @@ namespace MvcLunchSite.Controllers
                 Order ord = db.Orders
                     .Where(x => x.orderID == order.orderID)
                     .FirstOrDefault();
-                if(ord != null)
+                if (ord != null)
                 {
                     IPrincipal user = System.Web.HttpContext.Current.User;
                     if ((user != null) && user.Identity.IsAuthenticated)
                     {
-                        if(user.Identity.GetUserId() != ord.userID)
+                        if (user.Identity.GetUserId() != ord.userID)
                         {
                             return Json(new { success = "User ID for order and logged in user do not match." }, JsonRequestBehavior.AllowGet);
                         }
@@ -200,7 +238,7 @@ namespace MvcLunchSite.Controllers
             }
         }
 
-       [HttpPost]
+        [HttpPost]
         public ActionResult Vote(FormCollection t)
         {
             DateTime current = DateTime.Now;
@@ -210,7 +248,7 @@ namespace MvcLunchSite.Controllers
                                                      //d DateTime f = 
             int comp = DateTime.Compare(current, first.voteEndDate);
             //int comp = DateTime.Compare(current, first);
-            if(comp > 0)
+            if (comp > 0)
             {
                 ViewBag.Message = "Voting not allowed after " + first.voteEndDate.ToString("f");
             }
@@ -346,8 +384,8 @@ namespace MvcLunchSite.Controllers
                     ViewBag.Message = "Please log in to vote.";
                 }
             }
-            
-            
+
+
             ViewData["TopScoresList"] = getTopScores();
             ViewData["RestaurantList"] = db.Restaurants.ToList();
             ViewData["MenuList"] = db.Menus.ToList();
