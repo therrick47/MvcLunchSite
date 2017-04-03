@@ -508,14 +508,23 @@ namespace MvcLunchSite.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult clearVotes()
         {
-            foreach(var user in db.Users)
+            IPrincipal requestingUser = System.Web.HttpContext.Current.User;
+            if (sh.atLeastSuperuser(requestingUser))
             {
-                user.FirstChoice=null;
-                user.SecondChoice = null;
-                user.ThirdChoice = null;
+                foreach (var user in db.Users)
+                {
+                    user.FirstChoice = null;
+                    user.SecondChoice = null;
+                    user.ThirdChoice = null;
+                }
+                db.SaveChanges();
+                return RedirectToAction("Index", "Manage");
             }
-            db.SaveChanges();
-            return RedirectToAction("Index", "Manage");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
         //
         // GET: /Manage/LinkLoginCallback
