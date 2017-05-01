@@ -1,0 +1,503 @@
+﻿@using Microsoft.AspNet.Identity
+
+@model IEnumerable<MvcLunchSite.Models.Restaurant>
+@{ var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
+@{ var Menulist = (List<MvcLunchSite.Models.Menu>)ViewData["MenuList"];}
+@{ var Itemlist = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];}
+@{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
+@{ var orderList = (List<MvcLunchSite.Models.Order>)ViewData["OrderList"];}
+@{ var time = (List<MvcLunchSite.Models.Manage>)ViewData["TimeList"];}
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@* Voting and Top Score Display *@
+@using (Html.BeginForm("Vote", "Home", FormMethod.Post))
+{
+    
+    <div id ="jumbo" class="jumbotron">
+        <div class="row">
+            <center>
+            <div class="col-xs-6">
+                
+                @{
+                    List<SelectListItem> listNumber = new List<SelectListItem>();
+                    listNumber.Add(new SelectListItem { Value = "-1", Text = " " });
+
+                    foreach (var item in restaurantList)
+                    {
+                        listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
+                    }
+                }
+
+                @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
+                <script type="text/javascript">
+
+                    var firstDD = -1, secondDD =-1, thirdDD=-1;
+
+                    function UpdateDropdown(ddl) {
+                        var val = ddl.options[ddl.selectedIndex].value;
+                        firstDD = val;
+
+                        if (secondDD != -1 && secondDD == val) {
+
+                            
+                            $("#Choice2 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice2").options.add(opt);
+                            })
+                            secondDD = -1;
+
+                        }
+                        else if (thirdDD != -1 && thirdDD == val)
+                        {
+                            
+                            $("#Choice3 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice3").options.add(opt);
+                            })
+                            thirdDD = -1;
+                        }
+                    }
+
+                    function UpdateDropdown2(ddl) {
+                        var val = ddl.options[ddl.selectedIndex].value;
+                        secondDD = val;
+
+
+                        if (thirdDD != -1 && thirdDD == val) {
+                            $("#Choice3 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice3").options.add(opt);
+                            })                         
+                            thirdDD = -1;
+                        }
+                        else if (firstDD != -1 && firstDD == val) {
+                            $("#Choice1 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice1").options.add(opt);
+                            })
+                            firstDD = -1;
+                        }
+
+
+                    }
+
+                    function UpdateDropdown3(ddl) {
+                        var val = ddl.options[ddl.selectedIndex].value;
+                        thirdDD = val;
+
+
+                        if (secondDD != -1 && secondDD == val) {
+                            $("#Choice2 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice2").options.add(opt);
+                            })
+                            secondDD = -1;
+                        }
+                        else if (firstDD != -1 && firstDD == val) {
+                            $("#Choice1 > option").remove();
+                            $("#" + ddl.id + "> option").each(function () {
+                                var opt = document.createElement("option");
+                                opt.text = this.text;
+                                opt.value = this.value;
+                                document.getElementById("Choice1").options.add(opt);
+                            })
+                            firstDD = -1;
+
+                        }
+                    }
+
+                </script>
+                @if(time.First() !=null)
+                {
+
+                
+                if (DateTime.Compare(time.First().voteEndDate, DateTime.Now) > 0)
+                {
+                    <h2>Vote for Your Favorite Restaraunts</h2>
+                    <p style="font-size: 1.5vw; text-indent: .55vw;">1st: @Html.DropDownList("Choice1", listNumber, new { @onchange = "UpdateDropdown(this)" }) </p>
+                    <p style="font-size: 1.5vw;">2nd: @Html.DropDownList("Choice2", listNumber, new { @onchange = "UpdateDropdown2(this)" }) </p>
+                    <p style="font-size: 1.5vw; text-indent: .4vw;">3rd: @Html.DropDownList("Choice3", listNumber, new { @onchange = "UpdateDropdown3(this)" }) </p>
+                    <input id="btnVote" type="submit" value="Vote" class="btn btn-default" style="font-size:2vw;" />
+                    <input id="btnVoteClear" onclick="clearVotes()" type="button" value="Clear" class="btn btn-default" style="font-size:2vw;" />
+                    
+
+                }
+
+                if(DateTime.Compare(time.First().voteEndDate, DateTime.Now)<0)
+                {              
+                    <br />
+                    <br />                       
+                    <h2>Voting concluded after @time.First().voteEndDate.ToString("f"). Please order down below.</h2>
+                }
+                }
+                <script>
+                    function clearVotes()
+                    {
+                        $("#Choice1").val(-1);
+                        $("#Choice2").val(-1);
+                        $("#Choice3").val(-1);
+                    }
+                </script>
+
+                <div class="form-group">
+                    <h3>@ViewBag.Message</h3>
+                </div>
+            </div>
+            </center>
+            <div class="col-xs-6 col-xs-offset-2" style="font-size: 14px;">
+                <h2 style="text-align:center;">Top Scores</h2>
+                &nbsp;
+                <ol style="line-height: 1em;">
+                    @{ int totalVotes = 0; }
+                    @foreach (var topItem in TopScoresList)
+                {
+                    totalVotes += Convert.ToInt32(topItem.Substring(topItem.Length - 1));
+                }
+                    @{ bool first = true; string txtColor = ""; }
+                    @foreach (var topItem in TopScoresList)
+                {
+                        <li>
+                            @topItem
+                            @{ double percentVote = (Convert.ToDouble(topItem.Substring(topItem.Length - 1)) / totalVotes) * 100; }
+                            <div class="progress" style="transform:scaleY(.75);">
+                                @{
+                                    if (first == true)
+                                    { txtColor = "progress-bar-success"; first = false; }
+                                    else
+                                    { txtColor = ""; }
+                                }
+                                <div class="progress-bar @txtColor" role="progressbar" aria-valuenow="@percentVote" aria-valuemin="0" aria-valuemax="100" style="width:@percentVote%">
+                                    <span class="sr-only">@percentVote% Complete</span>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ol>
+            </div>
+        </div>
+    </div>
+}
+
+@* Global Indices *@
+@{
+    int restaurantNum;
+    int menuNum;
+    int menuItemNum;
+}
+
+<script>
+    //Javascript for sending AJAX request for adding to order.
+    var postData = {};
+    var orderListHrefGlobal;
+    var orderItemHrefGlobal;
+
+
+    function orderItem(buttonId, orderListHref, orderItemHref) {
+
+        var menuItemId = parseInt(buttonId.trim(),10);
+        postData = {
+            "menuItemID": menuItemId,
+            "customization": ""
+        };
+        orderListHrefGlobal = orderListHref;
+        orderItemHrefGlobal = orderItemHref;
+        $("#orderModal").modal("toggle");
+    }
+
+    function orderSendAfterCustomize(){
+        $.ajax({
+            //url: "/Home/OrderItem",
+            url: '@Url.Action("OrderItem","Home")',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(postData),
+            datatype: "json",
+            success: function (returnObj) {
+                if (returnObj.hasOwnProperty('error')) {
+                    $("#bad").remove();
+                    document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Error: '+ returnObj['error'] +'</h4>'
+                    $("#bad").fadeIn();
+                }
+                else {
+                    $("#bad").remove();
+                    var orderUI = '<li id="' + orderItemHrefGlobal + '" class="list-group-item"><h4 class="list-group-item-heading">' + returnObj.menuItemName + '<button id="' + returnObj.orderID + '" onclick="removeFromOrder(this.id, \'' + orderItemHrefGlobal + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + returnObj.menuItemDescription + '</p><p><i>' + returnObj.customization + '</i></p></li>';
+                    var orderListUI = document.getElementById(orderListHrefGlobal);
+                    orderListUI.innerHTML += orderUI;
+                }
+            },
+            error: function (returnOnbj) {
+                $("#bad").remove();
+                document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Failed to add to order.</h4>'
+                $("#bad").fadeIn();
+            },
+        });
+    }
+
+    function closeModal() {
+        $("#customize-text").val('');
+        $("#orderModal").modal("toggle");
+    }
+
+    function addCustomization() {
+        postData.customization = $("#customize-text").val();
+        orderSendAfterCustomize();
+        closeModal();
+    }
+
+    function removeFromOrder(buttonId, orderItemHref) {
+        // Tried to mimic orderItem function, this doesn't work
+
+        var orderId = parseInt(buttonId,10);
+        var deleteData = {
+            "orderId": orderId
+        };
+        $.ajax({
+            //url: "/Home/RemoveFromOrder",
+            url: '@Url.Action("RemoveFromOrder","Home")',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(deleteData),
+            datatype: "json",
+            success: function (returnObj) {
+                if (returnObj.hasOwnProperty('error')) {
+                    $("#bad").remove();
+                    document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Error: ' + returnObj['error'] + '</h4>'
+                    $("#bad").fadeIn();
+                }
+                else {
+                    $("#" + orderItemHref).remove();
+                }
+            },
+            error: function (returnObj) {
+                $("#bad").remove();
+                document.getElementById(orderListHref).innerHTML += '<h4 id="bad" style="display:none; color:red;">Removal failed.</h4>'
+                $("#bad").fadeIn();
+            }
+        });
+    }
+                </script>
+
+<div class="row" id="test">
+    @* Restaurant Selection *@
+    <div class="col-xs-2">
+        <div>
+            <ul class="nav nav-pills nav-stacked" style="border-style:solid;border-color:gainsboro">
+                @{
+                    restaurantNum = 1;
+                    foreach (var restaurant in restaurantList)
+                    {
+                        string restaurantName = Html.DisplayName(restaurant.name).ToString();
+                        string restaurantHref = "restaurant" + restaurantNum;
+                        string orderHref = "order" + restaurantNum;
+
+                        <li @if (restaurantNum == 1)
+                        { <text>class="active"</text> }>
+                            <a href="#@restaurantHref" data-target="#@restaurantHref, #@orderHref" data-toggle="pill">@restaurantName</a>
+                        </li>
+
+                        restaurantNum++;
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    @* Restaurant Display *@
+    <div class="col-xs-6 restaurant1">
+        <div class="tab-content">
+            @{
+                restaurantNum = 1;
+                foreach (var restaurant in restaurantList)
+                {
+                    string restaurantName = Html.DisplayName(restaurant.name).ToString();
+                    string restaurantHref = "restaurant" + restaurantNum;
+                    string orderHref = "order" + restaurantNum;
+                    string imageURL = restaurant.pic;
+                    string restaurantURL = restaurant.url;
+
+                    <div id="@restaurantHref" class="tab-pane fade @if (restaurantNum == 1)
+                    { <text>in active</text> }">
+                        @* Menu Selection *@
+                        <div class="list-group menu">
+                            <a class="list-group-item active">
+                                <h3 class="list-group-item-heading menuTitle" id="menuTitle">
+                                    <img id="kitty-@restaurantNum" src=@imageURL class="logo" style="height:55px;width:55px;" /> 
+                                     &nbsp;&nbsp;&nbsp; @restaurantName  
+                                    
+                                </h3>
+                                <a href="@restaurantURL" target="_blank">@restaurantName</a> - Menu
+                            </a>
+                            <div style="border-color:gainsboro;">
+                                <ul class="nav nav-pills" id="menuTab">
+                                    @{
+                                        menuNum = 1;
+                                        foreach (var menu in Menulist)
+                                        {
+                                            if (menu.restaurantID == restaurant.ID)
+                                            {
+                                                string menuName = Html.DisplayName(menu.menuName).ToString();
+                                                string menuHref = "menu" + restaurantNum + menuNum;
+
+                                                <li @if (menuNum == 1)
+                                                { <text>class="active"</text> }>
+                                                    <a data-toggle="pill" href="#@menuHref">@menuName</a>
+                                                </li>
+                                                menuNum++;
+                                            }
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        @* Menu Display *@
+                        <div class="tab-content">
+                            @{
+                                menuNum = 1;
+                                foreach (var menu in Menulist)
+                                {
+                                    menuItemNum = 1;
+                                    if (menu.restaurantID == restaurant.ID)
+                                    {
+                                        string menuName = Html.DisplayName(menu.menuName).ToString();
+                                        string menuHref = "menu" + restaurantNum + menuNum;
+                                        
+                                        <div id="@menuHref" class="tab-pane fade @if (menuNum == 1)
+                                        { <text>in active</text> } ">
+                                            <div> @menu.menuNotes</div>
+                                            <ul class="list-group">
+                                                @foreach (var menuItem in Itemlist)
+                                                {
+                                                    if (menuItem.menuID == menu.menuID && menu.restaurantID == restaurant.ID)
+                                                    {
+                                                        <li class="list-group-item">
+                                                            <h4 class="list-group-item-heading">
+                                                                @menuItem.menuItemName
+                                                                <button id="@menuItem.menuItemID" onclick="orderItem(this.id, '@orderHref-list', 'orderItem-@menuItemNum')" class="btn btnPrice label label-success label-pill pull-xs-right" style="float:right;">Add to order</button>
+                                                            </h4>
+                                                            <p class="list-group-item-text" id="description">
+                                                                @menuItem.menuItemDescription
+                                                            </p>
+                                                        </li>
+                                                    }
+                                                    menuItemNum++;
+                                                }
+                                            </ul>
+                                        </div>
+                                        menuNum++;
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                    restaurantNum++;
+                }
+            }
+        </div>
+    </div>
+
+    @* Order Display *@
+    <div class="col-xs-4 order1">
+        <div class="tab-content">
+            @{
+                restaurantNum = 1;
+                foreach (var restaurant in restaurantList)
+                {
+                    string restaurantName = Html.DisplayName(restaurant.name).ToString();
+                    string orderHref = "order" + restaurantNum;
+
+                    <div id="@orderHref" class="tab-pane fade @if (restaurantNum == 1)
+                    { <text>in active</text> }">
+                        <a class="list-group-item active" style="margin-bottom:20px;">
+                            <h4 class="list-group-item-heading">
+                                Order for <i>@restaurantName</i>
+                            </h4>
+                            @if (!System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                            {
+                                <text>Please log in to view your order.</text>
+                            }
+                        </a>
+                        <ul class="list-group" id="@orderHref-list">
+                        @{
+                            menuNum = 1;
+                            foreach (var order in orderList)
+                            {
+                                foreach (var menu in Menulist)
+                                {
+                                    menuItemNum = 1;
+                                    if (menu.restaurantID == restaurant.ID)
+                                    {
+                                        foreach (var menuItem in Itemlist)
+                                        {
+                                            if (System.Web.HttpContext.Current.User.Identity.GetUserId() == order.userID && order.menuItemID == menuItem.menuItemID && menuItem.menuID == menu.menuID)
+                                            {
+                                                <li id ="orderItem-@menuItemNum" class="list-group-item">
+                                                    <h4 class="list-group-item-heading">
+                                                        @menuItem.menuItemName
+                                                        <button id="@order.orderID" onclick="removeFromOrder(this.id, 'orderItem-@menuItemNum')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">
+                                                            Remove
+                                                        </button>
+                                                    </h4>
+                                                    <p class="list-group-item-text" id="description">
+                                                        @menuItem.menuItemDescription
+                                                    </p>
+                                                    <p>
+                                                        <i>@order.customization</i>
+                                                    </p>
+                                                </li>
+                                            }
+                                            menuItemNum++;
+                                        }
+                                    }
+                                }
+                            }
+                            restaurantNum++;
+                        }
+                        </ul>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div id="orderModal" class="modal fade" tabindex="-1" role="dialog" style="position: fixed; -webkit-transform: translateZ(0)">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-hidden="true" onclick="closeModal()">&times;</button>
+                <h4 class="modal-title">Customize Order</h4>
+            </div>
+            <div class="modal-body" style="width: 100%; height: 125px;">
+                <textarea id="customize-text" style="max-width:100%; width: 100%; height: 100%; display: block;"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addCustomization()">Add to Order</button>
+                <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-backdrop{
+        display:none;
+    }
+</style>

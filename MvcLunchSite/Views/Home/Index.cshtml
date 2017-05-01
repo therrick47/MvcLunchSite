@@ -211,7 +211,7 @@
 
 
     function orderItem(buttonId, orderListHref, orderItemHref) {
-        
+
         var menuItemId = parseInt(buttonId.trim(),10);
         postData = {
             "menuItemID": menuItemId,
@@ -224,7 +224,8 @@
 
     function orderSendAfterCustomize(){
         $.ajax({
-            url: "/Home/OrderItem",
+            //url: "/Home/OrderItem",
+            url: '@Url.Action("OrderItem","Home")',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(postData),
@@ -263,13 +264,14 @@
 
     function removeFromOrder(buttonId, orderItemHref) {
         // Tried to mimic orderItem function, this doesn't work
-        
+
         var orderId = parseInt(buttonId,10);
         var deleteData = {
             "orderId": orderId
         };
         $.ajax({
-            url: "/Home/RemoveFromOrder",
+            //url: "/Home/RemoveFromOrder",
+            url: '@Url.Action("RemoveFromOrder","Home")',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(deleteData),
