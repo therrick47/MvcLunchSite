@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
+@using System.Text.RegularExpressions
 
 @model IEnumerable<MvcLunchSite.Models.Restaurant>
 @{ var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
@@ -19,7 +20,7 @@
     <div id ="jumbo" class="jumbotron">
         <div class="row">
             <center>
-            <div class="col-xs-6">
+            <div class="col-xs-5">
                 
                 @{
                     List<SelectListItem> listNumber = new List<SelectListItem>();
@@ -162,21 +163,21 @@
                 </div>
             </div>
             </center>
-            <div class="col-xs-6 col-xs-offset-2" style="font-size: 14px;">
+            <div class="col-xs-5" style="font-size: 14px;">
                 <h2 style="text-align:center;">Top Scores</h2>
                 &nbsp;
                 <ol style="line-height: 1em;">
-                    @{ int totalVotes = 0; }
+                    @{ int totalVotes = 0; Regex rgx = new Regex(".*:"); }
                     @foreach (var topItem in TopScoresList)
-                {
-                    totalVotes += Convert.ToInt32(topItem.Substring(topItem.Length - 1));
-                }
+                    {
+                        totalVotes += Convert.ToInt32(rgx.Replace(topItem, ""));
+                    }
                     @{ bool first = true; string txtColor = ""; }
                     @foreach (var topItem in TopScoresList)
                 {
                         <li>
                             @topItem
-                            @{ double percentVote = (Convert.ToDouble(topItem.Substring(topItem.Length - 1)) / totalVotes) * 100; }
+                            @{ double percentVote = (Convert.ToDouble(rgx.Replace(topItem, "")) / totalVotes) * 100; }
                             <div class="progress" style="transform:scaleY(.75);">
                                 @{
                                     if (first == true)
