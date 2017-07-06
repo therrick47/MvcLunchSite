@@ -1,0 +1,205 @@
+﻿@using Microsoft.AspNet.Identity
+@model MvcLunchSite.Models.Order
+@{ var orderList = (List<MvcLunchSite.Models.Order>)ViewData["OrderList"];}
+@{ var list = (List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"]; }
+@{ var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];}
+@{ var TopScoresList = (List<string>)ViewData["TopScoresList"];}
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@{
+    List<SelectListItem> listNumber = new List<SelectListItem>();
+    listNumber.Add(new SelectListItem { Value = "-1", Text = " " });
+    foreach (var item in restaurantList)
+    {
+        listNumber.Add(new SelectListItem { Value = item.ID.ToString(), Text = item.name });
+    }
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#filterList").val("@ViewData["WinningRestaurantDropDownIndex"]");
+        changeDisp();
+    });
+</script>
+
+@{
+    <h2>Order</h2>
+    MvcLunchSite.Models.ApplicationUser currUser = list.Find(x => x.UserName == User.Identity.Name);
+    if (currUser != null)
+    {
+        if (currUser.Role.ToLower() == "orderer" || currUser.Role.ToLower() == "admin" || currUser.Role.ToLower() == "superuser")//checks that user has proper clearance to view orders
+        {
+            <script type="text/javascript">
+                function printDisp(divName){
+                    var toPrint = document.getElementById(divName).innerHTML;
+                    var currPage = document.body.innerHTML;
+                    document.body.innerHTML=toPrint;
+                    window.print();
+                    document.body.innerHTML=currPage;
+                }
+            </script>
+            <div>
+                @Html.DropDownList("filterList", listNumber, new { @onchange = "changeDisp()" })
+                <button id="btnVote" type="submit" onclick="printDisp('toPrint')" style="height:25px;width:120px;background:black;color:white;border:none">Print</button>
+                <br />
+            </div>
+            @*updating the page based on dropdown choice*@
+            <script type="text/javascript">
+                function changeDisp() {
+
+                    // Refactored the below code to show/hide preloaded divs instead of redrawing the page each time
+
+                    @*//div that orders are displayed into
+                    var section = document.getElementById("toPrint");
+                    section.innerHTML = null;
+                    //dropdownlist
+                    var dropList = document.getElementById("filterList");
+                    //dropdownlist text
+                    var dropText = dropList.options[dropList.selectedIndex].text;
+                    //store lists into arrays to be used in loops
+                    var myRestList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"]));
+                    var myUseList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"]));
+                    var myOrdList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.Order>)ViewData["OrderList"]));
+                    console.log(myOrdList);
+                    //used to store html string to be used for body
+                    var toStoreInSec="";
+
+                    var currTotal=0.0;
+                    for(var resSpot = 0; resSpot < myRestList.length; resSpot++){
+                        currTotal=0.0;
+                        if(dropText == myRestList[resSpot].name || dropText.trim() == ""){
+                            toStoreInSec += '<strong>' +myRestList[resSpot].name+'</strong>'
+                                + '<ul>';
+                            for( var useSpot = 0; useSpot < myUseList.length; useSpot++){
+                                //if dropdownlist text matches restaurant or the dropdownlist is on the empty value
+
+                                toStoreInSec+='<li>';
+                                if(myUseList[useSpot].FullName == null){
+                                    toStoreInSec+=myUseList[useSpot].Email+'<ul>';
+                                }
+                                else{
+                                   toStoreInSec += myUseList[useSpot].FullName + '<ul>';
+                                }
+                                for (var ordSpot = 0; ordSpot < myOrdList.length; ordSpot++){
+                                    if(myOrdList[ordSpot].userID == myUseList[useSpot].Id && myOrdList[ordSpot].restaurantID == myRestList[resSpot].ID){
+                                        toStoreInSec+='<li>'
+                                            +myOrdList[ordSpot].menuItemName+ ' --- ' + myOrdList[ordSpot].ItemPrice + '<ul>';
+                                        currTotal+=parseFloat(myOrdList[ordSpot].ItemPrice);
+
+                                        if(myOrdList[ordSpot].customization != null){
+                                            toStoreInSec+=myOrdList[ordSpot].customization;
+                                        }
+                                        toStoreInSec+='</ul></li>';
+                                    }
+                                }
+                                toStoreInSec+='</ul></li>';
+                            }
+
+                            toStoreInSec+='</ul>'
+                            +'<strong> Total:'+ currTotal.toFixed(2)+'</strong><br/><br/>';
+                        }
+                    }
+                    //update page with new html
+                    section.innerHTML += toStoreInSec;*@
+
+                    // Show hide divs based on dropdown ID
+
+                    var dropList = document.getElementById("filterList");
+                    var myRestList = @Html.Raw(Json.Encode((List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"]));
+                    for(var resSpot = 0; resSpot < myRestList.length; resSpot++) {
+                        if (dropList.options[dropList.selectedIndex].value == "-1") {
+                            var toShow = document.getElementById(myRestList[resSpot].ID);
+                            toShow.style.display = 'block';
+                            // console.log("Showing " + myRestList[resSpot].ID)
+                        }
+                        else if (dropList.options[dropList.selectedIndex].value == myRestList[resSpot].ID) {
+                            var toShow = document.getElementById(myRestList[resSpot].ID);
+                            toShow.style.display = 'block';
+                            // console.log("Showing " + myRestList[resSpot].ID)
+                        }
+                        else {
+                            var toHide = document.getElementById(myRestList[resSpot].ID);
+                            toHide.style.display = 'none';
+                            // console.log("Hiding " + myRestList[resSpot].ID)
+                        }
+                    }
+                }
+            </script>
+            <div id="toPrint">
+                @foreach (var rest in restaurantList) //var user in list)
+                {
+                <div id="@rest.ID"> @{ 
+                    var query = from user in list
+                                where !orderList.Any(order => order.userID == user.Id && order.restaurantID == rest.ID.ToString())
+                                select user.Id;
+                    List<string> notOrderedIDs = query.ToList();
+                    List<string> notOrdered = new List<string>();
+                    var currTotal = 0.0;
+                    <strong>
+                        @rest.name
+                    </strong>
+                    <ul>
+                        @foreach (var user in list)
+                        {
+                            if (notOrderedIDs.Contains(user.Id)) {
+                                if (user.FullName == null) {
+                                    notOrdered.Add(user.Email);
+                                }
+                                else {
+                                    notOrdered.Add(user.FullName);
+                                }
+                            }
+                            else {
+                            <li> 
+                                @if (user.FullName == null) {
+                                    @user.Email
+                                }
+                                else
+                                {
+                                    @user.FullName
+                                }
+                                    <ul>
+                                        @foreach (var item in orderList)
+                                        {
+                                            if (item.userID == user.Id && item.restaurantID == rest.ID.ToString())
+                                            {
+                                                <li>
+                                                    @{
+                                                        currTotal += double.Parse(item.ItemPrice);
+                                                    }
+                                                    @item.menuItemName --- @item.ItemPrice
+                                                    <ul>
+                                                        @if (item.customization != "")
+                                                        {
+                                                            @item.customization
+                                                        }
+                                                    </ul>
+                                                </li>
+                                                }
+                                            }
+                                    </ul>
+                                </li>
+                            }  
+                        }
+                    </ul>
+                    <strong> Total: @currTotal</strong>
+                    <br />
+                    <br />
+                    <strong style="color:red">The following people have not ordered for @rest.name:</strong>
+                    <ul>
+                        @foreach (string user in notOrdered) { 
+                            <li style="color:red">@user</li> 
+                        }
+                    </ul>
+                }
+                </div>
+                }
+            </div>
+        }
+    }
+}

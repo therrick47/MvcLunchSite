@@ -1,0 +1,109 @@
+﻿@model Tuple<MvcLunchSite.Models.Restaurant,MvcLunchSite.Models.Menu,MvcLunchSite.Models.MenuItem>
+@{ 
+    var restaurantList = (List<MvcLunchSite.Models.Restaurant>)ViewData["RestaurantList"];
+    var menuList = (List<MvcLunchSite.Models.Menu>)ViewData["MenuList"];
+    var menuItemList = (List<MvcLunchSite.Models.MenuItem>)ViewData["MenuItemList"];
+}
+@{
+    ViewBag.Title = "Restaurant";
+}
+
+<h2>Restaurants</h2>
+
+<strong>
+    @Html.ActionLink("Add Restaurant", "Create")
+</strong>
+
+@foreach (var restaurant in restaurantList)
+{
+    <div>
+        <strong>@Html.DisplayFor(modelItem => restaurant.name)</strong>
+        <strong style="float:right; text-align:right;">
+            @Html.ActionLink("Edit", "Edit", new { id = restaurant.ID }) |
+            @Html.ActionLink("Details", "Details", new { id = restaurant.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = restaurant.ID })
+        </strong>
+        <ul style="border-top: 2px solid black;">
+            @foreach(var menu in menuList)
+            {
+                if(menu.restaurantID == restaurant.ID)
+                {
+                    <li>                       
+                        @menu.menuName
+                        <div style="float:right; text-align:right;">
+                            @Html.ActionLink("Edit", "Edit", "Menus", new { id = menu.menuID }, null) |
+                            @Html.ActionLink("Details", "Details", "Menus", new { id = menu.menuID }, null) |
+                            @Html.ActionLink("Delete", "Delete", "Menus", new { id = menu.menuID }, null)
+                        </div>
+                        <ul style="border-top: 1px solid black;">
+                            @foreach(var menuItem in menuItemList)
+                            {
+                                if(menuItem.menuID == menu.menuID) 
+                                {
+                                    <li style="border-bottom: 1px solid black;">
+                                        @menuItem.menuItemName
+                                        <div style="float:right; text-align:right;">
+                                            @Html.ActionLink("Edit", "Edit", "MenuItems", new { id = menuItem.menuItemID }, null) |
+                                            @Html.ActionLink("Details", "Details", "MenuItems", new { id = menuItem.menuItemID }, null) |
+                                            @Html.ActionLink("Delete", "Delete", "MenuItems", new { id = menuItem.menuItemID }, null)
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            <li style="border-bottom: 1px solid black;">
+                                @Html.ActionLink("Add Menu Item", "Create", "MenuItems", new { id = menu.menuID }, null)
+                            </li>
+                        </ul>
+                    </li>
+                }
+            }
+            <li style="border-bottom: 1px solid black;">
+                @Html.ActionLink("Add Menu", "Create", "Menus", new { id = restaurant.ID }, null)
+            </li>
+        </ul>
+    </div>
+}
+
+
+@*@foreach (var restaurant in restaurantList)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => restaurant.name)
+            </th>
+            <th style="text-align:right; font-weight:normal;">
+                @Html.ActionLink("Edit", "Edit", new { id = restaurant.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = restaurant.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = restaurant.ID })
+            </th>
+        </tr>
+    </table>
+
+    <h2 style="margin-left:5vw;">Menus</h2>
+    <p style="margin-left:5vw;">@Html.ActionLink("Create New", "Menus/Create")</p>
+
+    foreach (var menu in menuList)
+    {
+        if (menu.restaurantID == restaurant.ID)
+        {
+            <table class="table" style="margin-left:5vw; right:5vw;">
+                <tr>
+                    <th>
+                        @menu.menuName
+                    </th>
+                    <th style="text-align:right; font-weight:normal;">
+                        @Html.ActionLink("Edit", "Menus/Edit", new { id = menu.menuID }) |
+                        @Html.ActionLink("Details", "Menus/Details", new { id = menu.menuID }) |
+                        @Html.ActionLink("Delete", "Menus/Delete", new { id = menu.menuID })
+                    </th>
+                </tr>
+            </table>
+        }
+    }
+}*@
+
+
+
+@*<div>@Html.Partial("~/Views/Menus/Index.cshtml",ViewData)</div>
+<div>@Html.Partial("~/Views/MenuItems/Index.cshtml",ViewData)</div>*@

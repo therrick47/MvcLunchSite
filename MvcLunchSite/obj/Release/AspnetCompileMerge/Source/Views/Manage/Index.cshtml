@@ -1,0 +1,141 @@
+﻿@model MvcLunchSite.Models.IndexViewModel
+@{ var list = (List<MvcLunchSite.Models.ApplicationUser>)ViewData["UserList"];}
+@{
+    ViewBag.Title = "Manage";
+}
+
+@{ var timeList = (List<MvcLunchSite.Models.Manage>)ViewData["TimeList"];}
+
+<h2>@ViewBag.Title</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<text>
+    <h4>Change your account settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            [
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Change your password", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("Create", "SetPassword")
+            }
+            ]
+        </dd>
+        
+        @if (Model.RoleName != null)
+        {
+            <dt>Your Privileges:</dt>
+            <dd>
+            @if (Model.RoleName.ToLower() == "orderer" || Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
+            {
+                <text>[ @Html.ActionLink("View/Print Orders", "Index", "Orders") ]</text>
+            }
+            @if (Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
+            {
+                <text>[ @Html.ActionLink("Manage Restaurants", "Index", "Restaurants") ]</text>
+            }
+            @if (Model.RoleName.ToLower() == "superuser")
+            {
+                <text>[ <a href="#" onclick="showHide('roles', this)">Change User Roles</a> ]</text>
+                <text>[ <a href="#" onclick="showHide('time', this)">Change Voting Deadline</a> ]</text>
+
+                <script>
+                    function showHide(id, link)
+                    {
+                        var div = document.getElementById(id);
+                        div.style.display = div.style.display == "none" ? "block" : "none";
+                        link.blur();
+                    }
+                </script>
+                <p><input id="clear" onclick="location.href='@Url.Action("clearVotes", "Manage")'" type="button" value="Clear Votes" class="btn btn-default" style="font-size:1vw;" /></p>
+            }
+            </dd>
+            
+        }
+        @*<dt>External Logins:</dt>
+    <dd>
+        @Model.Logins.Count [
+        @Html.ActionLink("Manage", "ManageLogins") ]
+    </dd>*@
+        
+    </dl>
+    <div id="roles" style="display:none">
+        @if (Model.RoleName != null)
+        {
+
+            //<p>User Privileges</p>
+            if (Model.RoleName.ToLower() == "orderer" || Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
+            {
+                //<p>Orderer Privileges</p>
+                if (Model.RoleName.ToLower() == "admin" || Model.RoleName.ToLower() == "superuser")
+                {
+                    //<p>Admin Privileges</p>
+                    if (Model.RoleName.ToLower() == "superuser")
+                    {
+                        //<p>Superuser Privileges</p>
+                        //<p></p>
+                    <div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>User Email</th>
+                                    <th>User Role</th>
+                                    <th>Edit Role</th>
+                                </tr>
+                            </thead>
+                            @foreach (var User in list)
+                            {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => User.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => User.Role).ToString().ToLower() </td>
+                                <td>@Html.ActionLink("Change Role", "ChangeRole", new { id = User.Id })</td>
+                            </tr>
+                            }
+                        </table>
+                    </div>
+                    }
+                }
+            }
+
+        }
+
+    </div>
+
+    <div id="time" style="display:none">
+        <h4>
+        
+            Current Voting Deadline: @timeList[0].voteEndDate
+            <br />
+            Current Ordering Deadline: @timeList[0].orderEndDate        
+          
+
+
+        </h4>
+        <p>
+            @Html.ActionLink("Select Date/Time", "Time", new { id = timeList[0].Id})
+        </p>
+    </div>
+
+    <div id="clearVotes">
+        
+        <p>
+            
+            @*<button id="clearVoteButton" onclick="clearVotes">Clear Votes</button>*@
+            
+            
+         </p>
+    </div>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; display: block;" class="alert alert-warning alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <center><strong>Error: </strong> @ViewBag.ErrorMessage</center>
+    </div>
+}
+

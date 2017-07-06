@@ -10,8 +10,20 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <_PublishTargetUrl>C:\inetpub\wwwroot\MvcLunchSite</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="App_Data/aspnet-MvcLunchSite-20160811125451.mdf">
+      <publishTime>04/17/2017 15:26:23</publishTime>
+    </File>
+    <File Include="App_Data/aspnet-MvcLunchSite-20160811125451_log.ldf">
+      <publishTime>04/17/2017 15:26:23</publishTime>
+    </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>08/30/2016 07:55:42</publishTime>
+    </File>
+    <File Include="bin/App_global.asax.compiled">
+      <publishTime>06/12/2017 12:13:22</publishTime>
+    </File>
+    <File Include="bin/App_global.asax.dll">
+      <publishTime>06/12/2017 12:13:22</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>08/30/2016 07:55:44</publishTime>
@@ -62,7 +74,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2016 07:55:48</publishTime>
     </File>
     <File Include="bin/MvcLunchSite.dll">
-      <publishTime>04/19/2017 11:53:15</publishTime>
+      <publishTime>06/12/2017 12:13:11</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/30/2016 07:55:49</publishTime>
@@ -152,7 +164,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/19/2017 11:52:46</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>04/19/2017 11:52:46</publishTime>
+      <publishTime>05/11/2017 11:33:53</publishTime>
     </File>
     <File Include="Content/bootstrap.css.map">
       <publishTime>04/19/2017 11:52:30</publishTime>
@@ -427,6 +439,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="packages.config">
       <publishTime>04/19/2017 11:52:51</publishTime>
     </File>
+    <File Include="PrecompiledApp.config">
+      <publishTime>06/12/2017 12:13:12</publishTime>
+    </File>
     <File Include="Scripts/bootstrap-datetimepicker.js">
       <publishTime>04/03/2017 11:17:50</publishTime>
     </File>
@@ -545,7 +560,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2016 07:55:29</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>05/01/2017 12:02:44</publishTime>
+      <publishTime>05/31/2017 11:39:27</publishTime>
     </File>
     <File Include="Views/Manage/AddPhoneNumber.cshtml">
       <publishTime>08/30/2016 07:55:29</publishTime>
@@ -638,13 +653,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2016 07:55:29</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>04/17/2017 15:36:05</publishTime>
+      <publishTime>06/12/2017 11:56:18</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>08/30/2016 07:55:29</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/19/2017 11:53:16</publishTime>
+      <publishTime>06/12/2017 11:55:59</publishTime>
     </File>
   </ItemGroup>
 </Project>
