@@ -28,9 +28,10 @@ namespace MvcLunchSite
             client.EnableSsl = true;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("lunchvotingwebsitecrc@gmail.com", "daStoveIsBest");
+            //client.Credentials = new NetworkCredential("crclunchsite@gmail.com", "awesomeLunchSite");
+            client.Credentials = new NetworkCredential("crclunchsite@gmail.com", "pywjbykvqralcmqz");
 
-            return client.SendMailAsync("lunchvotingwebsitecrc@gmail.com", message.Destination, message.Subject, message.Body);
+            return client.SendMailAsync("crclunchsite@gmail.com", message.Destination, message.Subject, message.Body);
         }
     }
 

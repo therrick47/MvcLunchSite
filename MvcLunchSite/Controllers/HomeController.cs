@@ -102,17 +102,17 @@ namespace MvcLunchSite.Controllers
                     MenuItem menuItem = query.FirstOrDefault();
                     if (menuItem != null)
                     {
-                        bool canOrder = true;
+                        //bool canOrder = true;
                         string strID = user.Identity.GetUserId();
                         List<Order> ordList = db.Orders.Where(x => x.userID == strID).ToList();
-                        int topCount = 0;
+                        //int topCount = 0;
                         foreach (var ordItem in ordList)
                         {
                             MenuItem toCheckType = db.MenuItems.Where(x => ordItem.menuItemID == x.menuItemID).FirstOrDefault();
                             Menu toLook = db.Menus.Where(x => x.menuID == menuItem.menuID).FirstOrDefault();
                             Restaurant first = db.Restaurants.Where(x => x.ID.ToString() == ordItem.restaurantID).FirstOrDefault();
                             Restaurant second = db.Restaurants.Where(x => x.ID == toLook.restaurantID).FirstOrDefault();
-                            if (first.ID == second.ID)
+                            /*if (first.ID == second.ID)
                             {
                                 if (toCheckType.itemType == menuItem.itemType)
                                 {
@@ -129,11 +129,11 @@ namespace MvcLunchSite.Controllers
                                         canOrder = false;
                                     }
                                 }
-                            }
+                            }*/
 
                         }
-                        if (canOrder)
-                        {
+                        //if (canOrder)
+                        //
                             order.menuItemDescription = menuItem.menuItemDescription;
                             order.ItemPrice = menuItem.menuItemPrice;
                             order.menuItemName = menuItem.menuItemName;
@@ -172,11 +172,11 @@ namespace MvcLunchSite.Controllers
                             }
                             ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
                             return Json(order);
-                        }
+                        /*}
                         else
                         {
                             return Json(new { error = "Item type limit already acheived." }, JsonRequestBehavior.AllowGet);
-                        }
+                        }*/
                     }
                     else
                     {

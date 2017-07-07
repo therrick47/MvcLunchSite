@@ -380,7 +380,9 @@
     <Content Include="Views\Manage\ChangeTime.cshtml" />
     <Content Include="Views\Manage\Time.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
