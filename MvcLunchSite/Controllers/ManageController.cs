@@ -511,6 +511,49 @@ namespace MvcLunchSite.Controllers
             IPrincipal requestingUser = System.Web.HttpContext.Current.User;
             if (sh.atLeastSuperuser(requestingUser))
             {
+                DateTime today = DateTime.Today;
+                DateTime futureOrder = today;
+                DateTime futureVote = today;
+                int month = 1;
+                //int day = 1;
+                int year = today.Year;
+                if(today.Day>=7 || today.DayOfWeek==DayOfWeek.Friday)
+                {
+                    if (today.Month == 12)
+                        year = today.Year + 1;
+                    else
+                        month = today.Month;
+                    futureOrder = new DateTime(year, month+1, 1, 10, 00, 00);
+                    futureVote = new DateTime(year, month, DateTime.DaysInMonth(year,month), 17, 00, 00);
+                    if (futureVote.DayOfWeek != DayOfWeek.Thursday)
+                    {
+                        futureVote = futureOrder;
+                        for (int a = 1; a <= 7; a++)
+                        {
+                            futureVote.AddDays(1);
+                            if (futureVote.DayOfWeek == DayOfWeek.Thursday)
+                                break;
+                        }
+                    }
+
+                    if (futureOrder.DayOfWeek != DayOfWeek.Friday)
+                    {
+                        for(int a = 2; a <= 7; a++)
+                        {
+                            futureOrder.AddDays(1);
+                            if (futureOrder.DayOfWeek == DayOfWeek.Friday)
+                                break;
+                        }
+                    }
+                    
+                }
+
+                if (futureOrder != today)
+                {
+                    db.Manages.First().orderEndDate = futureOrder;
+                    db.Manages.First().voteEndDate = futureVote;
+                }
+
                 foreach (var user in db.Users)
                 {
                     user.FirstChoice = null;

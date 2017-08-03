@@ -68,7 +68,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2016 07:55:48</publishTime>
     </File>
     <File Include="bin/MvcLunchSite.dll">
-      <publishTime>07/07/2017 14:59:13</publishTime>
+      <publishTime>08/03/2017 10:49:12</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/30/2016 07:55:49</publishTime>
@@ -647,7 +647,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2016 07:55:29</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/07/2017 14:59:14</publishTime>
+      <publishTime>08/03/2017 10:49:13</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -20,10 +20,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2016 07:55:42</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>06/12/2017 12:13:22</publishTime>
+      <publishTime>08/03/2017 10:39:31</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>06/12/2017 12:13:22</publishTime>
+      <publishTime>08/03/2017 10:39:31</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>08/30/2016 07:55:44</publishTime>
@@ -74,7 +74,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2016 07:55:48</publishTime>
     </File>
     <File Include="bin/MvcLunchSite.dll">
-      <publishTime>06/12/2017 12:13:11</publishTime>
+      <publishTime>08/03/2017 10:36:15</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>08/30/2016 07:55:49</publishTime>
@@ -440,7 +440,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/19/2017 11:52:51</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>06/12/2017 12:13:12</publishTime>
+      <publishTime>08/03/2017 10:39:21</publishTime>
     </File>
     <File Include="Scripts/bootstrap-datetimepicker.js">
       <publishTime>04/03/2017 11:17:50</publishTime>
@@ -653,13 +653,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2016 07:55:29</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>06/12/2017 11:56:18</publishTime>
+      <publishTime>08/30/2016 07:55:29</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>08/30/2016 07:55:29</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/12/2017 11:55:59</publishTime>
+      <publishTime>08/03/2017 10:35:08</publishTime>
     </File>
   </ItemGroup>
 </Project>
