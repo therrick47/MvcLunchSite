@@ -75,46 +75,18 @@ namespace MvcLunchSite.Controllers
             return View();
         }
 
-        [HttpPost]
-        public JsonResult EditItem([Bind(Include = "orderID,customization")] Order order)
+        /*public ActionResult OrderItem()
         {
-            IPrincipal user = System.Web.HttpContext.Current.User;
-            if ((user != null) && user.Identity.IsAuthenticated)
-            {
-                string userId = user.Identity.GetUserId();
-                if (order.orderID != 0)
-                {
-                    var query = from item in db.Orders
-                                where item.orderID.Equals(order.orderID)
-                                select item;
-                    Order ordItem = query.FirstOrDefault();
-                    if (ordItem != null)
-                    {
-                        if (user.Identity.GetUserId() != ordItem.userID)
-                        {
-                            return Json(new { success = "User ID for order and logged in user do not match." }, JsonRequestBehavior.AllowGet);
-                        }
-                        ordItem.customization = order.customization;
-                        db.SaveChanges();
-                        ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
-                        return Json(ordItem);
+            ViewBag.orderID = new SelectList(db.Orders, ""
+        }*/
 
-                    }
-                    else
-                    {
-                        return Json(new { error = "Order was somehow null." }, JsonRequestBehavior.AllowGet);
-                    }
-                }
-                else
-                {
-                    return Json(new { error = "Invalid order id." }, JsonRequestBehavior.AllowGet);
-                }
-            }
-            else
-            {
-                return Json(new { error = "You need to be logged in to order." }, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //public ActionResult OrderItem()
+        //{
+        //    ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
+
+        //    return View();
+        //}
+
         [HttpPost]
         public JsonResult OrderItem([Bind(Include = "menuItemID,customization")] Order order)
         {
@@ -130,46 +102,81 @@ namespace MvcLunchSite.Controllers
                     MenuItem menuItem = query.FirstOrDefault();
                     if (menuItem != null)
                     {
+                        //bool canOrder = true;
                         string strID = user.Identity.GetUserId();
                         List<Order> ordList = db.Orders.Where(x => x.userID == strID).ToList();
-                        order.menuItemDescription = menuItem.menuItemDescription;
-                        order.ItemPrice = menuItem.menuItemPrice;
-                        order.menuItemName = menuItem.menuItemName;
-                        order.userID = userId;
-                        var secondQuery = from item in db.Menus
-                                          where item.menuID.Equals(menuItem.menuID)
-                                          select item;
-                        Menu menu = secondQuery.FirstOrDefault();
-                        if (menu == null)
+                        //int topCount = 0;
+                        foreach (var ordItem in ordList)
                         {
-                            return Json(new { error = "Restaurant was not found." }, JsonRequestBehavior.AllowGet);
-                        }
-                        else
-                        {
-                            order.restaurantID = menu.restaurantID.ToString();
-                        }
-                        if (ModelState.IsValid && order.userID != null)
-                        {
-                            if (order.customization == null)
+                            MenuItem toCheckType = db.MenuItems.Where(x => ordItem.menuItemID == x.menuItemID).FirstOrDefault();
+                            Menu toLook = db.Menus.Where(x => x.menuID == menuItem.menuID).FirstOrDefault();
+                            Restaurant first = db.Restaurants.Where(x => x.ID.ToString() == ordItem.restaurantID).FirstOrDefault();
+                            Restaurant second = db.Restaurants.Where(x => x.ID == toLook.restaurantID).FirstOrDefault();
+                            /*if (first.ID == second.ID)
                             {
-                                order.customization = "";
-                            }
-                            if (order != null)
+                                if (toCheckType.itemType == menuItem.itemType)
+                                {
+                                    if (menuItem.itemType.Trim() == "Topping")
+                                    {
+                                        topCount++;
+                                        if (topCount > 2)
+                                        {
+                                            canOrder = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        canOrder = false;
+                                    }
+                                }
+                            }*/
+
+                        }
+                        //if (canOrder)
+                        //
+                            order.menuItemDescription = menuItem.menuItemDescription;
+                            order.ItemPrice = menuItem.menuItemPrice;
+                            order.menuItemName = menuItem.menuItemName;
+                            order.userID = userId;
+                            var secondQuery = from item in db.Menus
+                                              where item.menuID.Equals(menuItem.menuID)
+                                              select item;
+                            Menu menu = secondQuery.FirstOrDefault();
+                            if (menu == null)
                             {
-                                db.Orders.Add(order);
-                                db.SaveChanges();
+                                return Json(new { error = "Restaurant was not found." }, JsonRequestBehavior.AllowGet);
                             }
                             else
                             {
-                                return Json(new { error = "Order was somehow null." }, JsonRequestBehavior.AllowGet);
+                                order.restaurantID = menu.restaurantID.ToString();
                             }
-                        }
+                            if (ModelState.IsValid && order.userID != null)
+                            {
+                                if (order.customization == null)
+                                {
+                                    order.customization = "";
+                                }
+                                if (order != null)
+                                {
+                                    db.Orders.Add(order);
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    return Json(new { error = "Order was somehow null." }, JsonRequestBehavior.AllowGet);
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { error = "Invalid model state." }, JsonRequestBehavior.AllowGet);
+                            }
+                            ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
+                            return Json(order);
+                        /*}
                         else
                         {
-                            return Json(new { error = "Invalid model state." }, JsonRequestBehavior.AllowGet);
-                        }
-                        ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
-                        return Json(order);
+                            return Json(new { error = "Item type limit already acheived." }, JsonRequestBehavior.AllowGet);
+                        }*/
                     }
                     else
                     {
@@ -186,6 +193,13 @@ namespace MvcLunchSite.Controllers
                 return Json(new { error = "You need to be logged in to order." }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        //public ActionResult RemoveFromOrder()
+        //{
+        //    ViewBag.orderID = new SelectList(db.Orders, "orderID", "userID", "menuItemID", RouteData.Values["id"]);
+
+        //    return View();
+        //}
 
         [HttpPost]
         public JsonResult RemoveFromOrder([Bind(Include = "orderID")] Order order)
