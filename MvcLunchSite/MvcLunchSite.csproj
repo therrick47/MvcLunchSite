@@ -194,9 +194,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-MvcLunchSite-20160811125451.mdf" />
+    <Content Include="App_Data\aspnet-MvcLunchSite-20160811125451.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Data\aspnet-MvcLunchSite-20160811125451_log.ldf">
       <DependentUpon>aspnet-MvcLunchSite-20160811125451.mdf</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />

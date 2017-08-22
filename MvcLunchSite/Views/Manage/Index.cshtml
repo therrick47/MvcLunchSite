@@ -26,6 +26,7 @@
             }
             ]
         </dd>
+        <br />
         
         @if (Model.RoleName != null)
         {
@@ -52,6 +53,8 @@
                         link.blur();
                     }
                 </script>
+                <br />
+                <br />
                 <p><input id="clear" onclick="location.href='@Url.Action("clearVotes", "Manage")'" type="button" value="Clear Votes" class="btn btn-default" style="font-size:1vw;" /></p>
             }
             </dd>

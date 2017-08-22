@@ -23,9 +23,10 @@
                 @Html.ActionLink("Lunch Voting Website", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <!--Removed duplicate home links-->
+               <!-- <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                </ul>
+                </ul>-->
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

@@ -209,6 +209,7 @@
     var postData = {};
     var orderListHrefGlobal;
     var orderItemHrefGlobal;
+    var isEdit=false;
 
 
     function orderItem(buttonId, orderListHref, orderItemHref) {
@@ -224,32 +225,73 @@
     }
 
     function orderSendAfterCustomize(){
-        $.ajax({
-            //url: "/Home/OrderItem",
-            url: '@Url.Action("OrderItem","Home")',
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(postData),
-            datatype: "json",
-            success: function (returnObj) {
-                if (returnObj.hasOwnProperty('error')) {
+        if (isEdit) {
+            isEdit = false;
+            $.ajax({
+                //url: "/Home/OrderItem",
+                url: '@Url.Action("EditItem","Home")',
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(postData),
+                datatype: "json",
+                success: function (returnObj) {
+                    if (returnObj.hasOwnProperty('error')) {
+                        $("#bad").remove();
+                        document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Error: ' + returnObj['error'] + '</h4>'
+                        $("#bad").fadeIn();
+                    }
+                    else {
+                        $("#bad").remove();
+                        var orderUI = '<li id ="' + orderItemHrefGlobal + '" class="list-group-item">'
+                                                    + '<h4 class="list-group-item-heading">' + returnObj.menuItemName
+                                                    + '</h4><p class="list-group-item-text" id="description">' + returnObj.menuItemDescription
+                                                    + '</p><p><i>' + returnObj.customization + '</i></p>'
+                                                    + '<button id="' + returnObj.orderID + '" onclick="editItem(this.id, ' + orderItemHrefGlobal + ', ' + returnObj.menuItemID + ')" class="btn btnEdit label label-warning label-pill">Edit</button>'
+                                                    + '<button id="' + returnObj.orderID + '" onclick="removeFromOrder(this.id, \'' + orderItemHrefGlobal + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button>'
+                                               + ' </li>';
+                        $("#" + orderItemHrefGlobal).remove();
+                        console.log(orderListHrefGlobal);
+                        var orderListUI = document.getElementById(orderListHrefGlobal);
+                        console.log(orderListUI);
+                        orderListUI.innerHTML += orderUI;
+                    }
+                },
+                error: function (returnOnbj) {
                     $("#bad").remove();
-                    document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Error: '+ returnObj['error'] +'</h4>'
+                    document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Failed to edit to order.</h4>'
                     $("#bad").fadeIn();
-                }
-                else {
+                },
+            });
+        }
+        else{
+            $.ajax({
+                //url: "/Home/OrderItem",
+                url: '@Url.Action("OrderItem","Home")',
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(postData),
+                datatype: "json",
+                success: function (returnObj) {
+                    if (returnObj.hasOwnProperty('error')) {
+                        $("#bad").remove();
+                        document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Error: '+ returnObj['error'] +'</h4>'
+                        $("#bad").fadeIn();
+                    }
+                    else {
+                        $("#bad").remove();
+                       var orderUI = '<li id="' + orderItemHrefGlobal + '" class="list-group-item"><h4 class="list-group-item-heading">' + returnObj.menuItemName + '<button id="' + returnObj.orderID + '" onclick="removeFromOrder(this.id, \'' + orderItemHrefGlobal + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + returnObj.menuItemDescription + '</p><p><i>' + returnObj.customization + '</i></p></li>';
+                       // var orderUI = '<li id ="' + orderItemHrefGlobal + '" class="list-group-item"><h4 class="list-group-item-heading">' + returnObj.menuItemName + '</h4><p class="list-group-item-text" id="description">' + returnObj.menuItemDescription + '</p><p><i>' + returnObj.customization + '</i></p><button id="' + returnObj.orderID + '" onclick="editItem(this.id, ' + orderListHrefGlobal + ', ' + returnObj.menuItemID + ')" class="btn btnEdit label label-warning label-pill">Edit</button><button id="' + returnObj.orderID + '" onclick="removeFromOrder(this.id, \'' + orderItemHrefGlobal + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></li>';
+                        var orderListUI = document.getElementById(orderListHrefGlobal);
+                        orderListUI.innerHTML += orderUI;
+                    }
+                },
+                error: function (returnOnbj) {
                     $("#bad").remove();
-                    var orderUI = '<li id="' + orderItemHrefGlobal + '" class="list-group-item"><h4 class="list-group-item-heading">' + returnObj.menuItemName + '<button id="' + returnObj.orderID + '" onclick="removeFromOrder(this.id, \'' + orderItemHrefGlobal + '\')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">Remove</button></h4><p class="list-group-item-text" id="description">' + returnObj.menuItemDescription + '</p><p><i>' + returnObj.customization + '</i></p></li>';
-                    var orderListUI = document.getElementById(orderListHrefGlobal);
-                    orderListUI.innerHTML += orderUI;
-                }
-            },
-            error: function (returnOnbj) {
-                $("#bad").remove();
-                document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Failed to add to order.</h4>'
-                $("#bad").fadeIn();
-            },
-        });
+                    document.getElementById(orderListHrefGlobal).innerHTML += '<h4 id="bad" style="display:none; color:red;">Failed to add to order.</h4>'
+                    $("#bad").fadeIn();
+                },
+            });
+        }
     }
 
     function closeModal() {
@@ -293,6 +335,17 @@
                 $("#bad").fadeIn();
             }
         });
+    }
+    function editItem(buttonId, orderListHref, orderItemHref) {
+        var ordID = parseInt(buttonId.trim(), 10);
+        postData = {
+            "orderID": ordID,
+            "customization": ""
+        };
+        orderListHrefGlobal = orderListHref;
+        orderItemHrefGlobal = orderItemHref;
+        isEdit=true;
+        $("#orderModal").modal("toggle");
     }
                 </script>
 
@@ -452,9 +505,7 @@
                                                 <li id ="orderItem-@menuItemNum" class="list-group-item">
                                                     <h4 class="list-group-item-heading">
                                                         @menuItem.menuItemName
-                                                        <button id="@order.orderID" onclick="removeFromOrder(this.id, 'orderItem-@menuItemNum')" class="btn btnRemove label label-danger label-pill pull-xs-right" style="float:right;">
-                                                            Remove
-                                                        </button>
+                                                        
                                                     </h4>
                                                     <p class="list-group-item-text" id="description">
                                                         @menuItem.menuItemDescription
@@ -462,6 +513,12 @@
                                                     <p>
                                                         <i>@order.customization</i>
                                                     </p>
+                                                    <button id="@order.orderID" onclick="editItem(this.id, '@orderHref-list', 'orderItem-@menuItemNum')" class="btn btnEdit label label-warning label-pill">
+                                                        Edit
+                                                    </button>
+                                                    <button id="@order.orderID" onclick="removeFromOrder(this.id, 'orderItem-@menuItemNum')" class="btn btnRemove label label-danger label-pill">
+                                                        Remove
+                                                    </button>
                                                 </li>
                                             }
                                             menuItemNum++;
